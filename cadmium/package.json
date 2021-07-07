@@ -1,0 +1,20 @@
+{
+  "name": "cadmium",
+  "version": "1.0.0",
+  "description": "An easy-to-use multipurpose Discord bot.",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": " "
+  },
+  "keywords": [
+    "discord",
+    "bot"
+  ],
+  "author": "Conax",
+  "license": "GPL-3.0"
+}
