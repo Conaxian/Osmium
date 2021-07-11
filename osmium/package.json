@@ -19,7 +19,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "bufferutil": "^4.0.3",
-    "discord.js": "^12.5.3",
+    "discord.js": "^13.0.0-dev.d433fe8.1626004976",
     "dotenv": "^10.0.0",
     "erlpack": "github:discord/erlpack",
     "sodium": "^3.0.2",
