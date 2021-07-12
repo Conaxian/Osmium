@@ -2,6 +2,7 @@
 
 require("dotenv").config();
 const {DISCORD_TOKEN: TOKEN} = process.env;
+const {activity} = require("../config.json");
 
 const {Client, Intents} = require("discord.js");
 const allIntents = [
@@ -25,10 +26,13 @@ const options = {
   intents: new Intents(allIntents)
 };
 
-class Bot extends Client {
+module.exports = exports = class Bot extends Client {
   constructor() {
     super(options);
   }
-}
 
-module.exports = exports = {Bot, TOKEN};
+  async run(presence) {
+    await super.login(TOKEN);
+    this.user.setActivity(activity);
+  }
+}

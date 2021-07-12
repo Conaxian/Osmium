@@ -1,6 +1,6 @@
 "use strict";
 
-const {Bot, TOKEN} = require("./lib/bot.js");
+const Bot = require("./lib/bot.js");
 const bot = new Bot();
 
 bot.on("ready", () => {
@@ -13,4 +13,4 @@ bot.on("messageCreate", async msg => {
   }
 });
 
-bot.login(TOKEN);
+bot.run();
