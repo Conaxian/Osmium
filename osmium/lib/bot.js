@@ -1,8 +1,9 @@
 "use strict";
 
 require("dotenv").config();
-const Discord = require("discord.js");
+const {DISCORD_TOKEN: TOKEN} = process.env;
 
+const {Client, Intents} = require("discord.js");
 const allIntents = [
   "GUILDS",
   "GUILD_MEMBERS",
@@ -21,20 +22,13 @@ const allIntents = [
   "DIRECT_MESSAGE_TYPING"
 ];
 const options = {
-  intents: new Discord.Intents(allIntents)
+  intents: new Intents(allIntents)
 };
 
-const client = new Discord.Client(options);
-const {DISCORD_TOKEN: TOKEN} = process.env
-
-client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}`);
-});
-
-client.on("messageCreate", async msg => {
-  if (msg.content === "Test") {
-    await msg.reply("Successful test");
+class Bot extends Client {
+  constructor() {
+    super(options);
   }
-});
+}
 
-client.login(TOKEN);
+module.exports = exports = {Bot, TOKEN};
