@@ -1,10 +1,11 @@
 "use strict";
 
+const Log = require("./lib/log.js");
 const Bot = require("./lib/bot.js");
 const bot = new Bot();
 
 bot.on("ready", () => {
-  console.log(`Logged in as ${bot.user.tag}`);
+  Log.info("Ready event triggered");
 });
 
 bot.on("messageCreate", async msg => {

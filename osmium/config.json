@@ -1,6 +1,15 @@
 {
+  "debug": true,
+
   "activity": {
     "name": "your feedback!",
     "type": "LISTENING"
+  },
+
+  "logColors": {
+    "info": "white",
+    "warn": "yellow",
+    "error": "red",
+    "debug": "blue"
   }
 }

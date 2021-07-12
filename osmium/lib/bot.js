@@ -3,6 +3,7 @@
 require("dotenv").config();
 const {DISCORD_TOKEN: TOKEN} = process.env;
 const {activity} = require("../config.json");
+const Log = require("./log.js");
 
 const {Client, Intents} = require("discord.js");
 const allIntents = [
@@ -32,7 +33,9 @@ module.exports = exports = class Bot extends Client {
   }
 
   async run(presence) {
+    Log.info("Starting to log in");
     await super.login(TOKEN);
+    Log.info(`Logged in as ${this.user.tag}`)
     this.user.setActivity(activity);
   }
 }
