@@ -1,17 +1,23 @@
 "use strict";
 
-const Log = require("./lib/log.js");
 const Bot = require("./lib/bot.js");
 const bot = new Bot();
 
-bot.on("ready", () => {
-  Log.info("Ready event triggered");
+const Log = require("./lib/log.js");
+const log = new Log("Main");
+
+const parse = require("./lib/cmd/parse.js");
+
+log.info("Starting app");
+
+bot.once("ready", () => {
+  log.info("Bot is ready");
 });
 
 bot.on("messageCreate", async msg => {
-  if (msg.content === "Test") {
-    await msg.reply("Successful test");
-  }
+  const ctx = await parse({text: msg.content, msg});
+  if (!ctx) return;
+  log.debug(ctx);
 });
 
 bot.run();

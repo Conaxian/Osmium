@@ -1,5 +1,6 @@
 {
   "debug": true,
+  "prefix": "!",
 
   "activity": {
     "name": "your feedback!",

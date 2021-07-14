@@ -3,7 +3,9 @@
 require("dotenv").config();
 const {DISCORD_TOKEN: TOKEN} = process.env;
 const {activity} = require("../config.json");
+
 const Log = require("./log.js");
+const log = new Log("Bot");
 
 const {Client, Intents} = require("discord.js");
 const allIntents = [
@@ -23,8 +25,16 @@ const allIntents = [
   "DIRECT_MESSAGE_REACTIONS",
   "DIRECT_MESSAGE_TYPING"
 ];
+const allPartials = [
+  "USER",
+  "CHANNEL",
+  "GUILD_MEMBER",
+  "MESSAGE",
+  "REACTION"
+];
 const options = {
-  intents: new Intents(allIntents)
+  intents: new Intents(allIntents),
+  partials: allPartials
 };
 
 module.exports = exports = class Bot extends Client {
@@ -33,9 +43,9 @@ module.exports = exports = class Bot extends Client {
   }
 
   async run(presence) {
-    Log.info("Starting to log in");
+    log.info("Starting to log in");
     await super.login(TOKEN);
-    Log.info(`Logged in as ${this.user.tag}`)
+    log.info(`Logged in as ${this.user.tag}`)
     this.user.setActivity(activity);
   }
 }
