@@ -3,6 +3,14 @@
 const Log = require("../log.js");
 const log = new Log("MsgParser");
 
+const {prefix} = require("../../config.json");
+
+const parseParts = {
+  async getCmd(text) {
+    return
+  }
+};
+
 const parseTypes = {
   async guild({text, msg}) {
     return [text, "guild"];
