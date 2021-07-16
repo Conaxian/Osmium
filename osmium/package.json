@@ -18,12 +18,14 @@
   "author": "Conax",
   "license": "GPL-3.0",
   "dependencies": {
+    "@discordjs/opus": "^0.5.3",
+    "@discordjs/voice": "^0.5.4",
     "bufferutil": "^4.0.3",
     "colors": "^1.4.0",
     "discord.js": "^13.0.0-dev.d433fe8.1626004976",
     "dotenv": "^10.0.0",
     "erlpack": "github:discord/erlpack",
-    "sodium": "^3.0.2",
+    "tweetnacl": "^1.0.3",
     "utf-8-validate": "^5.0.5",
     "zlib-sync": "^0.1.7"
   }
