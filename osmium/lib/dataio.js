@@ -6,8 +6,9 @@ const getPath = file => `../data/${file}.json`;
 module.exports = exports = {
   async read(file) {
     const path = getPath(file);
+    let json;
     try {
-      const json = await fs.readFile(path,
+      json = await fs.readFile(path,
       {encoding: "utf8"});
     } catch (err) {
       return {};
