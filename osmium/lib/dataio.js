@@ -8,8 +8,7 @@ module.exports = exports = {
     const path = getPath(file);
     let json;
     try {
-      json = await fs.readFile(path,
-      {encoding: "utf8"});
+      json = await fs.readFile(path, {encoding: "utf8"});
     } catch (err) {
       return {};
     }
@@ -19,7 +18,6 @@ module.exports = exports = {
   async write(file, object) {
     const path = getPath(file);
     const json = JSON.stringify(object, null, 2);
-    await fs.writeFile(path, json,
-    {encoding: "utf8"});
+    await fs.writeFile(path, json, {encoding: "utf8"});
   }
 };
