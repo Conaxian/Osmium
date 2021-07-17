@@ -26,9 +26,10 @@ const parseTypes = {
 };
 
 module.exports = exports = async function parse({text, msg}) {
-  const isSystemMsg = msg?.author?.bot || msg?.system;
-  if (!text || isSystemMsg) return;
+  const ignoreMsg = msg?.author?.bot || msg?.system;
+  if (!text || ignoreMsg) return;
   let type = null;
+
   switch (msg?.channel?.type) {
     case undefined:
       type = "virtual"; break;
@@ -40,6 +41,7 @@ module.exports = exports = async function parse({text, msg}) {
       log.error(`Invalid channel type: ${msg.channel.type}`);
       return;
   }
+
   const ctx = await parseTypes[type]({text, msg});
   return ctx;
 }
