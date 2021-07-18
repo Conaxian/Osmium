@@ -1,8 +1,13 @@
 "use strict";
 
 const fs = require("fs/promises");
-const {Range} = require("./util.js");
-const getLocalePath = lang => `../locale/${lang}.json`;
+const {Range} = require("./util");
+const DataIO = require("./dataio");
+const Context = require("./cmd/context");
+const {Message, Guild, GuildMember, User} = require("discord.js");
+
+const {defaultLocale: defaultLang} = require("../config.json");
+const getLocalePath = lang => `./locale/${lang}.json`;
 const localeCache = new Map();
 
 async function loadLocale(lang, force=false) {
@@ -17,7 +22,7 @@ async function loadLocale(lang, force=false) {
   }
 }
 
-module.exports = exports = class Loc {
+module.exports = exports = class LocStr {
   constructor(id) {
     this.id = id;
     this.fValues = [];
@@ -36,5 +41,18 @@ module.exports = exports = class Loc {
       string = string.replaceAll(`{${i}}`, this.fValues[i]);
     }
     return string;
+  }
+
+  async cstring(src) {
+    let lang;
+    if (src instanceof Context) {
+      lang = src.userConfig?.language ?? src.guildConfig?.language;
+    } else if (src instanceof Message || src instanceof Guild) {
+      lang = DataIO.read("guilds")?.[src.author.id]?.config?.language;
+    } else if (src instanceof Message || src instanceof GuildMember ||
+    src instanceof User) {
+      lang ??= DataIO.read("users")?.[src.author.id]?.config?.language;
+    }
+    return await this.string(lang ?? defaultLang);
   }
 }

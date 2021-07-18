@@ -1,7 +1,7 @@
 "use strict";
 
 const colors = require("colors");
-const Timestamp = require("./timestamp.js");
+const Timestamp = require("./timestamp");
 const {debug, logColors} = require("../config.json");
 
 module.exports = exports = class Log {

@@ -1,31 +1,67 @@
 "use strict";
 
-const Log = require("../log.js");
+const Log = require("../log");
 const log = new Log("MsgParser");
+const DataIO = require("../dataio");
+const {mentionId} = require("../util");
+const LocStr = require("../locale");
 
-const {prefix} = require("../../config.json");
+const {prefix: defaultPrefix, cmdCooldown} = require("../../config.json");
+const callTimes = new Map();
 
-const parseParts = {
-  async getCmd(text) {
-    return
+async function replyPrefix(bot, text, prefix) {
+  if (mentionId(text) === bot.user.id) {
+    return new LocStr("general/current-prefix").format(prefix);
   }
-};
+}
+
+async function getCmd(text, msg, prefix) {
+  if (text.startsWith(prefix) && new Set(text).size > 1) {
+    if (msg) {
+      const callTime = callTimes.get(msg.author.id);
+      if (callTime > new Date() - cmdCooldown) return;
+      callTimes.set(msg.author.id, new Date());
+    }
+
+    const originalCall = text.split(" ")[0].slice(prefix.length);
+    const call = originalCall.toLowerCase().replace(/_/g, "-");
+  }
+}
 
 const parseTypes = {
-  async guild({text, msg}) {
-    return [text, "guild"];
+  async guild({bot, text, msg}) {
+    const guildConfig = DataIO.read("guilds")?.[msg.guild.id];
+    const prefix = guildConfig?.config?.prefix ?? defaultPrefix;
+
+    const reply = await replyPrefix(bot, text, prefix);
+    if (reply) return await reply.cstring(msg);
+
+    const command = await getCmd(text, msg, prefix);
+    return command;
   },
 
-  async dm({text, msg}) {
-    return [text, "dm"];
+  async dm({bot, text, msg}) {
+    const prefix = defaultPrefix;
+
+    const reply = await replyPrefix(bot, text, prefix);
+    if (reply) return await reply.cstring(msg);
+
+    const command = await getCmd(text, msg, prefix);
+    return command;
   },
 
-  async virtual({text, msg}) {
-    return [text, "virtual"];
+  async virtual({bot, text}) {
+    const prefix = defaultPrefix;
+
+    const reply = await replyPrefix(bot, text, prefix);
+    if (reply) return reply;
+
+    const command = await getCmd(text, null, prefix);
+    return command;
   }
 };
 
-module.exports = exports = async function parse({text, msg}) {
+module.exports = exports = async function parse({bot, text, msg}) {
   const ignoreMsg = msg?.author?.bot || msg?.system;
   if (!text || ignoreMsg) return;
   let type = null;
@@ -42,6 +78,6 @@ module.exports = exports = async function parse({text, msg}) {
       return;
   }
 
-  const ctx = await parseTypes[type]({text, msg});
+  const ctx = await parseTypes[type]({bot, text, msg});
   return ctx;
 }

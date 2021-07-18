@@ -4,7 +4,7 @@ require("dotenv").config();
 const {DISCORD_TOKEN: TOKEN} = process.env;
 const {activity} = require("../config.json");
 
-const Log = require("./log.js");
+const Log = require("./log");
 const log = new Log("Bot");
 
 const {Client, Intents} = require("discord.js");

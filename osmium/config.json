@@ -1,6 +1,12 @@
 {
   "debug": true,
   "prefix": "!",
+  "cmdCooldown": 1000,
+
+  "defaultLocale": "en-US",
+  "locales": [
+    "en-US"
+  ],
 
   "activity": {
     "name": "your feedback!",

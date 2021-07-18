@@ -14,4 +14,9 @@ class Range {
   }
 }
 
-module.exports = exports = {Range};
+function mentionId(mention) {
+  if (+mention) return mention;
+  return mention.match(/<(?:@[!&]?|#)(\d+)>/)?.[1] ?? null;
+}
+
+module.exports = exports = {Range, mentionId};
