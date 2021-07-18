@@ -22,7 +22,7 @@ async function loadLocale(lang, force=false) {
   }
 }
 
-module.exports = exports = class LocStr {
+class LocStr {
   constructor(id) {
     this.id = id;
     this.fValues = [];
@@ -56,3 +56,5 @@ module.exports = exports = class LocStr {
     return await this.string(lang ?? defaultLang);
   }
 }
+
+module.exports = exports = {loadLocale, LocStr};

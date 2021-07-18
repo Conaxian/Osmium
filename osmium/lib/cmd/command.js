@@ -1,10 +1,10 @@
 "use strict";
 
 module.exports = exports = class Command {
-  constructor({name, aliases, invoker}) {
+  constructor({name, aliases, invoke}) {
     this.name = name;
     this.aliases = aliases ?? [];
-    this.invoker = invoker;
+    this.invoke = invoke;
   }
 
   get calls() {

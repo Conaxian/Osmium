@@ -2,8 +2,8 @@
 
 module.exports = exports = class Mod {
   constructor(name, commands) {
-    this.name = name
-    this.commands = commands
+    this.name = name;
+    this.commands = commands;
   }
 
   *[Symbol.iterator]() {

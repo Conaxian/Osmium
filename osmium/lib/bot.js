@@ -48,4 +48,20 @@ module.exports = exports = class Bot extends Client {
     log.info(`Logged in as ${this.user.tag}`)
     this.user.setActivity(activity);
   }
+
+  async out(output, ctx) {
+    const args = output.options;
+    switch (output.type) {
+      case "string":
+        args.content = output.value; break;
+      case "locstr":
+        args.content = await output.value.cstring(ctx);
+        break;
+      case "embed":
+        if (!args.embeds) args.embeds = [];
+        args.embeds.push(output.value);
+        break;
+    }
+    (output.reply) ? ctx.msg.reply(args) : ctx.channel.send(args);
+  }
 }

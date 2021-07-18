@@ -3,10 +3,12 @@
 const Log = require("../log");
 const log = new Log("MsgParser");
 const DataIO = require("../dataio");
+const Context = require("./context");
 const {mentionId} = require("../util");
-const LocStr = require("../locale");
+const {LocStr} = require("../locale");
 
 const {prefix: defaultPrefix, cmdCooldown} = require("../../config.json");
+const {callNamespace} = require("../loader");
 const callTimes = new Map();
 
 async function replyPrefix(bot, text, prefix) {
@@ -25,6 +27,9 @@ async function getCmd(text, msg, prefix) {
 
     const originalCall = text.split(" ")[0].slice(prefix.length);
     const call = originalCall.toLowerCase().replace(/_/g, "-");
+    const cmd = callNamespace.get(call);
+    if (!cmd) return new LocStr("general/unknown-command").format(prefix);
+    return cmd.name;
   }
 }
 
@@ -32,32 +37,59 @@ const parseTypes = {
   async guild({bot, text, msg}) {
     const guildConfig = DataIO.read("guilds")?.[msg.guild.id];
     const prefix = guildConfig?.config?.prefix ?? defaultPrefix;
+    const ctx = new Context({bot, text, msg, type: "guild", prefix});
 
     const reply = await replyPrefix(bot, text, prefix);
-    if (reply) return await reply.cstring(msg);
+    if (reply) {
+      ctx.resolve("locstr", reply);
+      return ctx;
+    }
 
     const command = await getCmd(text, msg, prefix);
-    return command;
+    if (command && !command instanceof LocStr) {
+      ctx.command = command;
+    } else if (command) {
+      ctx.resolve("locstr", command);
+    }
+    return ctx;
   },
 
   async dm({bot, text, msg}) {
     const prefix = defaultPrefix;
+    const ctx = new Context({bot, text, msg, type: "dm", prefix});
 
     const reply = await replyPrefix(bot, text, prefix);
-    if (reply) return await reply.cstring(msg);
+    if (reply) {
+      ctx.resolve("locstr", reply);
+      return ctx;
+    }
 
     const command = await getCmd(text, msg, prefix);
-    return command;
+    if (command && !command instanceof LocStr) {
+      ctx.command = command;
+    } else {
+      ctx.resolve("locstr", command);
+    }
+    return ctx;
   },
 
   async virtual({bot, text}) {
     const prefix = defaultPrefix;
+    const ctx = new Context({bot, text, type: "virtual", prefix});
 
     const reply = await replyPrefix(bot, text, prefix);
-    if (reply) return reply;
+    if (reply) {
+      ctx.resolve("locstr", reply);
+      return ctx;
+    }
 
     const command = await getCmd(text, null, prefix);
-    return command;
+    if (command && !command instanceof LocStr) {
+      ctx.command = command;
+    } else {
+      ctx.resolve("locstr", command);
+    }
+    return ctx;
   }
 };
 

@@ -3,15 +3,19 @@
   "prefix": "!",
   "cmdCooldown": 1000,
 
+  "activity": {
+    "name": "your feedback!",
+    "type": "LISTENING"
+  },
+
   "defaultLocale": "en-US",
   "locales": [
     "en-US"
   ],
 
-  "activity": {
-    "name": "your feedback!",
-    "type": "LISTENING"
-  },
+  "preloadModules": [
+    "core"
+  ],
 
   "logColors": {
     "info": "white",

@@ -1,5 +1,6 @@
 {
   "general": {
-    "current-prefix": "The current command prefix is `{0}`"
+    "current-prefix": "The current command prefix is `{0}`",
+    "unknown-command": "Unknown command! Use `{0}help` to get a list of available commands."
   }
 }

@@ -16,9 +16,7 @@ bot.once("ready", () => {
 
 bot.on("messageCreate", async msg => {
   const ctx = await parse({bot, text: msg.content, msg});
-  if (!ctx) return;
-  log.debug(ctx);
-  msg.reply(ctx);
+  if (ctx?.result) bot.out(ctx.result, ctx);
 });
 
 bot.run();
