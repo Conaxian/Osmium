@@ -7,7 +7,7 @@ exports.data = {
     "tetht"
   ],
 
-  async invoke(ctx) {
-    return "Testing";
+  async *invoke(ctx) {
+    ctx.resolve({"content": "Test successful"});
   }
 }

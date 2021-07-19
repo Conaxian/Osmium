@@ -1,9 +1,9 @@
 "use strict";
 
-const Output = require("../output");
+const Output = require("./output");
 
 module.exports = exports = class Context {
-  constructor({bot, text, msg, type, prefix, command, args}) {
+  constructor({bot, text, msg, type, prefix, command, args, perms}) {
     this.bot = bot;
     this.text = text;
     if (type !== "virtual") {
@@ -15,6 +15,11 @@ module.exports = exports = class Context {
     this.prefix = prefix;
     this.command = command;
     this.args = args;
+    this.perms = perms;
+  }
+
+  output(data, reply=true) {
+    return new Output(data, reply);
   }
 
   resolve(data, reply=true) {

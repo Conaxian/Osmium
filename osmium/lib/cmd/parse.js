@@ -11,26 +11,44 @@ const {prefix: defaultPrefix, cmdCooldown} = require("../../config.json");
 const {callNamespace} = require("../loader");
 const callTimes = new Map();
 
-async function replyPrefix(bot, text, prefix) {
-  if (mentionId(text) === bot.user.id) {
-    return new LocStr("general/current-prefix").format(prefix);
+async function replyPrefix(ctx) {
+  if (mentionId(ctx.text) === ctx.bot.user.id) {
+    const result = new LocStr("general/current-prefix")
+      .format(ctx.prefix);
+    ctx.resolve({"content": result});
+    return;
   }
 }
 
-async function getCmd(text, msg, prefix) {
-  if (text.startsWith(prefix) && new Set(text).size > 1) {
-    if (msg) {
-      const callTime = callTimes.get(msg.author.id);
+async function getCmd(ctx) {
+  if (ctx.text.startsWith(ctx.prefix) && new Set(ctx.text).size > 1) {
+    if (ctx.msg) {
+      const callTime = callTimes.get(ctx.author.id);
       if (callTime > new Date() - cmdCooldown) return;
-      callTimes.set(msg.author.id, new Date());
+      callTimes.set(ctx.author.id, new Date());
     }
 
-    const originalCall = text.split(" ")[0].slice(prefix.length);
+    const originalCall = ctx.text.split(" ")[0].slice(ctx.prefix.length);
     const call = originalCall.toLowerCase().replace(/_/g, "-");
     const cmd = callNamespace.get(call);
-    if (!cmd) return new LocStr("general/unknown-command").format(prefix);
-    return cmd.name;
+    if (!cmd) {
+      const result = new LocStr("general/unknown-command")
+        .format(ctx.prefix);
+      ctx.resolve({"content": result});
+      return;
+    }
+
+    const argRegex = new RegExp(`^${ctx.prefix}${originalCall}`);
+    const argString = ctx.text.replace(argRegex, "").trim();
+    const args = await getArgs(ctx, argString);
+
+    ctx.command = cmd;
+    ctx.args = args;
   }
+}
+
+async function getArgs(ctx, argString) {
+  return [];
 }
 
 const parseTypes = {
@@ -39,18 +57,10 @@ const parseTypes = {
     const prefix = guildConfig?.config?.prefix ?? defaultPrefix;
     const ctx = new Context({bot, text, msg, type: "guild", prefix});
 
-    const reply = await replyPrefix(bot, text, prefix);
-    if (reply) {
-      ctx.resolve({"content": reply});
-      return ctx;
-    }
+    await replyPrefix(ctx);
+    if (ctx.result) return ctx;
 
-    const command = await getCmd(text, msg, prefix);
-    if (command && !command instanceof LocStr) {
-      ctx.command = command;
-    } else if (command) {
-      ctx.resolve({"content": command});
-    }
+    await getCmd(ctx);
     return ctx;
   },
 
@@ -58,18 +68,10 @@ const parseTypes = {
     const prefix = defaultPrefix;
     const ctx = new Context({bot, text, msg, type: "dm", prefix});
 
-    const reply = await replyPrefix(bot, text, prefix);
-    if (reply) {
-      ctx.resolve({"content": reply});
-      return ctx;
-    }
+    await replyPrefix(ctx);
+    if (ctx.result) return ctx;
 
-    const command = await getCmd(text, msg, prefix);
-    if (command && !command instanceof LocStr) {
-      ctx.command = command;
-    } else {
-      ctx.resolve({"content": command});
-    }
+    await getCmd(ctx);
     return ctx;
   },
 
@@ -77,18 +79,10 @@ const parseTypes = {
     const prefix = defaultPrefix;
     const ctx = new Context({bot, text, type: "virtual", prefix});
 
-    const reply = await replyPrefix(bot, text, prefix);
-    if (reply) {
-      ctx.resolve({"content": reply});
-      return ctx;
-    }
+    await replyPrefix(ctx);
+    if (ctx.result) return ctx;
 
-    const command = await getCmd(text, null, prefix);
-    if (command && !command instanceof LocStr) {
-      ctx.command = command;
-    } else {
-      ctx.resolve({"content": command});
-    }
+    await getCmd(ctx);
     return ctx;
   }
 };
