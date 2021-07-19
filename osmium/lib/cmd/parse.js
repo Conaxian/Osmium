@@ -41,7 +41,7 @@ const parseTypes = {
 
     const reply = await replyPrefix(bot, text, prefix);
     if (reply) {
-      ctx.resolve("locstr", reply);
+      ctx.resolve({"content": reply});
       return ctx;
     }
 
@@ -49,7 +49,7 @@ const parseTypes = {
     if (command && !command instanceof LocStr) {
       ctx.command = command;
     } else if (command) {
-      ctx.resolve("locstr", command);
+      ctx.resolve({"content": command});
     }
     return ctx;
   },
@@ -60,7 +60,7 @@ const parseTypes = {
 
     const reply = await replyPrefix(bot, text, prefix);
     if (reply) {
-      ctx.resolve("locstr", reply);
+      ctx.resolve({"content": reply});
       return ctx;
     }
 
@@ -68,7 +68,7 @@ const parseTypes = {
     if (command && !command instanceof LocStr) {
       ctx.command = command;
     } else {
-      ctx.resolve("locstr", command);
+      ctx.resolve({"content": command});
     }
     return ctx;
   },
@@ -79,7 +79,7 @@ const parseTypes = {
 
     const reply = await replyPrefix(bot, text, prefix);
     if (reply) {
-      ctx.resolve("locstr", reply);
+      ctx.resolve({"content": reply});
       return ctx;
     }
 
@@ -87,7 +87,7 @@ const parseTypes = {
     if (command && !command instanceof LocStr) {
       ctx.command = command;
     } else {
-      ctx.resolve("locstr", command);
+      ctx.resolve({"content": command});
     }
     return ctx;
   }
@@ -102,6 +102,8 @@ module.exports = exports = async function parse({bot, text, msg}) {
     case undefined:
       type = "virtual"; break;
     case "GUILD_TEXT":
+    case "GUILD_PUBLIC_THREAD":
+    case "GUILD_PRIVATE_THREAD":
       type = "guild"; break;
     case "DM": case "GROUP_DM":
       type = "dm"; break;

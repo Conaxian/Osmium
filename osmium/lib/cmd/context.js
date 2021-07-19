@@ -17,7 +17,7 @@ module.exports = exports = class Context {
     this.args = args;
   }
 
-  resolve(type, value) {
-    this.result = new Output(type, value);
+  resolve(data, reply=true) {
+    this.result = new Output(data, reply);
   }
 }

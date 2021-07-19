@@ -1,11 +1,12 @@
 "use strict";
 
+const {LocStr} = require("./locale");
+const Log = require("./log");
+const log = new Log("Bot");
+
 require("dotenv").config();
 const {DISCORD_TOKEN: TOKEN} = process.env;
 const {activity} = require("../config.json");
-
-const Log = require("./log");
-const log = new Log("Bot");
 
 const {Client, Intents} = require("discord.js");
 const allIntents = [
@@ -50,18 +51,13 @@ module.exports = exports = class Bot extends Client {
   }
 
   async out(output, ctx) {
-    const args = output.options;
-    switch (output.type) {
-      case "string":
-        args.content = output.value; break;
-      case "locstr":
-        args.content = await output.value.cstring(ctx);
-        break;
-      case "embed":
-        if (!args.embeds) args.embeds = [];
-        args.embeds.push(output.value);
-        break;
+    if (output.data?.content instanceof LocStr) {
+      output.data.content = await output.data.content.cstring(ctx);
     }
-    (output.reply) ? ctx.msg.reply(args) : ctx.channel.send(args);
+    if (output.reply) {
+      await ctx.msg.reply(output.data);
+    } else {
+      await ctx.channel.send(output.data);
+    }
   }
 }
