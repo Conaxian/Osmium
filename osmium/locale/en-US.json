@@ -1,6 +1,10 @@
 {
   "general": {
+    "name": "English (United States)"
+  },
+  "parser": {
     "current-prefix": "The current command prefix is `{0}`",
-    "unknown-command": "Unknown command! Use `{0}help` to get a list of available commands."
+    "unknown-command": "Unknown command! Use `{0}help` to get a list of available commands.",
+    "missing-arg": "Not enough arguments specified!\nMissing argument: `{0}`"
   }
 }

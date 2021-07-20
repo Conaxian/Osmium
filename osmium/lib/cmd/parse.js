@@ -49,8 +49,8 @@ async function getArgs(ctx, argString) {
   for (let argName in ctx.command.args) {
     const arg = ctx.command.args[argName];
     const result = await arg.parse(ctx, argString);
-    if (!result) {
-      if (arg.optional) continue;
+    if (!result[0]) {
+      if (arg.optional) break;
       const result = new LocStr("general/missing-arg")
         .format(arg.fullname);
       ctx.resolve({"content": result});

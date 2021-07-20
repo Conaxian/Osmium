@@ -19,7 +19,7 @@ module.exports = exports = class Argument {
   }
 
   get optional() {
-    return this.fullname.test(/^\[.+\]$/);
+    return /^\[.+\]$/.test(this.fullname);
   }
 
   async parse(ctx, string) {
