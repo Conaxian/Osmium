@@ -15,8 +15,9 @@ bot.once("ready", () => {
 bot.on("messageCreate", async msg => {
   const ctx = await parse({bot, text: msg.content, msg});
   if (!ctx) return;
-  if (ctx.command) {
-    for await (let output of ctx.command.invoke(ctx)) {
+  if (!ctx.result && ctx.command) {
+    for await (let output of ctx.command.invoke(ctx,
+      ...Object.values(ctx.args))) {
       await bot.out(output, ctx)
     }
   }

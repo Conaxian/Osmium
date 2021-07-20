@@ -30,8 +30,8 @@ async function getCmd(ctx) {
 
     const originalCall = ctx.text.split(" ")[0].slice(ctx.prefix.length);
     const call = originalCall.toLowerCase().replace(/_/g, "-");
-    const cmd = callNamespace.get(call);
-    if (!cmd) {
+    ctx.command = callNamespace.get(call);
+    if (!ctx.command) {
       const result = new LocStr("general/unknown-command")
         .format(ctx.prefix);
       ctx.resolve({"content": result});
@@ -40,15 +40,25 @@ async function getCmd(ctx) {
 
     const argRegex = new RegExp(`^${ctx.prefix}${originalCall}`);
     const argString = ctx.text.replace(argRegex, "").trim();
-    const args = await getArgs(ctx, argString);
-
-    ctx.command = cmd;
-    ctx.args = args;
+    ctx.args = await getArgs(ctx, argString);
   }
 }
 
 async function getArgs(ctx, argString) {
-  return [];
+  const args = {};
+  for (let argName in ctx.command.args) {
+    const arg = ctx.command.args[argName];
+    const result = await arg.parse(ctx, argString);
+    if (!result) {
+      if (arg.optional) continue;
+      const result = new LocStr("general/missing-arg")
+        .format(arg.fullname);
+      ctx.resolve({"content": result});
+      break;
+    }
+    [args[argName], argString] = result;
+  }
+  return args;
 }
 
 const parseTypes = {
