@@ -13,7 +13,7 @@ const callTimes = new Map();
 
 async function replyPrefix(ctx) {
   if (mentionId(ctx.text) === ctx.bot.user.id) {
-    const result = new LocStr("general/current-prefix")
+    const result = new LocStr("parser/current-prefix")
       .format(ctx.prefix);
     ctx.resolve({"content": result});
     return;
@@ -32,7 +32,7 @@ async function getCmd(ctx) {
     const call = originalCall.toLowerCase().replace(/_/g, "-");
     ctx.command = callNamespace.get(call);
     if (!ctx.command) {
-      const result = new LocStr("general/unknown-command")
+      const result = new LocStr("parser/unknown-command")
         .format(ctx.prefix);
       ctx.resolve({"content": result});
       return;
@@ -51,7 +51,7 @@ async function getArgs(ctx, argString) {
     const result = await arg.parse(ctx, argString);
     if (!result[0]) {
       if (arg.optional) break;
-      const result = new LocStr("general/missing-arg")
+      const result = new LocStr("parser/missing-arg")
         .format(arg.fullname);
       ctx.resolve({"content": result});
       break;
