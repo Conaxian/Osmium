@@ -19,4 +19,8 @@ function mentionId(mention) {
   return mention.match(/^<(?:@[!&]?|#)(\d+)>$/)?.[1] ?? null;
 }
 
-module.exports = exports = {Range, mentionId};
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+module.exports = exports = {Range, mentionId, escapeRegExp};

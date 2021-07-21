@@ -4,7 +4,7 @@ const Log = require("../log");
 const log = new Log("MsgParser");
 const DataIO = require("../dataio");
 const Context = require("./context");
-const {mentionId} = require("../util");
+const {mentionId, escapeRegExp} = require("../util");
 const {LocStr} = require("../locale");
 
 const {prefix: defaultPrefix, cmdCooldown} = require("../../config.json");
@@ -38,7 +38,9 @@ async function getCmd(ctx) {
       return;
     }
 
-    const argRegex = new RegExp(`^${ctx.prefix}${originalCall}`);
+    const escPrefix = escapeRegExp(ctx.prefix);
+    const escOriginalCall = escapeRegExp(originalCall);
+    const argRegex = new RegExp(`^${escPrefix}${escOriginalCall}`);
     const argString = ctx.text.replace(argRegex, "").trim();
     ctx.args = await getArgs(ctx, argString);
   }
