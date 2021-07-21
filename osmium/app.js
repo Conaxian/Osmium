@@ -18,10 +18,10 @@ bot.on("messageCreate", async msg => {
   if (!ctx.result && ctx.command) {
     for await (let output of ctx.command.invoke(ctx,
       ...Object.values(ctx.args))) {
-      await bot.out(output, ctx)
+      await ctx.out(output)
     }
   }
-  if (ctx.result) await bot.out(ctx.result, ctx);
+  if (ctx.result) await ctx.out(ctx.result);
 });
 
 bot.run();

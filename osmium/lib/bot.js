@@ -49,15 +49,4 @@ module.exports = exports = class Bot extends Client {
     log.info(`Logged in as ${this.user.tag}`)
     this.user.setActivity(activity);
   }
-
-  async out(output, ctx) {
-    if (output.data?.content instanceof LocStr) {
-      output.data.content = await output.data.content.cstring(ctx);
-    }
-    if (output.reply) {
-      await ctx.msg.reply(output.data);
-    } else {
-      await ctx.channel.send(output.data);
-    }
-  }
 }

@@ -63,7 +63,7 @@ async function getArgs(ctx, argString) {
 
 const parseTypes = {
   async guild({bot, text, msg}) {
-    const guildConfig = DataIO.read("guilds")?.[msg.guild.id];
+    const guildConfig = await DataIO.read("guilds")?.[msg.guild.id];
     const prefix = guildConfig?.config?.prefix ?? defaultPrefix;
     const ctx = new Context({bot, text, msg, type: "guild", prefix});
 

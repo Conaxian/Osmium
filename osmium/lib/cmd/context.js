@@ -25,4 +25,41 @@ module.exports = exports = class Context {
   resolve(data, reply=true) {
     this.result = new Output(data, reply);
   }
+
+  async out(output) {
+    if (output.data?.content?.cstring) {
+      output.data.content = await output.data.content.cstring(this);
+    }
+    if (output.reply) {
+      await this.msg.reply(output.data);
+    } else {
+      await this.channel.send(output.data);
+    }
+  }
+
+  async cembed(options) {
+    options.description = options.text;
+    if (options.title?.cstring) {
+      options.title = await options.title.cstring(this);
+    }
+    if (options.description?.cstring) {
+      options.description = await options.description.cstring(this);
+    }
+
+    for (field of options.fields ?? []) {
+      if (field.name?.cstring) {
+        field.name = await field.name.cstring(this);
+      }
+      if (field.value?.cstring) {
+        field.value = await field.value.cstring(this);
+      }
+    }
+
+    if (options.author?.name?.cstring) {
+      options.author.name = await options.author.name.cstring(this);
+    }
+    if (options.footer?.text?.cstring) {
+      options.footer.text = await options.footer.tetx.cstring(this);
+    }
+  }
 }

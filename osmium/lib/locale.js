@@ -48,10 +48,12 @@ class LocStr {
     if (src instanceof Context) {
       lang = src.userConfig?.language ?? src.guildConfig?.language;
     } else if (src instanceof Message || src instanceof Guild) {
-      lang = DataIO.read("guilds")?.[src.author.id]?.config?.language;
+      lang = await DataIO.read("guilds")?.[src.author.id]
+      ?.config?.language;
     } else if (src instanceof Message || src instanceof GuildMember ||
     src instanceof User) {
-      lang ??= DataIO.read("users")?.[src.author.id]?.config?.language;
+      lang ??= await DataIO.read("users")?.[src.author.id]
+      ?.config?.language;
     }
     return await this.string(lang ?? defaultLang);
   }
