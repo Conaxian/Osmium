@@ -1,6 +1,9 @@
 "use strict";
 
 const Output = require("./output");
+const Timestamp = require("../timestamp");
+const {MessageEmbed} = require("discord.js");
+const {cembedFooterIcon, cembedColor} = require("../../config.json");
 
 module.exports = exports = class Context {
   constructor({bot, text, msg, type, prefix, command, args, perms}) {
@@ -27,13 +30,28 @@ module.exports = exports = class Context {
   }
 
   async out(output) {
-    if (output.data?.content?.cstring) {
-      output.data.content = await output.data.content.cstring(this);
+    const data = output.data;
+    if (data?.content?.cstring) {
+      data.content = await data.content.cstring(this);
     }
+
+    if (data.embeds && !Array.isArray(data.embeds)) {
+      data.embeds = [data.embeds];
+    }
+    if (data.files && !Array.isArray(data.files)) {
+      data.files = [data.files];
+    }
+    if (data.components && !Array.isArray(data.components)) {
+      data.components = [data.components];
+    }
+    if (data.stickers && !Array.isArray(data.stickers)) {
+      data.stickers = [data.stickers];
+    }
+
     if (output.reply) {
-      await this.msg.reply(output.data);
+      await this.msg.reply(data);
     } else {
-      await this.channel.send(output.data);
+      await this.channel.send(data);
     }
   }
 
@@ -46,7 +64,10 @@ module.exports = exports = class Context {
       options.description = await options.description.cstring(this);
     }
 
-    for (field of options.fields ?? []) {
+    if (options.fields && !Array.isArray(options.fields)) {
+      options.fields = [options.fields];
+    }
+    for (let field of options.fields ?? []) {
       if (field.name?.cstring) {
         field.name = await field.name.cstring(this);
       }
@@ -61,5 +82,14 @@ module.exports = exports = class Context {
     if (options.footer?.text?.cstring) {
       options.footer.text = await options.footer.tetx.cstring(this);
     }
+
+    if (!options.footer) {
+      options.footer = {
+        "text": `${Timestamp.HHMM(new Date())} UTC`,
+        "iconURL": cembedFooterIcon
+      };
+    }
+    if (!options.color) options.color = cembedColor;
+    return new MessageEmbed(options);
   }
 }
