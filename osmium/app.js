@@ -17,7 +17,7 @@ bot.on("messageCreate", async msg => {
   if (!ctx) return;
   if (!ctx.result && ctx.command) {
     for await (let output of ctx.command.invoke(ctx,
-      ...Object.values(ctx.args))) {
+    ...Object.values(ctx.args))) {
       await ctx.out(output)
     }
   }

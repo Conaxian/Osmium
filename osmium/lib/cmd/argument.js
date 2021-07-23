@@ -8,6 +8,15 @@ const formatter = {
   }
 };
 
+class ArgError extends Error {
+  constructor(arg, value) {
+    super();
+    this.name = "ArgError";
+    this.arg = arg;
+    this.value = value;
+  }
+}
+
 module.exports = exports = class Argument {
   constructor(fullname, format) {
     this.fullname = fullname;
@@ -24,6 +33,7 @@ module.exports = exports = class Argument {
 
   async parse(ctx, string) {
     const result = await formatter[this.format](ctx, string);
+    if (!Array.isArray(result)) throw new ArgError(this, result);
     return [result[0], result[1].trim()];
   }
 }

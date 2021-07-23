@@ -3,11 +3,13 @@
 const Log = require("../log");
 const log = new Log("MsgParser");
 const DataIO = require("../dataio");
+const Perms = require("./perms");
 const Context = require("./context");
 const {mentionId, escapeRegExp} = require("../util");
 const {LocStr} = require("../locale");
 
-const {prefix: defaultPrefix, cmdCooldown} = require("../../config.json");
+const {prefix: defaultPrefix, cmdCooldown, devs} =
+  require("../../config.json");
 const {callNamespace} = require("../loader");
 const callTimes = new Map();
 
@@ -38,6 +40,12 @@ async function getCmd(ctx) {
       return;
     }
 
+    if (!ctx.perms.has(ctx.command.perms)) {
+      const result = new LocStr("parser/missing-perms-user");
+      ctx.resolve({"content": result});
+      return;
+    }
+
     const escPrefix = escapeRegExp(ctx.prefix);
     const escOriginalCall = escapeRegExp(originalCall);
     const argRegex = new RegExp(`^${escPrefix}${escOriginalCall}`);
@@ -50,12 +58,23 @@ async function getArgs(ctx, argString) {
   const args = {};
   for (let argName in ctx.command.args) {
     const arg = ctx.command.args[argName];
-    const result = await arg.parse(ctx, argString);
+    let result;
+    try {
+      result = await arg.parse(ctx, argString);
+    } catch (err) {
+      if (err.name != "ArgError") throw err;
+      const invalidArg = new LocStr(`arg-format/${err.arg.format}`);
+      const text = new LocStr("parser/invalid-value")
+        .format(arg.fullname, err.value, await invalidArg.cstring(ctx));
+      ctx.resolve({"content": text});
+      break;
+    }
+
     if (!result[0]) {
       if (arg.optional) break;
-      const result = new LocStr("parser/missing-arg")
+      const text = new LocStr("parser/missing-arg")
         .format(arg.fullname);
-      ctx.resolve({"content": result});
+      ctx.resolve({"content": text});
       break;
     }
     [args[argName], argString] = result;
@@ -65,9 +84,14 @@ async function getArgs(ctx, argString) {
 
 const parseTypes = {
   async guild({bot, text, msg}) {
+    const dev = devs.includes(msg.author.id);
+    const guildPerms = msg.member.permissions;
+    const channelPerms = msg.channel.permissionsFor(msg.member);
+    const perms = new Perms(dev, true, guildPerms, channelPerms);
+
     const guildConfig = await DataIO.read("guilds")?.[msg.guild.id];
     const prefix = guildConfig?.config?.prefix ?? defaultPrefix;
-    const ctx = new Context({bot, text, msg, type: "guild", prefix});
+    const ctx = new Context({bot, text, msg, type: "guild", prefix, perms});
 
     await replyPrefix(ctx);
     if (ctx.result) return ctx;
@@ -77,8 +101,9 @@ const parseTypes = {
   },
 
   async dm({bot, text, msg}) {
-    const prefix = defaultPrefix;
-    const ctx = new Context({bot, text, msg, type: "dm", prefix});
+    const perms = new Perms(devs.includes(msg.author.id), false);
+    const ctx = new Context({bot, text, msg,
+      type: "dm", defaultPrefix, perms});
 
     await replyPrefix(ctx);
     if (ctx.result) return ctx;
@@ -88,8 +113,9 @@ const parseTypes = {
   },
 
   async virtual({bot, text}) {
-    const prefix = defaultPrefix;
-    const ctx = new Context({bot, text, type: "virtual", prefix});
+    const perms = new Perms(false, false);
+    const ctx = new Context({bot, text, type: "virtual",
+      defaultPrefix, perms});
 
     await replyPrefix(ctx);
     if (ctx.result) return ctx;

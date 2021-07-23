@@ -26,7 +26,7 @@ module.exports = exports = class Context {
   }
 
   resolve(data, reply=true) {
-    this.result = new Output(data, reply);
+    if (!this.result) this.result = new Output(data, reply);
   }
 
   async out(output) {
@@ -89,7 +89,9 @@ module.exports = exports = class Context {
         "iconURL": cembedFooterIcon
       };
     }
-    if (!options.color) options.color = cembedColor;
+    if (!options.color) {
+      options.color = this?.author?.displayColor || cembedColor;
+    }
     return new MessageEmbed(options);
   }
 }

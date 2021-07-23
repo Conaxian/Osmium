@@ -5,6 +5,12 @@
   "parser": {
     "current-prefix": "The current command prefix is `{0}`",
     "unknown-command": "Unknown command! Use `{0}help` to get a list of available commands.",
-    "missing-arg": "Not enough arguments specified!\nMissing argument: `{0}`"
+    "missing-perms-user": "You have insufficient permissions to use this command!",
+    "missing-perms-bot": "The bot has insufficient permissions to execute this command! It requires administrator permissions to work properly.",
+    "missing-arg": "Not enough arguments specified!\nMissing argument: `{0}`",
+    "invalid-value": "Invalid `{0}` value: `{1}`\n{2}"
+  },
+  "arg-format": {
+    "int": "Please enter a valid integer (whole number)."
   }
 }
