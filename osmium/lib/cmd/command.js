@@ -12,4 +12,12 @@ module.exports = exports = class Command {
   get calls() {
     return [this.name, ...this.aliases];
   }
+
+  get syntax() {
+    let result = this.name;
+    for (let arg of this.args) {
+      result += " " + arg.fullname;
+    }
+    return result;
+  }
 }

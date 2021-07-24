@@ -19,6 +19,7 @@ module.exports = exports = class Context {
     this.command = command;
     this.args = args;
     this.perms = perms;
+    // TODO: Add userConfig and guildConfig (see cstring in locale.js)
   }
 
   output(data, reply=true) {

@@ -1,10 +1,26 @@
 "use strict";
 
+const {loadedModules, callNamespace} = require("../loader");
+
 const formatter = {
   async word(ctx, string) {
     const result = string.match(/^(\S+)/)?.[1];
     const remainder = string.replace(result, "");
     return [result, remainder];
+  },
+
+  async command_module(ctx, string) {
+    const name = string.match(/^(\S+)/)?.[1];
+    const remainder = string.replace(name, "");
+    if (name) {
+      const module = loadedModules.get(name.toLowerCase());
+      if (module) return [module, remainder];
+      const command = callNamespace.get(name.toLowerCase());
+      if (command) return [command, remainder];
+      return name;
+    } else {
+      return [name, remainder];
+    }
   }
 };
 

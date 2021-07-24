@@ -38,7 +38,11 @@ class LocStr {
     const idPath = this.id.split("/");
     idPath.forEach(node => string = string[node]);
     for (let i of new Range(this.fValues.length)) {
-      string = string.replaceAll(`{${i}}`, this.fValues[i]);
+      let fValue = this.fValues[i];
+      if (fValue instanceof LocStr) {
+        fValue = await fValue.string(lang);
+      }
+      string = string.replaceAll(`{${i}}`, fValue);
     }
     return string;
   }

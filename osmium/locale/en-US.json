@@ -11,6 +11,25 @@
     "invalid-value": "Invalid `{0}` value: `{1}`\n{2}"
   },
   "arg-format": {
-    "int": "Please enter a valid integer (whole number)."
+    "int": "Enter a valid integer (whole number).",
+    "command_module": "Enter a name of a valid module or command."
+  },
+  "mod": {
+    "core": {
+      "name": "Core",
+      "desc": "The core functionality of Osmium.",
+      "help": {
+        "name": "Help",
+        "desc": "If `{0}` isn't specified, shows all modules. If `{0}` is the name of a module, shows all commands of the module. If `{0}` is the name of a command, shows detailed information about the command.",
+        "help": "Help",
+        "module-list": "This is a list of all loaded modules.",
+        "module-help": "{0}\n`{1}help {2}`",
+        "command-list": "This is a list of all commands in **{0}**."
+      },
+      "test": {
+        "name": "Test",
+        "desc": "A testing command (to be removed)."
+      }
+    }
   }
 }
