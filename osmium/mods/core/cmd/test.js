@@ -13,6 +13,7 @@ exports.data = {
     new Arg("<alpha>", "word"),
     new Arg("<beta>", "word")
   ],
+  hidden: true,
 
   async *invoke(ctx, alpha, beta) {
     const embed = await ctx.cembed({

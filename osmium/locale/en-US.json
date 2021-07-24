@@ -1,6 +1,7 @@
 {
   "general": {
-    "name": "English (United States)"
+    "name": "English (United States)",
+    "none": "None"
   },
   "parser": {
     "current-prefix": "The current command prefix is `{0}`",
@@ -24,7 +25,10 @@
         "help": "Help",
         "module-list": "This is a list of all loaded modules.",
         "module-help": "{0}\n`{1}help {2}`",
-        "command-list": "This is a list of all commands in **{0}**."
+        "command-list": "This is a list of all commands in **{0}**.",
+        "syntax": "Syntax",
+        "aliases": "Aliases",
+        "perms": "Required Permissions"
       },
       "test": {
         "name": "Test",

@@ -37,7 +37,7 @@ exports.data = {
         fields.push({
           "name": new LocStr(`mod/${scope.name}/${command.name}/name`),
           "value": `\`${ctx.prefix}help ${command.name}\``,
-          "fields": fields
+          "inline": true
         });
       }
 
@@ -49,9 +49,30 @@ exports.data = {
       });
 
     } else {
+      const fields = [];
+      const none = new LocStr("general/none");
+      fields.push({
+        "name": new LocStr("mod/core/help/syntax"),
+        "value": `\`${ctx.prefix}${scope.syntax}\``
+      })
+      const aliases = scope.aliases.length ?
+        "`" + scope.aliases.join("`, `") + "`" : none;
+      fields.push({
+        "name": new LocStr("mod/core/help/aliases"),
+        "value": aliases
+      })
+      // TODO: Make perms localized
+      const perms = scope.perms.length ? scope.perms : none;
+      fields.push({
+        "name": new LocStr("mod/core/help/perms"),
+        "value": perms
+      })
+
       embed = await ctx.cembed({
-        "title": new LocStr("mod/core/help/help"),
-        "text": "Work In Progress (detailed command info isn't available yet)"
+        "title": new LocStr(`mod/${scope.mod.name}/${scope.name}/name`),
+        "text": new LocStr(`mod/${scope.mod.name}/${scope.name}/desc`)
+          .format(scope.args.map(arg => arg.fullname)),
+        "fields": fields
       });
 
     }

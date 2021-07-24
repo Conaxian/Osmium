@@ -9,17 +9,18 @@ module.exports = exports = {
   callNamespace: new Map(),
 
   async load(name) {
-    let mod = require(`../mods/${name}`);
-    const commands = [];
-    for (let cmd of mod.commands) {
-      const command = new Command(cmd.data);
+    const modData = require(`../mods/${name}`);
+    const mod = new Mod(name, []);
+    this.loadedModules.set(name, mod);
+
+    for (let cmd of modData.commands) {
+      const data = {...cmd.data, mod: mod};
+      const command = new Command(data);
       for (let call of command.calls) {
         this.callNamespace.set(call, command);
       }
-      commands.push(command);
+      mod.commands.push(command);
     }
-    mod = new Mod(name, commands);
-    this.loadedModules.set(name, mod);
   }
 };
 
