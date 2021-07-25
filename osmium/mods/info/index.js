@@ -3,6 +3,6 @@
 module.exports = exports = {
   commands: [
     require("./cmd/help"),
-    require("./cmd/test")
+    require("./cmd/ping")
   ]
 };

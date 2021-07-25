@@ -56,9 +56,9 @@
     "use-external-stickers": "Use External Stickers"
   },
   "mod": {
-    "core": {
-      "name": "Core",
-      "desc": "The core functionality of Osmium.",
+    "info": {
+      "name": "Info",
+      "desc": "Commands which show useful information.",
       "help": {
         "name": "Help",
         "desc": "If `{0}` isn't specified, shows all modules. If `{0}` is the name of a module, shows all commands of the module. If `{0}` is the name of a command, shows detailed information about the command.",
@@ -70,9 +70,10 @@
         "aliases": "Aliases",
         "perms": "Required Permissions"
       },
-      "test": {
-        "name": "Test",
-        "desc": "A testing command (to be removed)."
+      "ping": {
+        "name": "Ping",
+        "desc": "A test command that shows the bot's ping. Useful for testing if the bot is online.",
+        "ping": "Pong!\nThe bot's ping is {0} ms."
       }
     }
   }

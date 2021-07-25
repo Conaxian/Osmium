@@ -43,10 +43,14 @@ module.exports = exports = class Bot extends Client {
     super(options);
   }
 
-  async run(presence) {
+  async run() {
     log.info("Starting to log in");
     await super.login(TOKEN);
     log.info(`Logged in as ${this.user.tag}`)
+    this.user.setActivity(activity);
+  }
+
+  reload() {
     this.user.setActivity(activity);
   }
 }

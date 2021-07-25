@@ -58,10 +58,32 @@ module.exports = exports = class Context {
     }
 
     if (output.reply) {
-      await this.msg.reply(data);
+      return await this.msg.reply(data);
     } else {
-      await this.channel.send(data);
+      return await this.channel.send(data);
     }
+  }
+
+  async edit(msg, edited) {
+    const data = edited.data;
+    if (data?.content?.cstring) {
+      data.content = await data.content.cstring(this);
+    }
+
+    if (data.embeds && !Array.isArray(data.embeds)) {
+      data.embeds = [data.embeds];
+    }
+    if (data.files && !Array.isArray(data.files)) {
+      data.files = [data.files];
+    }
+    if (data.components && !Array.isArray(data.components)) {
+      data.components = [data.components];
+    }
+    if (data.stickers && !Array.isArray(data.stickers)) {
+      data.stickers = [data.stickers];
+    }
+
+    return await msg.edit(data);
   }
 
   async cembed(options) {

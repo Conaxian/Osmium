@@ -16,19 +16,19 @@ exports.data = {
     let embed;
     if (!scope) {
       const fields = [];
-      for (module of loadedModules.values()) {
-        let desc = new LocStr(`mod/${module.name}/desc`);
-        let text = new LocStr("mod/core/help/module-help")
-          .format(desc, ctx.prefix, module.name);
+      for (let mod of loadedModules.values()) {
+        let desc = new LocStr(`mod/${mod.name}/desc`);
+        let text = new LocStr("mod/info/help/module-help")
+          .format(desc, ctx.prefix, mod.name);
         fields.push({
-          "name": new LocStr(`mod/${module.name}/name`),
+          "name": new LocStr(`mod/${mod.name}/name`),
           "value": text
         });
       }
 
       embed = await ctx.cembed({
-        "title": new LocStr("mod/core/help/help"),
-        "text": new LocStr("mod/core/help/module-list"),
+        "title": new LocStr("mod/info/help/help"),
+        "text": new LocStr("mod/info/help/module-list"),
         "fields": fields
       });
 
@@ -44,8 +44,8 @@ exports.data = {
 
       const name = new LocStr(`mod/${scope.name}/name`);
       embed = await ctx.cembed({
-        "title": new LocStr("mod/core/help/help"),
-        "text": new LocStr("mod/core/help/command-list").format(name),
+        "title": new LocStr("mod/info/help/help"),
+        "text": new LocStr("mod/info/help/command-list").format(name),
         "fields": fields
       });
 
@@ -53,13 +53,13 @@ exports.data = {
       const fields = [];
       const none = new LocStr("general/none");
       fields.push({
-        "name": new LocStr("mod/core/help/syntax"),
+        "name": new LocStr("mod/info/help/syntax"),
         "value": `\`${ctx.prefix}${scope.syntax}\``
       });
       const aliases = scope.aliases.length ?
         "`" + scope.aliases.join("`, `") + "`" : none;
       fields.push({
-        "name": new LocStr("mod/core/help/aliases"),
+        "name": new LocStr("mod/info/help/aliases"),
         "value": aliases
       });
 
@@ -71,9 +71,8 @@ exports.data = {
           perms.push(new LocStr(`perms/${perm}`));
         }
       }
-      console.log(perms);
       fields.push({
-        "name": new LocStr("mod/core/help/perms"),
+        "name": new LocStr("mod/info/help/perms"),
         "value": perms.length ? new LocTemp(perms) : none
       });
 

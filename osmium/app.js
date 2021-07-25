@@ -8,17 +8,23 @@ const parse = require("./lib/cmd/parse");
 
 log.info("Starting app");
 
-bot.once("ready", () => {
+bot.on("ready", () => {
   log.info("Bot is ready");
+  bot.reload();
 });
 
 bot.on("messageCreate", async msg => {
   const ctx = await parse({bot, text: msg.content, msg});
   if (!ctx) return;
   if (!ctx.result && ctx.command) {
-    for await (let output of ctx.command.invoke(ctx,
-    ...Object.values(ctx.args))) {
-      await ctx.out(output)
+    const generator = ctx.command.invoke(ctx,
+    ...Object.values(ctx.args));
+    let result;
+    let output;
+    while (!result?.done) {
+      result = await generator.next(output);
+      if (!result.value) break;
+      output = await ctx.out(result.value);
     }
   }
   if (ctx.result) await ctx.out(ctx.result);

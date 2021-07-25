@@ -13,8 +13,8 @@ const formatter = {
     const name = string.match(/^(\S+)/)?.[1];
     const remainder = string.replace(name, "");
     if (name) {
-      const module = loadedModules.get(name.toLowerCase());
-      if (module) return [module, remainder];
+      const mod = loadedModules.get(name.toLowerCase());
+      if (mod) return [mod, remainder];
       const command = callNamespace.get(name.toLowerCase());
       if (command) return [command, remainder];
       return name;
