@@ -103,6 +103,16 @@
         "name": "Tiny",
         "desc": "Makes text ᵗᶦᶰʸ. Only works with some characters."
       }
+    },
+
+    "fun": {
+      "name": "Fun",
+      "desc": "Commands for entertainment.",
+      "gay": {
+        "name": "Gay Meter",
+        "desc": "Shows how gay is `{0}`. If `{0}` isn't entered, shows your gayness.",
+        "text": "{0} is {1}% gay :rainbow_flag:"
+      }
     }
 
   }

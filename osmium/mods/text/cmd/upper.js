@@ -13,6 +13,6 @@ module.exports = exports = {
   ],
 
   async *invoke(ctx, text) {
-    ctx.resolve({"text": text.toUpperCase()});
+    ctx.resolve({text: text.toUpperCase()});
   }
 };

@@ -30,6 +30,6 @@ module.exports = exports = {
       "text": text,
       "fields": fields
     });
-    ctx.resolve({"embeds": embed});
+    ctx.resolve({embeds: embed});
   }
 };

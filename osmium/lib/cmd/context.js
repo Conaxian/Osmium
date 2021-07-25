@@ -35,7 +35,7 @@ module.exports = exports = class Context {
   }
 
   resolve(data, reply=true) {
-    if (!this.result) this.result = new Output(data, reply);
+    this.result ??= new Output(data, reply);
   }
 
   async out(output) {
@@ -114,15 +114,11 @@ module.exports = exports = class Context {
       options.footer.text = await options.footer.tetx.cstring(this);
     }
 
-    if (!options.footer) {
-      options.footer = {
-        "text": `${Timestamp.HHMM(new Date())} UTC`,
-        "iconURL": cembedFooterIcon
-      };
-    }
-    if (!options.color) {
-      options.color = this?.author?.displayColor || cembedColor;
-    }
+    options.footer ??= {
+      "text": `${Timestamp.HHMM(new Date())} UTC`,
+      "iconURL": cembedFooterIcon
+    };
+    options.color ??= this?.author?.displayColor || cembedColor;
     return new MessageEmbed(options);
   }
 }
