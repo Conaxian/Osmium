@@ -9,6 +9,10 @@ const formatter = {
     return [result, remainder];
   },
 
+  async inf_string(ctx, string) {
+    return [string, ""]
+  },
+
   async command_module(ctx, string) {
     const name = string.match(/^(\S+)/)?.[1];
     const remainder = string.replace(name, "");
@@ -48,7 +52,8 @@ module.exports = exports = class Argument {
   }
 
   async parse(ctx, string) {
-    const result = await formatter[this.format](ctx, string);
+    const format = formatter[this.format.replace(/-/g, "_")];
+    const result = await format(ctx, string);
     if (!Array.isArray(result)) throw new ArgError(this, result);
     return [result[0], result[1].trim()];
   }

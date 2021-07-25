@@ -9,7 +9,7 @@ const {loadedModules} = require("../../../lib/loader");
 module.exports = exports = {
   name: "help",
   args: [
-    new Arg("[command/module]", "command_module")
+    new Arg("[command/module]", "command-module")
   ],
 
   async *invoke(ctx, scope) {

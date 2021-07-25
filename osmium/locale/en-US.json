@@ -3,6 +3,7 @@
     "name": "English (United States)",
     "none": "None"
   },
+
   "parser": {
     "current-prefix": "The current command prefix is `{0}`",
     "unknown-command": "Unknown command! Use `{0}help` to get a list of available commands.",
@@ -11,10 +12,12 @@
     "missing-arg": "Not enough arguments specified!\nMissing argument: `{0}`",
     "invalid-value": "Invalid `{0}` value: `{1}`\n{2}"
   },
+
   "arg-format": {
     "int": "Enter a valid integer (whole number).",
     "command_module": "Enter a name of a valid module or command."
   },
+
   "perms": {
     "developer": "Developer",
     "administrator": "Administrator",
@@ -55,7 +58,9 @@
     "use-private-threads": "Use Private Threads",
     "use-external-stickers": "Use External Stickers"
   },
+
   "mod": {
+
     "info": {
       "name": "Info",
       "desc": "Commands which show useful information.",
@@ -81,6 +86,20 @@
         "desc": "A test command that shows the bot's ping. Useful for testing if the bot is online.",
         "ping": "Pong!\nThe bot's ping is {0} ms."
       }
+    },
+
+    "text": {
+      "name": "Text",
+      "desc": "Various options for formatting text.",
+      "lower": {
+        "name": "Lowercase",
+        "desc": "Sends `{0}` with all letters in lowercase."
+      },
+      "upper": {
+        "name": "Uppercase",
+        "desc": "Sends `{0}` with all letters in uppercase."
+      }
     }
+
   }
 }
