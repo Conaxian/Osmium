@@ -2,7 +2,7 @@
 
 const {LocStr} = require("../../../lib/locale");
 
-exports.data = {
+module.exports = exports = {
   name: "ping",
   aliases: [
     "test"
@@ -11,10 +11,10 @@ exports.data = {
   async *invoke(ctx) {
     const text = new LocStr("mod/info/ping/ping")
       .format("...");
-    const msg = yield ctx.output({"text": text});
+    const msg = yield ctx.output({text: text});
     const editedText = new LocStr("mod/info/ping/ping")
       .format(msg.createdTimestamp - ctx.msg.createdTimestamp);
-    const edited = ctx.output({"text": editedText});
+    const edited = ctx.output({text: editedText});
     await ctx.edit(msg, edited);
   }
 };

@@ -62,13 +62,19 @@
       "help": {
         "name": "Help",
         "desc": "If `{0}` isn't specified, shows all modules. If `{0}` is the name of a module, shows all commands of the module. If `{0}` is the name of a command, shows detailed information about the command.",
-        "help": "Help",
         "module-list": "This is a list of all loaded modules.",
         "module-help": "{0}\n`{1}help {2}`",
         "command-list": "This is a list of all commands in **{0}**.",
         "syntax": "Syntax",
         "aliases": "Aliases",
         "perms": "Required Permissions"
+      },
+      "about": {
+        "name": "About",
+        "desc": "Shows detailed information about the bot.",
+        "text": "Osmium is an easy-to-use multipurpose Discord bot. Contact **{0}** on Discord if you have any questions, suggestions, or issues.",
+        "add-bot": "Add Bot",
+        "github": "GitHub"
       },
       "ping": {
         "name": "Ping",

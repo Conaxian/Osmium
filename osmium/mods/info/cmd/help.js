@@ -6,7 +6,7 @@ const {Range} = require("../../../lib/util");
 const {LocStr, LocTemp} = require("../../../lib/locale");
 const {loadedModules} = require("../../../lib/loader");
 
-exports.data = {
+module.exports = exports = {
   name: "help",
   args: [
     new Arg("[command/module]", "command_module")
@@ -21,46 +21,46 @@ exports.data = {
         let text = new LocStr("mod/info/help/module-help")
           .format(desc, ctx.prefix, mod.name);
         fields.push({
-          "name": new LocStr(`mod/${mod.name}/name`),
-          "value": text
+          name: new LocStr(`mod/${mod.name}/name`),
+          value: text
         });
       }
 
       embed = await ctx.cembed({
-        "title": new LocStr("mod/info/help/help"),
-        "text": new LocStr("mod/info/help/module-list"),
-        "fields": fields
+        title: new LocStr("mod/info/help/name"),
+        text: new LocStr("mod/info/help/module-list"),
+        fields: fields
       });
 
     } else if (scope instanceof Mod) {
       const fields = [];
       for (let command of scope.commands) {
         fields.push({
-          "name": new LocStr(`mod/${scope.name}/${command.name}/name`),
-          "value": `\`${ctx.prefix}help ${command.name}\``,
-          "inline": true
+          name: new LocStr(`mod/${scope.name}/${command.name}/name`),
+          value: `\`${ctx.prefix}help ${command.name}\``,
+          inline: true
         });
       }
 
       const name = new LocStr(`mod/${scope.name}/name`);
       embed = await ctx.cembed({
-        "title": new LocStr("mod/info/help/help"),
-        "text": new LocStr("mod/info/help/command-list").format(name),
-        "fields": fields
+        title: new LocStr("mod/info/help/name"),
+        text: new LocStr("mod/info/help/command-list").format(name),
+        fields: fields
       });
 
     } else {
       const fields = [];
       const none = new LocStr("general/none");
       fields.push({
-        "name": new LocStr("mod/info/help/syntax"),
-        "value": `\`${ctx.prefix}${scope.syntax}\``
+        name: new LocStr("mod/info/help/syntax"),
+        value: `\`${ctx.prefix}${scope.syntax}\``
       });
       const aliases = scope.aliases.length ?
         "`" + scope.aliases.join("`, `") + "`" : none;
       fields.push({
-        "name": new LocStr("mod/info/help/aliases"),
-        "value": aliases
+        name: new LocStr("mod/info/help/aliases"),
+        value: aliases
       });
 
       const perms = [];
@@ -72,18 +72,18 @@ exports.data = {
         }
       }
       fields.push({
-        "name": new LocStr("mod/info/help/perms"),
-        "value": perms.length ? new LocTemp(perms) : none
+        name: new LocStr("mod/info/help/perms"),
+        value: perms.length ? new LocTemp(perms) : none
       });
 
       embed = await ctx.cembed({
-        "title": new LocStr(`mod/${scope.mod.name}/${scope.name}/name`),
-        "text": new LocStr(`mod/${scope.mod.name}/${scope.name}/desc`)
+        title: new LocStr(`mod/${scope.mod.name}/${scope.name}/name`),
+        text: new LocStr(`mod/${scope.mod.name}/${scope.name}/desc`)
           .format(scope.args.map(arg => arg.fullname)),
-        "fields": fields
+        fields: fields
       });
 
     }
-    ctx.resolve({"embeds": embed});
+    ctx.resolve({embeds: embed});
   }
 }
