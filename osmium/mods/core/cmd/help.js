@@ -2,7 +2,8 @@
 
 const Arg = require("../../../lib/cmd/argument");
 const Mod = require("../../../lib/mod");
-const {LocStr} = require("../../../lib/locale");
+const {Range} = require("../../../lib/util");
+const {LocStr, LocTemp} = require("../../../lib/locale");
 const {loadedModules} = require("../../../lib/loader");
 
 exports.data = {
@@ -54,19 +55,27 @@ exports.data = {
       fields.push({
         "name": new LocStr("mod/core/help/syntax"),
         "value": `\`${ctx.prefix}${scope.syntax}\``
-      })
+      });
       const aliases = scope.aliases.length ?
         "`" + scope.aliases.join("`, `") + "`" : none;
       fields.push({
         "name": new LocStr("mod/core/help/aliases"),
         "value": aliases
-      })
-      // TODO: Make perms localized
-      const perms = scope.perms.length ? scope.perms : none;
+      });
+
+      const perms = [];
+      if (scope.perms.length) {
+        for (let i of new Range(scope.perms.length)) {
+          const perm = scope.perms[i];
+          if (i) perms.push(", ");
+          perms.push(new LocStr(`perms/${perm}`));
+        }
+      }
+      console.log(perms);
       fields.push({
         "name": new LocStr("mod/core/help/perms"),
-        "value": perms
-      })
+        "value": perms.length ? new LocTemp(perms) : none
+      });
 
       embed = await ctx.cembed({
         "title": new LocStr(`mod/${scope.mod.name}/${scope.name}/name`),

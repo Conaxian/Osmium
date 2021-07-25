@@ -92,6 +92,7 @@ const parseTypes = {
     const guildConfig = await DataIO.read("guilds")?.[msg.guild.id];
     const prefix = guildConfig?.config?.prefix ?? defaultPrefix;
     const ctx = new Context({bot, text, msg, type: "guild", prefix, perms});
+    await ctx.init();
 
     await replyPrefix(ctx);
     if (ctx.result) return ctx;
@@ -104,6 +105,7 @@ const parseTypes = {
     const perms = new Perms(devs.includes(msg.author.id), false);
     const ctx = new Context({bot, text, msg,
       type: "dm", defaultPrefix, perms});
+    await ctx.init();
 
     await replyPrefix(ctx);
     if (ctx.result) return ctx;
@@ -116,6 +118,7 @@ const parseTypes = {
     const perms = new Perms(false, false);
     const ctx = new Context({bot, text, type: "virtual",
       defaultPrefix, perms});
+    await ctx.init();
 
     await replyPrefix(ctx);
     if (ctx.result) return ctx;

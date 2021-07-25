@@ -2,6 +2,7 @@
 
 const Output = require("./output");
 const Timestamp = require("../timestamp");
+const DataIO = require("../dataio");
 const {MessageEmbed} = require("discord.js");
 const {cembedFooterIcon, cembedColor} = require("../../config.json");
 
@@ -13,13 +14,20 @@ module.exports = exports = class Context {
       this.msg = msg;
       this.author = (type === "guild") ? msg.member : msg.author;
       this.channel = msg.channel;
+      if (type === "guild") this.guild = msg.guild;
     }
     this.type = type;
     this.prefix = prefix;
     this.command = command;
     this.args = args;
     this.perms = perms;
-    // TODO: Add userConfig and guildConfig (see cstring in locale.js)
+  }
+
+  async init() {
+    this.userConfig = await DataIO.read("user")?.[this.author.id];
+    if (this.type === "guild") {
+      this.guildConfig = await DataIO.read("guilds")?.[this.guild.id];
+    }
   }
 
   output(data, reply=true) {

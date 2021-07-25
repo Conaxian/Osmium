@@ -63,4 +63,22 @@ class LocStr {
   }
 }
 
-module.exports = exports = {loadLocale, LocStr};
+class LocTemp extends LocStr {
+  constructor(parts) {
+    super();
+    this.parts = parts;
+  }
+
+  async string(lang) {
+    let result = "";
+    for (let part of this.parts) {
+      if (part instanceof LocStr) {
+        part = await part.string(lang);
+      }
+      result += part;
+    }
+    return result;
+  }
+}
+
+module.exports = exports = {loadLocale, LocStr, LocTemp};

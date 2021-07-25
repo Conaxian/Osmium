@@ -14,9 +14,11 @@ module.exports = exports = class Perms {
 
     let result = true;
     for (let perm of perms) {
-      perm = perm.toLowerCase();
-      if (this.channelPerms) result = this.channelPerms.has(perm);
-      else result = this.guildPerms.has(perm);
+      perm = perm.toUpperCase().replace(/-/g, "_");
+      if (perm === "DEVELOPER") return false;
+      if (this.guildPerms.has("ADMINISTRATOR", false)) continue;
+      if (this.channelPerms) result = this.channelPerms.has(perm, false);
+      else result = this.guildPerms.has(perm, false);
       if (!result) break;
     }
     return result;
