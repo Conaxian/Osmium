@@ -113,6 +113,16 @@
         "desc": "Shows how gay is `{0}`. If `{0}` isn't entered, shows your gayness.",
         "text": "{0} is {1}% gay :rainbow_flag:"
       }
+    },
+
+    "config": {
+      "name": "Configuration",
+      "desc": "Configuration of Osmium's functionality.",
+      "prefix": {
+        "name": "Prefix",
+        "desc": "Sets Osmium's prefix in this server to `{0}`.",
+        "success": "<:ok:872977648308088832> Successfully set Osmium's prefix in this server to `{0}`."
+      }
     }
 
   }

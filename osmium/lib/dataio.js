@@ -1,7 +1,7 @@
 "use strict";
 
 const fs = require("fs/promises");
-const getPath = file => `../data/${file}.json`;
+const getPath = file => `data/${file}.json`;
 
 module.exports = exports = {
   async read(file) {

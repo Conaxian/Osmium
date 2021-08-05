@@ -3,8 +3,10 @@
 const Output = require("./output");
 const Timestamp = require("../timestamp");
 const DataIO = require("../dataio");
+const Log = require("../log");
+const log = new Log("Context");
 const {MessageEmbed} = require("discord.js");
-const {cembedFooterIcon, cembedColor} = require("../../config.json");
+const {cembedFooterIcon, cembedColors} = require("../../config.json");
 
 module.exports = exports = class Context {
   constructor({bot, text, msg, type, prefix, command, args, perms}) {
@@ -24,9 +26,9 @@ module.exports = exports = class Context {
   }
 
   async init() {
-    this.userConfig = await DataIO.read("user")?.[this.author.id];
+    this.userData = (await DataIO.read("user"))?.[this.author.id];
     if (this.type === "guild") {
-      this.guildConfig = await DataIO.read("guilds")?.[this.guild.id];
+      this.guildData = (await DataIO.read("guilds"))?.[this.guild.id];
     }
   }
 
@@ -118,7 +120,19 @@ module.exports = exports = class Context {
       "text": `${Timestamp.HHMM(new Date())} UTC`,
       "iconURL": cembedFooterIcon
     };
-    options.color ??= this?.author?.displayColor || cembedColor;
+
+    if (options.type) switch (options.type) {
+      case "ok":
+        options.color ??= cembedColors.ok;
+        break;
+      case "error":
+        options.color ??= cembedColors.error;
+        break;
+      default:
+        log.error(`Invalid option type: '${options.type}'`);
+    }
+    options.color ??= this?.author?.displayColor || cembedColors.default;
+
     return new MessageEmbed(options);
   }
 }

@@ -23,7 +23,8 @@ async function replyPrefix(ctx) {
 }
 
 async function getCmd(ctx) {
-  if (ctx.text.startsWith(ctx.prefix) && new Set(ctx.text).size > 1) {
+  if (ctx.text.startsWith(ctx.prefix) &&
+  ctx.text.replace(ctx.prefix, "")) {
     if (ctx.msg) {
       const callTime = callTimes.get(ctx.author.id);
       if (callTime > new Date() - cmdCooldown) return;
@@ -89,8 +90,8 @@ const parseTypes = {
     const channelPerms = msg.channel.permissionsFor(msg.member);
     const perms = new Perms(dev, true, guildPerms, channelPerms);
 
-    const guildConfig = await DataIO.read("guilds")?.[msg.guild.id];
-    const prefix = guildConfig?.config?.prefix ?? defaultPrefix;
+    const guildData = (await DataIO.read("guilds"))?.[msg.guild.id];
+    const prefix = guildData?.config?.prefix ?? defaultPrefix;
     const ctx = new Context({bot, text, msg, type: "guild", prefix, perms});
     await ctx.init();
 
@@ -143,7 +144,7 @@ module.exports = exports = async function parse({bot, text, msg}) {
     case "DM": case "GROUP_DM":
       type = "dm"; break;
     default:
-      log.error(`Invalid channel type: ${msg.channel.type}`);
+      log.error(`Invalid channel type: '${msg.channel.type}'`);
       return;
   }
 

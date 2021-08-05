@@ -14,7 +14,7 @@ module.exports = exports = {
     this.loadedModules.set(name, mod);
 
     for (let cmd of modData.commands) {
-      const data = {...cmd, mod: mod};
+      const data = {...cmd, mod};
       const command = new Command(data);
       for (let call of command.calls) {
         this.callNamespace.set(call, command);

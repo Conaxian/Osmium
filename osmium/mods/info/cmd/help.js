@@ -22,7 +22,8 @@ module.exports = exports = {
           .format(desc, ctx.prefix, mod.name);
         fields.push({
           name: new LocStr(`mod/${mod.name}/name`),
-          value: text
+          value: text,
+          inline: true
         });
       }
 

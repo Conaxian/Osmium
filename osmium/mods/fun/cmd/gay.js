@@ -17,6 +17,6 @@ module.exports = exports = {
     const gayness = randInt(1, 101);
     const text = new LocStr("mod/fun/gay/text")
       .format(target ?? ctx.author, gayness);
-    ctx.resolve({text: text});
+    ctx.resolve({text});
   }
 };

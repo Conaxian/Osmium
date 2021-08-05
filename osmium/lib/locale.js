@@ -37,6 +37,7 @@ class LocStr {
     let string = await loadLocale(lang);
     const idPath = this.id.split("/");
     idPath.forEach(node => string = string[node]);
+
     for (let i of new Range(this.fValues.length)) {
       let fValue = this.fValues[i];
       if (fValue instanceof LocStr) {
@@ -44,19 +45,21 @@ class LocStr {
       }
       string = string.replaceAll(`{${i}}`, fValue);
     }
+
     return string;
   }
 
   async cstring(src) {
     let lang;
     if (src instanceof Context) {
-      lang = src.userConfig?.language ?? src.guildConfig?.language;
+      lang = src.userData?.config?.language ??
+      src.guildData?.config?.language;
     } else if (src instanceof Message || src instanceof Guild) {
-      lang = await DataIO.read("guilds")?.[src.author.id]
+      lang = (await DataIO.read("guilds"))?.[src.author.id]
       ?.config?.language;
     } else if (src instanceof Message || src instanceof GuildMember ||
     src instanceof User) {
-      lang ??= await DataIO.read("users")?.[src.author.id]
+      lang ??= (await DataIO.read("users"))?.[src.author.id]
       ?.config?.language;
     }
     return await this.string(lang ?? defaultLang);
