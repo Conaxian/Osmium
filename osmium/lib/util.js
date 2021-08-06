@@ -29,4 +29,19 @@ function randInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-module.exports = exports = {Range, mentionId, escapeRegExp, randInt};
+function safeAccess(obj, path) {
+  path = path.split("/");
+  for (let property of path) {
+    if (obj[property] === undefined) obj[property] = {};
+    obj = obj[property];
+  }
+  return obj;
+}
+
+module.exports = exports = {
+  Range,
+  mentionId,
+  escapeRegExp,
+  randInt,
+  safeAccess
+};

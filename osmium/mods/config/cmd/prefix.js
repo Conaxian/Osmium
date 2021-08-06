@@ -3,6 +3,7 @@
 const Arg = require("../../../lib/cmd/argument");
 const DataIO = require("../../../lib/dataio");
 const {LocStr} = require("../../../lib/locale");
+const {safeAccess} = require("../../../lib/util");
 
 module.exports = exports = {
   name: "prefix",
@@ -15,11 +16,7 @@ module.exports = exports = {
 
   async *invoke(ctx, prefix) {
     const guildsData = await DataIO.read("guilds");
-    if (!guildsData[ctx.guild.id]) guildsData[ctx.guild.id] = {};
-    if (!guildsData[ctx.guild.id].config) {
-      guildsData[ctx.guild.id].config = {};
-    }
-    guildsData[ctx.guild.id].config.prefix = prefix;
+    safeAccess(guildsData, `${ctx.guild.id}/config`).prefix = prefix;
     await DataIO.write("guilds", guildsData);
 
     const text = new LocStr("mod/config/prefix/success").format(prefix);
