@@ -15,7 +15,8 @@
 
   "arg-format": {
     "int": "Enter a valid integer (whole number).",
-    "command/module": "Enter a name of a valid module or command."
+    "command/module": "Enter a name of a valid module or command.",
+    "member": "Enter a valid member of this server."
   },
 
   "perms": {
@@ -85,6 +86,10 @@
         "name": "Ping",
         "desc": "A test command that shows the bot's ping. Useful for testing if the bot is online.",
         "ping": "Pong!\nThe bot's ping is {0} ms."
+      },
+      "avatar": {
+        "name": "Avatar",
+        "desc": "Displays the `{0}`'s profile picture. If `{0}` isn't specified, shows your profile picture."
       }
     },
 
@@ -110,7 +115,7 @@
       "desc": "Commands for entertainment.",
       "gay": {
         "name": "Gay Meter",
-        "desc": "Shows how gay is `{0}`. If `{0}` isn't entered, shows your gayness.",
+        "desc": "Shows how gay is `{0}`. If `{0}` isn't specified, shows your gayness.",
         "text": "{0} is {1}% gay :rainbow_flag:"
       }
     },

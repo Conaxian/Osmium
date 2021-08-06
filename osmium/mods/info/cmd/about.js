@@ -26,9 +26,9 @@ module.exports = exports = {
       inline: true
     });
     const embed = await ctx.cembed({
-      "title": new LocStr("mod/info/about/name"),
-      "text": text,
-      "fields": fields
+      title: new LocStr("mod/info/about/name"),
+      text: text,
+      fields: fields
     });
     ctx.resolve({embeds: embed});
   }

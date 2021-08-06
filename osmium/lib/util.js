@@ -14,7 +14,7 @@ class Range {
   }
 }
 
-function mentionId(mention) {
+function mentionId(mention="") {
   if (+mention) return mention;
   return mention.match(/^<(?:@[!&]?|#)(\d+)>$/)?.[1] ?? null;
 }

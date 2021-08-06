@@ -1,6 +1,7 @@
 "use strict";
 
 const {loadedModules, callNamespace} = require("../loader");
+const {mentionId} = require("../util");
 
 const formatter = {
   async word(ctx, string) {
@@ -24,6 +25,19 @@ const formatter = {
       return name;
     } else {
       return [name, remainder];
+    }
+  },
+
+  async member(ctx, string) {
+    const snowflake = string.match(/^(\S+)/)?.[1];
+    const remainder = string.replace(snowflake, "");
+    if (snowflake) {
+      const id = mentionId(snowflake);
+      const result = ctx.guild.members.resolve(id);
+      if (!result) return snowflake;
+      return [result, remainder];
+    } else {
+      return [snowflake, remainder]
     }
   }
 };
