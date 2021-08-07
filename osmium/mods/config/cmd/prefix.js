@@ -19,7 +19,11 @@ module.exports = exports = {
     safeAccess(guildsData, `${ctx.guild.id}/config`).prefix = prefix;
     await DataIO.write("guilds", guildsData);
 
-    const text = new LocStr("mod/config/prefix/success").format(prefix);
-    ctx.resolve({text});
+    const embed = await ctx.cembed({
+      text: new LocStr("mod/config/prefix/success")
+        .format(prefix),
+      type: "ok"
+    })
+    ctx.resolve({embeds: embed});
   }
 };

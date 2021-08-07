@@ -15,8 +15,11 @@ module.exports = exports = {
 
   async *invoke(ctx, target) {
     const gayness = randInt(1, 101);
-    const text = new LocStr("mod/fun/gay/text")
-      .format(target ?? ctx.author, gayness);
-    ctx.resolve({text});
+    const embed = await ctx.cembed({
+      title: new LocStr("mod/fun/gay/name"),
+      text: new LocStr("mod/fun/gay/text")
+        .format(target ?? ctx.author, gayness)
+    })
+    ctx.resolve({embeds: embed});
   }
 };

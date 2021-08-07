@@ -23,7 +23,9 @@ const formatter = {
     const remainder = string.replace(numeral, "");
     if (numeral) {
       const number = +numeral;
-      if (!number) return numeral;
+      const isInvalid = (!number && number !== 0)
+      || !Number.isInteger(number);
+      if (isInvalid) return numeral;
       return [number, remainder];
     } else {
       return [numeral, remainder];

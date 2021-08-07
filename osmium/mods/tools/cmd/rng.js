@@ -17,12 +17,15 @@ module.exports = exports = {
   ],
 
   async *invoke(ctx, min, max) {
-    let text;
     if (min >= max) {
-      text = new LocStr("mod/tools/rng/invalid-range");
+      const embed = await ctx.cembed({
+        text: new LocStr("mod/tools/rng/invalid-range"),
+        type: "error"
+      });
+      ctx.resolve({embeds: embed});
     } else {
-      text = `${randInt(min, max + 1)}`;
+      const text = `${randInt(min, max + 1)}`;
+      ctx.resolve({text});
     }
-    ctx.resolve({text});
   }
 };

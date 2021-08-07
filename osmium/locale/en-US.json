@@ -6,16 +6,16 @@
 
   "parser": {
     "current-prefix": "The current command prefix is `{0}`",
-    "unknown-command": "<:error:872977647884439605> Unknown command! Use `{0}help` to get a list of available commands.",
-    "missing-perms-user": "<:error:872977647884439605> You have insufficient permissions to use this command!",
-    "missing-perms-bot": "<:error:872977647884439605> The bot has insufficient permissions to execute this command! It requires administrator permissions to work properly.",
-    "missing-arg": "<:error:872977647884439605> Not enough arguments specified!\nMissing argument: `{0}`",
-    "invalid-value": "<:error:872977647884439605> Invalid `{0}` value: `{1}`\n{2}"
+    "unknown-command": "Unknown command! Use `{0}help` to get a list of available commands.",
+    "missing-perms-user": "You have insufficient permissions to use this command!",
+    "missing-perms-bot": "The bot has insufficient permissions to execute this command! It requires administrator permissions to work properly.",
+    "missing-arg": "Not enough arguments specified!\nMissing argument: `{0}`",
+    "invalid-value": "Invalid `{0}` value: `{1}`\n{2}"
   },
 
   "arg-format": {
     "int": "Enter a valid integer (whole number).",
-    "command/module": "Enter a name of a valid module or command.",
+    "command-module": "Enter a name of a valid module or command.",
     "member": "Enter a valid member of this server."
   },
 
@@ -85,7 +85,8 @@
       "ping": {
         "name": "Ping",
         "desc": "A test command that shows the bot's ping. Useful for testing if the bot is online.",
-        "ping": "Pong!\nThe bot's ping is {0} ms."
+        "text": "The bot's ping is {0} ms.",
+        "pong": "Pong!"
       },
       "avatar": {
         "name": "Avatar",
@@ -116,7 +117,7 @@
       "rng": {
         "name": "RNG",
         "desc": "Generates a random integer (whole number) in the range from `{0}` to `{1}` (inclusive).",
-        "invalid-range": "<:error:872977647884439605> Max number must be greater than the min number!"
+        "invalid-range": "Max number must be greater than the min number!"
       }
     },
 
@@ -136,7 +137,7 @@
       "prefix": {
         "name": "Prefix",
         "desc": "Sets Osmium's prefix in this server to `{0}`.",
-        "success": "<:ok:872977648308088832> Successfully set Osmium's prefix in this server to `{0}`."
+        "success": "Successfully set Osmium's prefix in this server to `{0}`."
       }
     }
 

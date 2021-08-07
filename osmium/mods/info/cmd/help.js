@@ -30,7 +30,8 @@ module.exports = exports = {
       embed = await ctx.cembed({
         title: new LocStr("mod/info/help/name"),
         text: new LocStr("mod/info/help/module-list"),
-        fields: fields
+        fields,
+        type: "info"
       });
 
     } else if (scope instanceof Mod) {
@@ -47,7 +48,8 @@ module.exports = exports = {
       embed = await ctx.cembed({
         title: new LocStr("mod/info/help/name"),
         text: new LocStr("mod/info/help/command-list").format(name),
-        fields: fields
+        fields,
+        type: "info"
       });
 
     } else {
@@ -81,7 +83,8 @@ module.exports = exports = {
         title: new LocStr(`mod/${scope.mod.name}/${scope.name}/name`),
         text: new LocStr(`mod/${scope.mod.name}/${scope.name}/desc`)
           .format(...scope.args.map(arg => arg.fullname)),
-        fields: fields
+        fields,
+        type: "info"
       });
 
     }

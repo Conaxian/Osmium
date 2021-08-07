@@ -6,7 +6,7 @@ const DataIO = require("../dataio");
 const Log = require("../log");
 const log = new Log("Context");
 const {MessageEmbed} = require("discord.js");
-const {cembedFooterIcon, cembedColors} = require("../../config.json");
+const {cembedColors, cembedIcons} = require("../../config.json");
 
 function toArray(obj) {
   if (obj && !Array.isArray(obj)) {
@@ -96,21 +96,20 @@ module.exports = exports = class Context {
 
     options.footer ??= {
       "text": `${Timestamp.HHMM(new Date())} UTC`,
-      "iconURL": cembedFooterIcon
     };
 
-    if (options.type) switch (options.type) {
-      case "ok":
-        options.color ??= cembedColors.ok;
-        break;
-      case "error":
-        options.color ??= cembedColors.error;
-        break;
-      default:
+    if (options.type) {
+      const validType = ["ok", "error", "info"].includes(options.type);
+      if (validType) {
+        options.color ??= cembedColors[options.type];
+        options.footer.iconURL ??= cembedIcons[options.type];
+      } else {
         log.error(`Invalid embed type: '${options.type}'`);
+      }
     }
-    options.color ??= this?.author?.displayColor || cembedColors.default;
 
+    options.color ??= this?.author?.displayColor || cembedColors.default;
+    options.footer.iconURL ??= cembedIcons.default;
     return new MessageEmbed(options);
   }
 }

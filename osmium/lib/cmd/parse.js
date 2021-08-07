@@ -15,9 +15,12 @@ const callTimes = new Map();
 
 async function replyPrefix(ctx) {
   if (mentionId(ctx.text) === ctx.bot.user.id) {
-    const result = new LocStr("parser/current-prefix")
-      .format(ctx.prefix);
-    ctx.resolve({"content": result});
+    const embed = await ctx.cembed({
+      text: new LocStr("parser/current-prefix")
+        .format(ctx.prefix),
+      type: "info"
+    })
+    ctx.resolve({embeds: embed});
     return;
   }
 }
@@ -35,15 +38,21 @@ async function getCmd(ctx) {
     const call = originalCall.toLowerCase().replace(/_/g, "-");
     ctx.command = callNamespace.get(call);
     if (!ctx.command) {
-      const result = new LocStr("parser/unknown-command")
-        .format(ctx.prefix);
-      ctx.resolve({"content": result});
+      const embed = await ctx.cembed({
+        text: new LocStr("parser/unknown-command")
+          .format(ctx.prefix),
+        type: "error"
+      })
+      ctx.resolve({embeds: embed});
       return;
     }
 
     if (!ctx.perms.has(ctx.command.perms)) {
-      const result = new LocStr("parser/missing-perms-user");
-      ctx.resolve({"content": result});
+      const embed = await ctx.cembed({
+        text: new LocStr("parser/missing-perms-user"),
+        type: "error"
+      })
+      ctx.resolve({embeds: embed});
       return;
     }
 
@@ -65,17 +74,23 @@ async function getArgs(ctx, argString) {
     } catch (err) {
       if (err.name != "ArgError") throw err;
       const invalidArg = new LocStr(`arg-format/${err.arg.format}`);
-      const text = new LocStr("parser/invalid-value")
-        .format(arg.fullname, err.value, await invalidArg.cstring(ctx));
-      ctx.resolve({"content": text});
+      const embed = await ctx.cembed({
+        text: new LocStr("parser/invalid-value")
+          .format(arg.fullname, err.value, await invalidArg.cstring(ctx)),
+        type: "error"
+      })
+      ctx.resolve({embeds: embed});
       break;
     }
 
-    if (!result[0]) {
+    if (!result[0] && result[0] !== 0) {
       if (arg.optional) break;
-      const text = new LocStr("parser/missing-arg")
-        .format(arg.fullname);
-      ctx.resolve({"content": text});
+      const embed = await ctx.cembed({
+        text: new LocStr("parser/missing-arg")
+          .format(arg.fullname),
+        type: "error"
+      })
+      ctx.resolve({embeds: embed});
       break;
     }
     [args[argName], argString] = result;
