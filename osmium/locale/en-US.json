@@ -110,6 +110,16 @@
       }
     },
 
+    "tools": {
+      "name": "Tools",
+      "desc": "Useful tools and utilities.",
+      "rng": {
+        "name": "RNG",
+        "desc": "Generates a random integer (whole number) in the range from `{0}` to `{1}` (inclusive).",
+        "invalid-range": "<:error:872977647884439605> Max number must be greater than the min number!"
+      }
+    },
+
     "fun": {
       "name": "Fun",
       "desc": "Commands for entertainment.",

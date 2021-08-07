@@ -3,9 +3,13 @@
 const {loadedModules, callNamespace} = require("../loader");
 const {mentionId} = require("../util");
 
+function firstWord(string) {
+  return string.match(/^(\S+)/)?.[1];
+}
+
 const formatter = {
   async word(ctx, string) {
-    const result = string.match(/^(\S+)/)?.[1];
+    const result = firstWord(string);
     const remainder = string.replace(result, "");
     return [result, remainder];
   },
@@ -14,8 +18,20 @@ const formatter = {
     return [string, ""]
   },
 
+  async int(ctx, string) {
+    const numeral = firstWord(string);
+    const remainder = string.replace(numeral, "");
+    if (numeral) {
+      const number = +numeral;
+      if (!number) return numeral;
+      return [number, remainder];
+    } else {
+      return [numeral, remainder];
+    }
+  },
+
   async command_module(ctx, string) {
-    const name = string.match(/^(\S+)/)?.[1];
+    const name = firstWord(string);
     const remainder = string.replace(name, "");
     if (name) {
       const mod = loadedModules.get(name.toLowerCase());
@@ -29,7 +45,7 @@ const formatter = {
   },
 
   async member(ctx, string) {
-    const snowflake = string.match(/^(\S+)/)?.[1];
+    const snowflake = firstWord(string);
     const remainder = string.replace(snowflake, "");
     if (snowflake) {
       const id = mentionId(snowflake);
