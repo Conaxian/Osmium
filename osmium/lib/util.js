@@ -29,10 +29,10 @@ function randInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function safeAccess(obj, path) {
+function safeAccess(obj, path, defaultValue={}) {
   path = path.split("/");
   for (let property of path) {
-    if (obj[property] === undefined) obj[property] = {};
+    if (obj[property] === undefined) obj[property] = defaultValue;
     obj = obj[property];
   }
   return obj;
