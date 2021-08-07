@@ -14,6 +14,18 @@ class Range {
   }
 }
 
+function capitalize(string) {
+  return string[0].toUpperCase() + string.slice(1);
+}
+
+function title(string) {
+  let result = "";
+  for (let word of string.split(/( |\t|\n|-)/g)) {
+    result += capitalize(word);
+  }
+  return result;
+}
+
 function mentionId(mention="") {
   if (+mention) return mention;
   return mention.match(/^<(?:@[!&]?|#)(\d+)>$/)?.[1] ?? null;
@@ -41,6 +53,8 @@ function safeAccess(obj, path, defaultIsArray=false) {
 
 module.exports = exports = {
   Range,
+  capitalize,
+  title,
   mentionId,
   escapeRegExp,
   randInt,

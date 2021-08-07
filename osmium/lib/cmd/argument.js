@@ -7,6 +7,20 @@ function firstWord(string) {
   return string.match(/^(\S+)/)?.[1];
 }
 
+function number(ctx, string, intOnly=false) {
+  const numeral = firstWord(string);
+  const remainder = string.replace(numeral, "");
+  if (numeral) {
+    const number = +numeral;
+    const isInvalid = (!number && number !== 0) ||
+    (intOnly && !Number.isInteger(number));
+    if (isInvalid) return numeral;
+    return [number, remainder];
+  } else {
+    return [numeral, remainder];
+  }
+}
+
 const formatter = {
   async word(ctx, string) {
     const result = firstWord(string);
@@ -19,17 +33,11 @@ const formatter = {
   },
 
   async int(ctx, string) {
-    const numeral = firstWord(string);
-    const remainder = string.replace(numeral, "");
-    if (numeral) {
-      const number = +numeral;
-      const isInvalid = (!number && number !== 0)
-      || !Number.isInteger(number);
-      if (isInvalid) return numeral;
-      return [number, remainder];
-    } else {
-      return [numeral, remainder];
-    }
+    return number(ctx, string, true);
+  },
+
+  async num(ctx, string) {
+    return number(ctx, string);
   },
 
   async command_module(ctx, string) {

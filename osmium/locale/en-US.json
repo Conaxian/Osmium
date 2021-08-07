@@ -15,6 +15,7 @@
 
   "arg-format": {
     "int": "Enter a valid integer (whole number).",
+    "num": "Enter a valid number.",
     "command-module": "Enter a name of a valid module or command.",
     "member": "Enter a valid member of this server."
   },
@@ -108,6 +109,11 @@
       "tiny": {
         "name": "Tiny",
         "desc": "Makes text ᵗᶦᶰʸ. Only works with some characters."
+      },
+      "numeral": {
+        "name": "Numeral",
+        "desc": "Converts `{0}` to its spoken form.",
+        "out-of-bounds": "The specified number is too small or too large!"
       }
     },
 

@@ -26,6 +26,7 @@
     "dotenv": "^10.0.0",
     "erlpack": "github:discord/erlpack",
     "tiny-text": "^1.0.1",
+    "to-words": "^2.4.0",
     "tweetnacl": "^1.0.3",
     "utf-8-validate": "^5.0.5",
     "zlib-sync": "^0.1.7"
