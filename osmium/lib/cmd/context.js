@@ -8,6 +8,13 @@ const log = new Log("Context");
 const {MessageEmbed} = require("discord.js");
 const {cembedFooterIcon, cembedColors} = require("../../config.json");
 
+function toArray(obj) {
+  if (obj && !Array.isArray(obj)) {
+    obj = [obj];
+  }
+  return obj;
+}
+
 module.exports = exports = class Context {
   constructor({bot, text, msg, type, prefix, command, args, perms}) {
     this.bot = bot;
@@ -32,6 +39,21 @@ module.exports = exports = class Context {
     }
   }
 
+  async #resolveLoc(obj) {
+    if (obj?.cstring) {
+      obj = await obj.cstring(this);
+    }
+    return obj;
+  }
+
+  async #fixMessage(data) {
+    data.content = await this.#resolveLoc(data.content);
+    data.embeds = toArray(data.embeds);
+    data.files = toArray(data.files);
+    data.components = toArray(data.components);
+    data.stickers = toArray(data.stickers);
+  }
+
   output(data, reply=true) {
     return new Output(data, reply);
   }
@@ -41,79 +63,35 @@ module.exports = exports = class Context {
   }
 
   async out(output) {
-    const data = output.data;
-    if (data?.content?.cstring) {
-      data.content = await data.content.cstring(this);
-    }
-
-    if (data.embeds && !Array.isArray(data.embeds)) {
-      data.embeds = [data.embeds];
-    }
-    if (data.files && !Array.isArray(data.files)) {
-      data.files = [data.files];
-    }
-    if (data.components && !Array.isArray(data.components)) {
-      data.components = [data.components];
-    }
-    if (data.stickers && !Array.isArray(data.stickers)) {
-      data.stickers = [data.stickers];
-    }
-
+    await this.#fixMessage(output.data);
     if (output.reply) {
-      return await this.msg.reply(data);
+      return await this.msg.reply(output.data);
     } else {
-      return await this.channel.send(data);
+      return await this.channel.send(output.data);
     }
   }
 
   async edit(msg, edited) {
-    const data = edited.data;
-    if (data?.content?.cstring) {
-      data.content = await data.content.cstring(this);
-    }
-
-    if (data.embeds && !Array.isArray(data.embeds)) {
-      data.embeds = [data.embeds];
-    }
-    if (data.files && !Array.isArray(data.files)) {
-      data.files = [data.files];
-    }
-    if (data.components && !Array.isArray(data.components)) {
-      data.components = [data.components];
-    }
-    if (data.stickers && !Array.isArray(data.stickers)) {
-      data.stickers = [data.stickers];
-    }
-
-    return await msg.edit(data);
+    await this.#fixMessage(edited.data);
+    return await msg.edit(edited.data);
   }
 
   async cembed(options) {
     options.description = options.text;
-    if (options.title?.cstring) {
-      options.title = await options.title.cstring(this);
-    }
-    if (options.description?.cstring) {
-      options.description = await options.description.cstring(this);
-    }
+    options.title = await this.#resolveLoc(options.title);
+    options.description = await this.#resolveLoc(options.description);
+    options.fields = toArray(options.fields);
 
-    if (options.fields && !Array.isArray(options.fields)) {
-      options.fields = [options.fields];
-    }
     for (let field of options.fields ?? []) {
-      if (field.name?.cstring) {
-        field.name = await field.name.cstring(this);
-      }
-      if (field.value?.cstring) {
-        field.value = await field.value.cstring(this);
-      }
+      field.name = await this.#resolveLoc(field.name);
+      field.value = await this.#resolveLoc(field.value);
     }
 
-    if (options.author?.name?.cstring) {
-      options.author.name = await options.author.name.cstring(this);
+    if (options.author) {
+      options.author.name = await this.#resolveLoc(options.author.name);
     }
-    if (options.footer?.text?.cstring) {
-      options.footer.text = await options.footer.tetx.cstring(this);
+    if (options.footer) {
+      options.footer.text = await this.#resolveLoc(options.footer.text);
     }
 
     options.footer ??= {
@@ -129,7 +107,7 @@ module.exports = exports = class Context {
         options.color ??= cembedColors.error;
         break;
       default:
-        log.error(`Invalid option type: '${options.type}'`);
+        log.error(`Invalid embed type: '${options.type}'`);
     }
     options.color ??= this?.author?.displayColor || cembedColors.default;
 
