@@ -87,12 +87,10 @@ module.exports = exports = class Context {
       field.value = await this.#resolveLoc(field.value);
     }
 
-    if (options.author) {
+    if (options.author)
       options.author.name = await this.#resolveLoc(options.author.name);
-    }
-    if (options.footer) {
+    if (options.footer)
       options.footer.text = await this.#resolveLoc(options.footer.text);
-    }
 
     options.footer ??= {
       "text": `${Timestamp.HHMM(new Date())} UTC`,

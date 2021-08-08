@@ -76,7 +76,7 @@ module.exports = exports = {
       }
       fields.push({
         name: new LocStr("mod/info/help/perms"),
-        value: perms.length ? new LocTemp(perms) : none
+        value: perms.length ? new LocTemp(...perms) : none
       });
 
       embed = await ctx.cembed({

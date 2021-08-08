@@ -4,6 +4,7 @@ import ast
 import traceback
 import subprocess
 import signal
+import locale
 from typing import Union
 
 ALLOWED_MODULES = [
@@ -60,7 +61,7 @@ class PyExecutor:
         filename: str,
         timeout: Union[int, float]=5,
         checks_per_second: int=40,
-        python_cmd: str=None,
+        python_cmd: str=None
     ):
         self.filename = filename
         self.timeout = timeout
@@ -73,7 +74,7 @@ class PyExecutor:
         self.python_cmd = python_cmd or \
             ("python" if self.win else "python3")
 
-    def execute(self, code: str, scan: bool=True):
+    def execute(self, code: str, scan: bool=True) -> Result:
         """
         Safely executes Python code.
         """
@@ -94,7 +95,8 @@ class PyExecutor:
             time.sleep(self.check_interval)
             if not task.is_running():
                 result = task.process.communicate()
-                stdout, stderr = (bytestr.decode("utf8").strip() \
+                encoding = locale.getpreferredencoding()
+                stdout, stderr = (bytestr.decode(encoding).strip() \
                     for bytestr in result)
                 exec_time = time.time() - task.exec_start
                 return Result(stdout, stderr, exec_time)
@@ -156,7 +158,7 @@ class _Task:
         """
         self.exec_start = time.time()
         with open(self.executor.file_path, "w",
-            encoding="utf8") as file:
+            encoding="utf-8") as file:
             file.write(self.code)
 
         popen_args = [
@@ -165,7 +167,7 @@ class _Task:
         ]
         popen_kwargs = {
             "stdout": subprocess.PIPE,
-            "stderr": subprocess.PIPE,
+            "stderr": subprocess.PIPE
         }
         if self.executor.win:
             popen_kwargs["creationflags"] = \
@@ -179,6 +181,7 @@ class _Task:
         """
         Kills the task.
         """
-        kill_signal = signal.CTRL_BREAK_EVENT \
-            if self.executor.win else signal.SIGKILL
-        os.kill(self.pid, kill_signal)
+        kill_command = ["taskkill", "/F", "/PID"] \
+            if self.executor.win else ["kill", "-" + str(signal.SIGKILL)]
+        kill_command.append(str(self.pid))
+        subprocess.check_call(kill_command, stdout=subprocess.DEVNULL)

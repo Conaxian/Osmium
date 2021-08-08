@@ -67,7 +67,7 @@ class LocStr {
 }
 
 class LocTemp extends LocStr {
-  constructor(parts) {
+  constructor(...parts) {
     super();
     this.parts = parts;
   }

@@ -1,5 +1,8 @@
 "use strict";
 
+const {exec} = require("child_process");
+const {promisify} = require("util");
+
 class Range {
   constructor(startOrStop, stop, step) {
     this.start = (stop !== undefined) ? startOrStop : 0;
@@ -35,6 +38,10 @@ function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function escapeCode(string) {
+  return string.replace(/`/g, "´");
+}
+
 function randInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max - 1);
@@ -51,12 +58,16 @@ function safeAccess(obj, path, defaultIsArray=false) {
   return obj;
 }
 
+const shell = promisify(exec)
+
 module.exports = exports = {
   Range,
   capitalize,
   title,
   mentionId,
   escapeRegExp,
+  escapeCode,
   randInt,
-  safeAccess
+  safeAccess,
+  shell
 };

@@ -32,6 +32,17 @@ const formatter = {
     return [string, ""]
   },
 
+  async py_code(ctx, string) {
+    if (string) {
+      const code = string
+        .match(/^`{0,3}(?:py\s|python\s)?(.*?)`{0,3}$/s)[1]
+        .trim();
+      return [code, ""];
+    } else {
+      return [string, ""];
+    }
+  },
+
   async int(ctx, string) {
     return number(ctx, string, true);
   },

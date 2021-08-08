@@ -2,6 +2,7 @@
 
 module.exports = exports = {
   commands: [
-    require("./cmd/rng")
+    require("./cmd/rng"),
+    require("./cmd/python")
   ]
 };
