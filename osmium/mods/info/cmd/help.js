@@ -3,7 +3,7 @@
 const Arg = require("../../../lib/cmd/argument");
 const Mod = require("../../../lib/mod");
 const {Range} = require("../../../lib/util");
-const {LocStr, LocTemp} = require("../../../lib/locale");
+const {LocStr, LocGroup} = require("../../../lib/locale");
 const {loadedModules} = require("../../../lib/loader");
 
 module.exports = exports = {
@@ -76,7 +76,7 @@ module.exports = exports = {
       }
       fields.push({
         name: new LocStr("mod/info/help/perms"),
-        value: perms.length ? new LocTemp(...perms) : none
+        value: perms.length ? new LocGroup(...perms) : none
       });
 
       embed = await ctx.cembed({

@@ -2,8 +2,12 @@
 
 const fs = require("fs/promises");
 const Arg = require("../../../lib/cmd/argument");
-const {LocStr, LocTemp} = require("../../../lib/locale");
-const {shell, escapeCode} = require("../../../lib/util");
+const {LocStr, LocGroup, LocLengthProxy} = require("../../../lib/locale");
+const {
+  MAX_EMBED_DESC_LENGTH,
+  shell,
+  escapeCode
+} = require("../../../lib/util");
 const {pythonCmd} = require("../../../config.json");
 
 const isWin = process.platform == "win32";
@@ -27,7 +31,7 @@ async function pyExecute(code, scan) {
 
   const data = JSON.parse(result.stdout);
   return {
-    output: data.stderr || data.stdout,
+    output: data.stderr || data.stdout || " ",
     execTime: data.execTime
   };
 }
@@ -44,38 +48,38 @@ module.exports = exports = {
   async *invoke(ctx, code) {
     const scan = !(/^\s*#dev/.test(code) && ctx.perms.has("developer"));
     const result = await pyExecute(code, scan);
-    let embed;
-    console.log(result);
+    const embedData = {};
 
     if (result.error) {
-      let error;
       if (result.unsafeToken) {
-        error = new LocStr("mod/tools/python/unsafe-token")
+        embedData.text = new LocStr("mod/tools/python/unsafe-token")
           .format(result.unsafeToken);
       } else {
-        error = new LocStr("mod/tools/python/timeout")
+        embedData.text = new LocStr("mod/tools/python/timeout")
           .format(5);
       }
 
-      const exitCode = new LocStr("mod/tools/python/finish-failure");
-      const text = new LocTemp("```", error, "```\n", exitCode);
-      embed = await ctx.cembed({
-        title: new LocStr("mod/tools/python/output"),
-        text,
-        type: "error"
-      });
+      embedData.exitCode = new LocStr("mod/tools/python/finish-failure");
+      embedData.type = "error";
 
     } else {
-      const output = result.output;
-      const exitCode = new LocStr("mod/tools/python/finish-success")
+      embedData.text = escapeCode(result.output);
+      embedData.exitCode = new LocStr("mod/tools/python/finish-success")
         .format(result.execTime.toFixed(2));
-      const text = new LocTemp("```", output, "```\n", exitCode);
-      embed = await ctx.cembed({
-        title: new LocStr("mod/tools/python/output"),
-        text,
-        type: "ok"
-      })
+      embedData.type = "ok";
     }
+
+    const text = new LocLengthProxy(
+      embedData.text,
+      MAX_EMBED_DESC_LENGTH,
+      "```",
+      new LocGroup("```\n", embedData.exitCode)
+    );
+    const embed = await ctx.cembed({
+      title: new LocStr("mod/tools/python/output"),
+      text,
+      type: embedData.type
+    });
     await ctx.resolve({embeds: embed});
   }
 };

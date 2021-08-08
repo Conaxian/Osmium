@@ -5,15 +5,9 @@ const Timestamp = require("../timestamp");
 const DataIO = require("../dataio");
 const Log = require("../log");
 const log = new Log("Context");
+const {forceArray} = require("../util");
 const {MessageEmbed} = require("discord.js");
 const {cembedColors, cembedIcons} = require("../../config.json");
-
-function toArray(obj) {
-  if (obj && !Array.isArray(obj)) {
-    obj = [obj];
-  }
-  return obj;
-}
 
 module.exports = exports = class Context {
   constructor({bot, text, msg, type, prefix, command, args, perms}) {
@@ -48,10 +42,10 @@ module.exports = exports = class Context {
 
   async #fixMessage(data) {
     data.content = await this.#resolveLoc(data.content);
-    data.embeds = toArray(data.embeds);
-    data.files = toArray(data.files);
-    data.components = toArray(data.components);
-    data.stickers = toArray(data.stickers);
+    data.embeds = forceArray(data.embeds);
+    data.files = forceArray(data.files);
+    data.components = forceArray(data.components);
+    data.stickers = forceArray(data.stickers);
   }
 
   output(data, reply=true) {
@@ -80,7 +74,7 @@ module.exports = exports = class Context {
     options.description = options.text;
     options.title = await this.#resolveLoc(options.title);
     options.description = await this.#resolveLoc(options.description);
-    options.fields = toArray(options.fields);
+    options.fields = forceArray(options.fields);
 
     for (let field of options.fields ?? []) {
       field.name = await this.#resolveLoc(field.name);

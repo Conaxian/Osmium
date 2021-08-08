@@ -3,6 +3,8 @@
 const {exec} = require("child_process");
 const {promisify} = require("util");
 
+const MAX_EMBED_DESC_LENGTH = 4096;
+
 class Range {
   constructor(startOrStop, stop, step) {
     this.start = (stop !== undefined) ? startOrStop : 0;
@@ -27,6 +29,13 @@ function title(string) {
     result += capitalize(word);
   }
   return result;
+}
+
+function forceArray(obj) {
+  if (obj && !Array.isArray(obj)) {
+    obj = [obj];
+  }
+  return obj;
 }
 
 function mentionId(mention="") {
@@ -58,12 +67,14 @@ function safeAccess(obj, path, defaultIsArray=false) {
   return obj;
 }
 
-const shell = promisify(exec)
+const shell = promisify(exec);
 
 module.exports = exports = {
+  MAX_EMBED_DESC_LENGTH,
   Range,
   capitalize,
   title,
+  forceArray,
   mentionId,
   escapeRegExp,
   escapeCode,

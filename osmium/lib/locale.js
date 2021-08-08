@@ -10,6 +10,13 @@ const {defaultLocale: defaultLang} = require("../config.json");
 const getLocalePath = lang => `./locale/${lang}.json`;
 const localeCache = new Map();
 
+async function resolveLoc(obj, lang) {
+  if (obj instanceof LocStr) {
+    obj = await obj.string(lang);
+  }
+  return obj;
+}
+
 async function loadLocale(lang, force=false) {
   if (force || !localeCache.has(lang)) {
     const path = getLocalePath(lang);
@@ -40,9 +47,7 @@ class LocStr {
 
     for (let i of new Range(this.fValues.length)) {
       let fValue = this.fValues[i];
-      if (fValue instanceof LocStr) {
-        fValue = await fValue.string(lang);
-      }
+      fValue = await resolveLoc(fValue, lang);
       string = string.replaceAll(`{${i}}`, fValue);
     }
 
@@ -66,7 +71,7 @@ class LocStr {
   }
 }
 
-class LocTemp extends LocStr {
+class LocGroup extends LocStr {
   constructor(...parts) {
     super();
     this.parts = parts;
@@ -75,13 +80,38 @@ class LocTemp extends LocStr {
   async string(lang) {
     let result = "";
     for (let part of this.parts) {
-      if (part instanceof LocStr) {
-        part = await part.string(lang);
-      }
+      part = await resolveLoc(part ,lang);
       result += part;
     }
     return result;
   }
 }
 
-module.exports = exports = {loadLocale, LocStr, LocTemp};
+class LocLengthProxy extends LocStr {
+  constructor(core, length, leftPadding="", rightPadding="") {
+    super();
+    this.core = core;
+    this.length = length;
+    this.leftPadding = leftPadding;
+    this.rightPadding = rightPadding;
+  }
+
+  async string(lang) {
+    const result = {
+      left: await resolveLoc(this.leftPadding, lang),
+      core: await resolveLoc(this.core, lang),
+      right: await resolveLoc(this.rightPadding, lang)
+    };
+
+    const paddingLength = result.left.length + result.right.length;
+    const maxLength = this.length - paddingLength - result.core.length;
+    return result.left + result.core.slice(0, maxLength) + result.right;
+  }
+}
+
+module.exports = exports = {
+  loadLocale,
+  LocStr,
+  LocGroup,
+  LocLengthProxy
+};
