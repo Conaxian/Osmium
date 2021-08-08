@@ -2,7 +2,7 @@
 
 const Arg = require("../../../lib/cmd/argument");
 const Mod = require("../../../lib/mod");
-const {Range, attachBlankField} = require("../../../lib/util");
+const {Range, stabilizeFieldLayout} = require("../../../lib/util");
 const {LocStr, LocGroup} = require("../../../lib/locale");
 const {loadedModules} = require("../../../lib/loader");
 
@@ -26,8 +26,7 @@ module.exports = exports = {
           inline: true
         });
       }
-      while (fields.length % 3)
-        attachBlankField(fields, fields.length);
+      stabilizeFieldLayout(fields);
 
       embed = await ctx.cembed({
         title: new LocStr("mod/info/help/name"),
@@ -45,8 +44,7 @@ module.exports = exports = {
           inline: true
         });
       }
-      while (fields.length % 3)
-        attachBlankField(fields, fields.length);
+      stabilizeFieldLayout(fields);
 
       const name = new LocStr(`mod/${scope.name}/name`);
       embed = await ctx.cembed({

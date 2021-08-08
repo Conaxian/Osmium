@@ -103,6 +103,11 @@ function attachBlankField(fields, index, inline=true) {
   });
 }
 
+function stabilizeFieldLayout(fields) {
+  while (fields.length % 3)
+    attachBlankField(fields, fields.length);
+}
+
 const shell = promisify(exec);
 
 module.exports = exports = {
@@ -120,5 +125,6 @@ module.exports = exports = {
   arraysEqual,
   arraysEqualDetails,
   attachBlankField,
+  stabilizeFieldLayout,
   shell
 };
