@@ -143,6 +143,11 @@
         "name": "Gay Meter",
         "desc": "Shows how gay is `{0}`. If `{0}` isn't specified, shows your gayness.",
         "text": "{0} is {1}% gay :rainbow_flag:"
+      },
+      "penis": {
+        "name": "Penis Length",
+        "desc": "Shows how long is `{0}`'s penis.",
+        "text": "{0}'s penis: **{1}**"
       }
     },
 

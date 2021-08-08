@@ -2,6 +2,7 @@
 
 module.exports = exports = {
   commands: [
-    require("./cmd/gay")
+    require("./cmd/gay"),
+    require("./cmd/penis")
   ]
 };
