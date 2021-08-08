@@ -1,0 +1,53 @@
+{
+  "debug": false,
+  "prefix": "?",
+  "cmdCooldown": 1000,
+
+  "author": "Conax#0001",
+  "botInvite": "https://conax.cz/osmium",
+  "gitHub": "https://github.com/Conaxian/Osmium",
+
+  "pythonCmd": "python",
+
+  "activity": {
+    "name": "your feedback!",
+    "type": "LISTENING"
+  },
+
+  "devs": [
+    "209607873787985920"
+  ],
+
+  "defaultLocale": "en-US",
+  "locales": [
+    "en-US"
+  ],
+
+  "preloadModules": [
+    "info",
+    "text",
+    "tools",
+    "fun",
+    "config"
+  ],
+
+  "cembedColors": {
+    "default": "2288CC",
+    "ok": "32BA7C",
+    "error": "F15249",
+    "info": "246BCC"
+  },
+  "cembedIcons": {
+    "default": "https://conax.cz/osm/footer.png",
+    "ok": "https://conax.cz/osm/ok.png",
+    "error": "https://conax.cz/osm/error.png",
+    "info": "https://conax.cz/osm/info.png"
+  },
+
+  "logColors": {
+    "info": "white",
+    "warn": "yellow",
+    "error": "red",
+    "debug": "blue"
+  }
+}
