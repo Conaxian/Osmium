@@ -26,10 +26,8 @@ module.exports = exports = {
           inline: true
         });
       }
-      while (fields.length % 3) {
+      while (fields.length % 3)
         attachBlankField(fields, fields.length);
-      }
-      console.log(fields);
 
       embed = await ctx.cembed({
         title: new LocStr("mod/info/help/name"),
@@ -47,9 +45,8 @@ module.exports = exports = {
           inline: true
         });
       }
-      while (fields.length % 3) {
+      while (fields.length % 3)
         attachBlankField(fields, fields.length);
-      }
 
       const name = new LocStr(`mod/${scope.name}/name`);
       embed = await ctx.cembed({
