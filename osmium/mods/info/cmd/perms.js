@@ -8,10 +8,9 @@ const {attachBlankField} = require("../../../lib/util");
 const {emojis, devs} = require("../../../config.json");
 
 function makePerms(ctx, member) {
-  const dev = devs.includes(member.id);
   const guildPerms = member.permissions;
   const channelPerms = ctx.channel.permissionsFor(member);
-  return new Perms(dev, true, guildPerms, channelPerms);
+  return new Perms(false, true, guildPerms, channelPerms);
 }
 
 module.exports = exports = {
