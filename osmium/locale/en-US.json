@@ -1,7 +1,9 @@
 {
   "general": {
     "name": "English (United States)",
-    "none": "None"
+    "none": "None",
+    "yes": "Yes",
+    "no": "No"
   },
 
   "parser": {
@@ -60,6 +62,12 @@
     "use-private-threads": "Use Private Threads",
     "use-external-stickers": "Use External Stickers"
   },
+  "perm-categories": {
+    "administration": "Administration",
+    "moderation": "Moderation",
+    "text-channels": "Text Channels",
+    "voice-channels": "Voice Channels"
+  },
 
   "mod": {
 
@@ -88,6 +96,12 @@
         "desc": "A test command that shows the bot's ping. Useful for testing if the bot is online.",
         "text": "The bot's ping is {0} ms.",
         "pong": "Pong!"
+      },
+      "perms": {
+        "name": "Permissions",
+        "desc": "Displays `{0}`'s permissions. If `{0}` isn't specified, shows your permissions.",
+        "perms-in": "Permissions in {0}",
+        "text": "This is a list of all permissions of {0} in this server."
       },
       "avatar": {
         "name": "Avatar",

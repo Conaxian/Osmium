@@ -10,7 +10,7 @@ const {
 } = require("../../../lib/util");
 const {pythonCmd} = require("../../../config.json");
 
-const isWin = process.platform == "win32";
+const isWin = process.platform === "win32";
 const pyexecCommand = pythonCmd + (isWin ?
   " lib\\pyexecute\\cli.py data\\execute.py" :
   " lib/pyexecute/cli.py data/execute.py")
@@ -80,6 +80,6 @@ module.exports = exports = {
       text,
       type: embedData.type
     });
-    await ctx.resolve({embeds: embed});
+    ctx.resolve({embeds: embed});
   }
 };

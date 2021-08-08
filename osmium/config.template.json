@@ -44,6 +44,12 @@
     "info": "https://conax.cz/osm/info.png"
   },
 
+  "emojis": {
+    "ok": "<:ok:872977648308088832>",
+    "error": "<:error:872977647884439605>",
+    "info": "<:info:873902215906091008>"
+  },
+
   "logColors": {
     "info": "white",
     "warn": "yellow",

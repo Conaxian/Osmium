@@ -4,6 +4,7 @@ const {exec} = require("child_process");
 const {promisify} = require("util");
 
 const MAX_EMBED_DESC_LENGTH = 4096;
+const ZERO_WIDTH_SPACE = "\u200B";
 
 class Range {
   constructor(startOrStop, stop, step) {
@@ -67,10 +68,46 @@ function safeAccess(obj, path, defaultIsArray=false) {
   return obj;
 }
 
+function arraysEqual(array1, array2) {
+  return arraysEqualDetails(array1, array2).result;
+}
+
+function arraysEqualDetails(array1, array2) {
+  if (array1 === array2) return {result: true};
+  if (!array1 || !array2) return {
+    result: false,
+    first: null,
+    second: null
+  };
+  if (array1.length < array2.length) {
+    const temp = array1;
+    array1 = array2;
+    array2 = temp;
+  }
+
+  for (let i of new Range(array1.length)) {
+    if (!array2.includes(array1[i])) return {
+      result: false,
+      first: array1[i],
+      second: array2[i]
+    };
+  }
+  return {result: true};
+}
+
+function attachBlankField(fields, index, inline=true) {
+  fields.splice(index, 0, {
+    name: ZERO_WIDTH_SPACE,
+    value: ZERO_WIDTH_SPACE,
+    inline
+  });
+}
+
 const shell = promisify(exec);
 
 module.exports = exports = {
   MAX_EMBED_DESC_LENGTH,
+  ZERO_WIDTH_SPACE,
   Range,
   capitalize,
   title,
@@ -80,5 +117,8 @@ module.exports = exports = {
   escapeCode,
   randInt,
   safeAccess,
+  arraysEqual,
+  arraysEqualDetails,
+  attachBlankField,
   shell
 };

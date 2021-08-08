@@ -23,7 +23,8 @@ module.exports = exports = {
       author: {
         name: user.username,
         iconURL: avatarUrl
-      }
+      },
+      type: "info"
     });
     ctx.resolve({embeds: embed});
   }

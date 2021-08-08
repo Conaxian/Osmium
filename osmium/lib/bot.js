@@ -35,7 +35,8 @@ const allPartials = [
 ];
 const options = {
   intents: new Intents(allIntents),
-  partials: allPartials
+  partials: allPartials,
+  failIfNotExists: false
 };
 
 module.exports = exports = class Bot extends Client {
