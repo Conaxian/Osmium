@@ -106,6 +106,14 @@
         "name": "Uppercase",
         "desc": "Sends `{0}` with all letters in uppercase."
       },
+      "capitalize": {
+        "name": "Capitalize",
+        "desc": "Sends `{0}` with the first word capitalized."
+      },
+      "title": {
+        "name": "Title",
+        "desc": "Sends `{0}` with all words capitalized."
+      },
       "tiny": {
         "name": "Tiny",
         "desc": "Makes text ᵗᶦᶰʸ. Only works with some characters."
