@@ -61,7 +61,7 @@ function randInt(min, max) {
 function safeAccess(obj, path, defaultIsArray=false) {
   path = path.split("/");
   for (let property of path) {
-    const defaultValue = defaultIsArray ? [] : {}
+    const defaultValue = defaultIsArray ? [] : {};
     if (obj[property] === undefined) obj[property] = defaultValue;
     obj = obj[property];
   }
