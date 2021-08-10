@@ -97,6 +97,10 @@
         "text": "The bot's ping is {0} ms.",
         "pong": "Pong!"
       },
+      "invite": {
+        "name": "Invite",
+        "desc": "Sends a permanent invite to the current channel."
+      },
       "perms": {
         "name": "Permissions",
         "desc": "Displays `{0}`'s permissions. If `{0}` isn't specified, shows your permissions.",
