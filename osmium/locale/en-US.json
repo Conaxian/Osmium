@@ -135,7 +135,11 @@
       "numeral": {
         "name": "Numeral",
         "desc": "Converts `{0}` to its spoken form.",
-        "out-of-bounds": "The specified number is too small or too large!"
+        "out-of-bounds": "The specified number is too small or too large!\nValid range: `{0}` to `{1}`"
+      },
+      "roman": {
+        "name": "Roman",
+        "desc": "Converts `{0}` to a roman numeral."
       }
     },
 
