@@ -7,6 +7,7 @@ module.exports = exports = {
     require("./cmd/capitalize"),
     require("./cmd/title"),
     require("./cmd/tiny"),
-    require("./cmd/numeral")
+    require("./cmd/numeral"),
+    require("./cmd/roman")
   ]
 };

@@ -1,20 +1,19 @@
 "use strict";
 
-const {ToWords} = require("to-words");
+const {convertNumberToRoman: toRoman} = require("cr-numeral");
 const Arg = require("../../../lib/cmd/argument");
 const {LocStr} = require("../../../lib/locale");
 
-const toWords = new ToWords({localeCode: "en-US"});
-const MIN = -999999999999999;
-const MAX = 999999999999999;
+const MIN = 1;
+const MAX = 4999;
 
 module.exports = exports = {
-  name: "numeral",
+  name: "roman",
   aliases: [
-    "num2words"
+    "romanum"
   ],
   args: [
-    new Arg("<number>", "num")
+    new Arg("<number>", "int")
   ],
 
   async *invoke(ctx, number) {
@@ -26,8 +25,7 @@ module.exports = exports = {
       });
       ctx.resolve({embeds: embed});
     } else {
-      const numeral = toWords.convert(number);
-      ctx.resolve({text: numeral});
+      ctx.resolve({text: toRoman(number)});
     }
   }
 };
