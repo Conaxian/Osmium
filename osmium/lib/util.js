@@ -52,8 +52,8 @@ function escapeCode(string) {
   return string.replace(/`/g, "´");
 }
 
-function escapeDquotes(string) {
-  return string.replace(/"/g, '\\"');
+function escapeTemplateString(string) {
+  return string.replace(/`|\$/g, "\\$&");
 }
 
 function randInt(min, max) {
@@ -124,7 +124,7 @@ module.exports = exports = {
   mentionId,
   escapeRegExp,
   escapeCode,
-  escapeDquotes,
+  escapeTemplateString,
   randInt,
   safeAccess,
   arraysEqual,

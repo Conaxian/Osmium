@@ -8,7 +8,7 @@ const {LocStr, LocGroup, LocLengthProxy} = require("../../../lib/locale");
 const {
   MAX_EMBED_DESC_LENGTH,
   shell,
-  escapeDquotes,
+  escapeTemplateString,
   escapeCode
 } = require("../../../lib/util");
 const {test} = require("../../../lib/osmapi");
@@ -18,10 +18,10 @@ const nodeCommand = "node " + (isWin ?
   "data\\execute.js" : "data/execute.js")
 
 async function jsExecute(code) {
-  code = escapeDquotes(code);
+  code = escapeTemplateString(code);
   code = `const{NodeVM}=require("vm2");
 const vm=new NodeVM({});
-vm.run("${code}");
+vm.run(\`${code}\`);
 `;
   await fs.writeFile("data/execute.js", code, {encoding: "utf8"});
 
