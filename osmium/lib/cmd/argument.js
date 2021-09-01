@@ -43,6 +43,17 @@ const formatter = {
     }
   },
 
+  async js_code(ctx, string) {
+    if (string) {
+      const code = string
+        .match(/^`{0,3}(?:js\s|javascript\s)?(.*?)`{0,3}$/s)[1]
+        .trim();
+      return [code, ""];
+    } else {
+      return [string, ""];
+    }
+  },
+
   async int(ctx, string) {
     return number(ctx, string, true);
   },

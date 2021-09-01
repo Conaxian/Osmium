@@ -159,6 +159,14 @@
         "desc": "Generates a random integer (whole number) in the range from `{0}` to `{1}` (inclusive).",
         "invalid-range": "Max number must be greater than the min number!"
       },
+      "javascript": {
+        "name": "JavaScript",
+        "desc": "Executes `{0}` in Node.js and displays the result. Wrapping the code in three backticks ` ``` ` is recommended.",
+        "output": "Output",
+        "timeout": "Script was terminated, as it ran for longer than {0} seconds!",
+        "finish-success": "Finished with exit code 0 in `{0}` seconds",
+        "finish-failure": "Finished with exit code 1"
+      },
       "python": {
         "name": "Python",
         "desc": "Executes `{0}` in Python 3 and displays the result. Wrapping the code in three backticks ` ``` ` is recommended.",
