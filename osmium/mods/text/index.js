@@ -2,6 +2,7 @@
 
 module.exports = exports = {
   commands: [
+    require("./cmd/say"),
     require("./cmd/lower"),
     require("./cmd/upper"),
     require("./cmd/capitalize"),

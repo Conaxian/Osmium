@@ -116,6 +116,10 @@
     "text": {
       "name": "Text",
       "desc": "Various options for formatting text.",
+      "say": {
+        "name": "Say",
+        "desc": "Sends `{0}`."
+      },
       "lower": {
         "name": "Lowercase",
         "desc": "Sends `{0}` with all letters in lowercase."
