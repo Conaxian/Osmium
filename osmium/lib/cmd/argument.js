@@ -56,9 +56,9 @@ const formatter = {
     const remainder = string.replace(name, "");
     if (name) {
       const mod = loadedModules.get(name.toLowerCase());
-      if (mod) return [mod, remainder];
+      if (mod && !mod.hidden) return [mod, remainder];
       const command = callNamespace.get(name.toLowerCase());
-      if (command) return [command, remainder];
+      if (command && !command.hidden) return [command, remainder];
       return name;
     } else {
       return [name, remainder];

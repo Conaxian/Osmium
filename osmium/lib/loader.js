@@ -10,7 +10,7 @@ module.exports = exports = {
 
   async load(name) {
     const modData = require(`../mods/${name}`);
-    const mod = new Mod(name, []);
+    const mod = new Mod(name, [], !!modData.hidden);
     this.loadedModules.set(name, mod);
 
     for (let cmd of modData.commands) {

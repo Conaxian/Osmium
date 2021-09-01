@@ -17,6 +17,7 @@ module.exports = exports = {
     if (!scope) {
       const fields = [];
       for (let mod of loadedModules.values()) {
+        if (mod.hidden) continue;
         let desc = new LocStr(`mod/${mod.name}/desc`);
         let text = new LocStr("mod/info/help/module-help")
           .format(desc, ctx.prefix, mod.name);

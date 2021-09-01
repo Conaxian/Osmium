@@ -1,9 +1,10 @@
 "use strict";
 
 module.exports = exports = class Mod {
-  constructor(name, commands) {
+  constructor(name, commands, hidden=false) {
     this.name = name;
     this.commands = commands;
+    this.hidden = hidden;
   }
 
   *[Symbol.iterator]() {
