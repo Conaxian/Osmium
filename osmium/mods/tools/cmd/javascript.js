@@ -1,16 +1,55 @@
 "use strict";
 
 const {NodeVM} = require("vm2");
+const fs = require("fs/promises");
 const {performance} = require("perf_hooks");
 const Arg = require("../../../lib/cmd/argument");
 const {LocStr, LocGroup, LocLengthProxy} = require("../../../lib/locale");
-const {MAX_EMBED_DESC_LENGTH, escapeCode} = require("../../../lib/util");
-const osm = require("../../../lib/osmapi/osm");
+const {
+  MAX_EMBED_DESC_LENGTH,
+  shell,
+  escapeDquotes,
+  escapeCode
+} = require("../../../lib/util");
+const {test} = require("../../../lib/osmapi");
 
-const vm = new NodeVM({
-  console: "redirect",
-  sandbox: {osm, osmium: osm}
-});
+const isWin = process.platform === "win32";
+const nodeCommand = "node " + (isWin ?
+  "data\\execute.js" : "data/execute.js")
+
+async function jsExecute(code) {
+  code = escapeDquotes(code);
+  code = `const{NodeVM}=require("vm2");
+const vm=new NodeVM({});
+vm.run("${code}");
+`;
+  await fs.writeFile("data/execute.js", code, {encoding: "utf8"});
+
+  const start = performance.now();
+  let result;
+  try {
+    result = await shell(nodeCommand, {timeout: 5000});
+  } catch (err) {
+    result = {stdout: "", stderr: err};
+  }
+  const time = performance.now() - start;
+
+  if (result.stderr.killed) {
+    return {
+      text: new LocStr("mod/tools/python/timeout").format(5),
+      exitCode: new LocStr("mod/tools/javascript/finish-failure"),
+      type: "error"
+    };
+  }
+
+  const output = result.stderr.toString() || result.stdout.trim() || " ";
+  return {
+    text: escapeCode(output),
+    exitCode: new LocStr("mod/tools/javascript/finish-success")
+      .format((time / 1000).toFixed(2)),
+    type: "ok"
+  };
+}
 
 module.exports = exports = {
   name: "javascript",
@@ -22,34 +61,10 @@ module.exports = exports = {
   ],
 
   async *invoke(ctx, code) {
-    const result = {};
-    const start = performance.now();
-    try {
-      result.text = (vm.run(code) ?? " ").toString();
-      const end = performance.now() - start;
-      const time = (end / 1000).toFixed(2);
-      result.exitCode = new LocStr("mod/tools/javascript/finish-success")
-        .format(time);
-      result.type = "ok";
-
-    } catch (err) {
-      if (/Script execution timed out after \d+ms/.test(err.message)) {
-        result.text = new LocStr("mod/tools/python/timeout").format(5);
-        result.exitCode = new LocStr("mod/tools/javascript/finish-failure");
-        result.type = "error"
-
-      } else {
-        const end = performance.now() - start;
-        const time = (end / 1000).toFixed(2);
-        result.text = err.toString();
-        result.exitCode = new LocStr("mod/tools/javascript/finish-success")
-          .format(time);
-        result.type = "ok"
-      }
-    }
+    const result = await jsExecute(code);
 
     const text = new LocLengthProxy(
-      escapeCode(result.text),
+      result.text,
       MAX_EMBED_DESC_LENGTH,
       "```",
       new LocGroup("```\n", result.exitCode)
