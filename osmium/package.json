@@ -23,7 +23,7 @@
     "bufferutil": "^4.0.3",
     "colors": "^1.4.0",
     "cr-numeral": "^1.1.3",
-    "discord.js": "^13.0.0-dev.4886ae2.1627214570",
+    "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
     "erlpack": "github:discord/erlpack",
     "tiny-text": "^1.0.1",
@@ -31,6 +31,8 @@
     "tweetnacl": "^1.0.3",
     "utf-8-validate": "^5.0.5",
     "vm2": "^3.9.3",
+    "ytdl-core": "^4.9.1",
+    "ytsr": "^3.5.3",
     "zlib-sync": "^0.1.7"
   }
 }

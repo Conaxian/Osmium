@@ -22,6 +22,11 @@
     "member": "Enter a valid member of this server."
   },
 
+  "music": {
+    "add-queue": "Added to Queue - **{0}**",
+    "playing": "Now Playing - **{0}**"
+  },
+
   "perms": {
     "developer": "Developer",
     "administrator": "Administrator",
@@ -190,6 +195,29 @@
         "name": "Penis Length",
         "desc": "Shows how long is `{0}`'s penis.",
         "text": "{0}'s penis: **{1}**"
+      }
+    },
+
+    "music": {
+      "name": "Music",
+      "desc": "Listen to YouTube music directly from Discord.",
+      "join": {
+        "name": "Join",
+        "desc": "Joins the voice channel you're connected to.",
+        "no-voice": "You aren't connected to any voice channel!",
+        "connected": "The bot is already connected to a voice channel!",
+        "success": "Joined the **{0}** voice channel."
+      },
+      "leave": {
+        "name": "Leave",
+        "desc": "Leaves the voice channel and clears the queue.",
+        "no-voice": "The bot isn't connected to any voice channel!",
+        "success": "Left the voice channel."
+      },
+      "play": {
+        "name": "Play",
+        "desc": "Plays the specified `{0}` from YouTube.",
+        "not-found": "No such song found on YouTube!"
       }
     },
 

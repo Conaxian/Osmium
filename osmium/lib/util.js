@@ -1,7 +1,8 @@
 "use strict";
 
-const {exec} = require("child_process");
-const {promisify} = require("util");
+const { exec } = require("child_process");
+const { promisify } = require("util");
+const { escapeMarkdown } = require("discord.js").Util;
 
 const MAX_EMBED_DESC_LENGTH = 4096;
 const ZERO_WIDTH_SPACE = "\u200B";
@@ -50,6 +51,10 @@ function escapeRegExp(string) {
 
 function escapeCode(string) {
   return string.replace(/`/g, "´");
+}
+
+function escapeMd(string) {
+  return escapeMarkdown(string);
 }
 
 function escapeTemplateString(string) {
@@ -124,6 +129,7 @@ module.exports = exports = {
   mentionId,
   escapeRegExp,
   escapeCode,
+  escapeMd,
   escapeTemplateString,
   randInt,
   safeAccess,
