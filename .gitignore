@@ -4,8 +4,9 @@
 # Bot config
 /config.json
 
-# Local data
-/data
+# Local data except dummy file
+/data/*
+!/data/dummy.txt
 
 # NPM modules
 node_modules
