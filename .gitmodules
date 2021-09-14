@@ -1,0 +1,3 @@
+[submodule "external/pyexecute"]
+	path = external/pyexecute
+	url = https://github.com/Conaxian/PyExecute

@@ -12,8 +12,8 @@ const {pythonCmd} = require("../../../../config.json");
 
 const isWin = process.platform === "win32";
 const pyexecCommand = pythonCmd + (isWin ?
-  " lib\\pyexecute\\cli.py data\\execute.py" :
-  " lib/pyexecute/cli.py data/execute.py")
+  " external\\pyexecute\\cli.py data\\execute.py" :
+  " external/pyexecute/cli.py data/execute.py")
 
 async function pyExecute(code, scan) {
   await fs.writeFile("data/execute.py", code, {encoding: "utf8"});
