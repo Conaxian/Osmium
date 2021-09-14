@@ -4,7 +4,7 @@ const Log = require("../log");
 const log = new Log("Perms");
 const {forceArray, arraysEqualDetails} = require("../util");
 const {FLAGS: PERMS} = require("discord.js").Permissions;
-const {debug} = require("../../config.json");
+const {debug} = require("../../../config.json");
 
 const ALL_PERMS = Object.keys(PERMS).map(perm => {
   return perm.toLowerCase().replace(/_/g, "-");

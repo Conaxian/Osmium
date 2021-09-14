@@ -1,13 +1,13 @@
 "use strict";
 
-const {LocStr} = require("./locale");
-const {Client, Intents} = require("discord.js");
+const { LocStr } = require("./locale");
+const { Client, Intents } = require("discord.js");
 const Log = require("./log");
 const log = new Log("Bot");
 
 require("dotenv").config();
 const {DISCORD_TOKEN: TOKEN} = process.env;
-const {activity} = require("../config.json");
+const {activity} = require("../../config.json");
 
 const allIntents = [
   "GUILDS",

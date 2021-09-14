@@ -1,7 +1,7 @@
 "use strict";
 
 const {LocStr} = require("../../../lib/locale");
-const {author, botInvite, gitHub} = require("../../../config.json");
+const {author, botInvite, gitHub} = require("../../../../config.json");
 
 module.exports = exports = {
   name: "about",

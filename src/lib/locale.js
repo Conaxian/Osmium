@@ -6,7 +6,7 @@ const DataIO = require("./dataio");
 const Context = require("./cmd/context");
 const {Message, Guild, GuildMember, User} = require("discord.js");
 
-const {defaultLocale: defaultLang} = require("../config.json");
+const {defaultLocale: defaultLang} = require("../../config.json");
 const getLocalePath = lang => `./locale/${lang}.json`;
 const localeCache = new Map();
 

@@ -2,9 +2,9 @@
   "name": "osmium",
   "version": "1.0.0",
   "description": "An easy-to-use multipurpose Discord bot.",
-  "main": "app.js",
+  "main": "./dest/app.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node ./dest/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,6 +20,7 @@
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
     "@discordjs/voice": "^0.5.4",
+    "@tsconfig/node16": "^1.0.2",
     "bufferutil": "^4.0.3",
     "colors": "^1.4.0",
     "cr-numeral": "^1.1.3",

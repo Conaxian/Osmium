@@ -1,0 +1,20 @@
+# Environment variables
+.env
+
+# Bot config
+/config.json
+
+# Local data
+/data
+
+# NPM modules
+node_modules
+
+# Python cache
+__pycache__
+
+# Compiler output
+/dest
+
+# VS Code workspace
+workspace.code-workspace

@@ -9,7 +9,7 @@ const {mentionId, escapeRegExp} = require("../util");
 const {LocStr} = require("../locale");
 
 const {prefix: defaultPrefix, cmdCooldown, devs} =
-  require("../../config.json");
+  require("../../../config.json");
 const {callNamespace} = require("../loader");
 const callTimes = new Map();
 

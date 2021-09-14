@@ -1,0 +1,10 @@
+{
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "outDir": "./dest",
+    "noEmitOnError": false
+  },
+  "rootDir": "./src",
+  "allowJs": true
+}
