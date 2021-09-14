@@ -17,7 +17,10 @@ class Audio {
     this.author = info.author;
     this.length = +info.lengthSeconds;
     this.desc = info.shortDescription;
-    this.resource = createAudioResource(ytdl(this.url));
+    this.resource = createAudioResource(ytdl(this.url, {
+      quality: "highestaudio",
+      highWaterMark: 1024 * 1024 * 10
+    }));
   }
 }
 
