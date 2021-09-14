@@ -5,8 +5,8 @@ const Arg = require("../../../lib/cmd/argument");
 const {LocStr} = require("../../../lib/locale");
 
 const toWords = new ToWords({localeCode: "en-US"});
-const MIN = -999999999999999;
-const MAX = 999999999999999;
+const MIN = -999_999_999_999_999;
+const MAX = 999_999_999_999_999;
 
 module.exports = exports = {
   name: "numeral",

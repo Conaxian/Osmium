@@ -1,36 +1,61 @@
 "use strict";
 
-const { createAudioPlayer } = require("@discordjs/voice");
+const { createAudioPlayer, entersState } = require("@discordjs/voice");
 const { LocStr } = require("../locale");
 const { escapeMd } = require("../util");
 
 const players = new Map();
 
 class Player {
-  constructor(ctx) {
+  constructor(ctx, connection) {
     this.ctx = ctx;
+    this.connection = connection;
     this.player = createAudioPlayer();
-    this.started = false;
+    this.playing = null;
     this.queue = [];
     players.set(ctx.guild.id, this);
 
     this.player.on("stateChange", async (_, { status }) => {
-      if (status === "idle" && this.queue.length) {
-        await this.next();
+      if (status === "idle") {
+        if (this.queue.length) {
+          await this.next();
+        } else {
+          this.playing = null;
+          const embed = await this.ctx.cembed({
+            text: new LocStr("music/empty-queue"),
+            type: "error"
+          });
+          await this.ctx.out(this.ctx.output({embeds: embed}, false));
+        }
+      }
+    });
+
+    this.connection.on("disconnected", async () => {
+      try {
+        await Promise.race([
+          entersState(this.connection, "signalling", 2000),
+          entersState(this.connection, "connecting", 2000)
+        ]);
+      } catch (error) {
+        this.stop();
       }
     });
   }
 
-  start(connection) {
-    if (this.started) return;
-    this.started = true;
+  get length() {
+    return this.queue.length;
+  }
+
+  start() {
+    if (this.playing) return;
     this.next();
-    connection.subscribe(this.player);
+    this.connection.subscribe(this.player);
   }
 
   async next() {
     const audio = this.queue.shift();
     this.player.play(audio.resource);
+    this.playing = audio;
     const embed = await this.ctx.cembed({
       text: new LocStr("music/playing")
         .format(escapeMd(audio.title)),
@@ -49,13 +74,28 @@ class Player {
     await this.ctx.out(this.ctx.output({embeds: embed}, false));
   }
 
-  get length() {
-    return this.queue.length;
+  async skip() {
+    const embed = await this.ctx.cembed({
+      text: new LocStr("music/skipped")
+        .format(escapeMd(this.playing.title)),
+      type: "info"
+    });
+    await this.ctx.out(this.ctx.output({embeds: embed}, false));
+
+    if (this.queue.length) {
+      await this.next();
+    } else {
+      this.player.stop();
+      this.playing = null;
+    }
   }
 
   stop() {
-    this.player.stop();
     players.delete(this.ctx.guild.id);
+    this.player.stop();
+    try {
+      this.connection.destroy();
+    } catch {}
   }
 }
 

@@ -20,7 +20,7 @@ module.exports = exports = {
 
   async *invoke(ctx, query) {
     const voice = ctx.author.voice.channel;
-    let connection = getVoiceConnection(ctx.guild.id);
+    const connection = getVoiceConnection(ctx.guild.id);
     if (!voice) {
       const embed = await ctx.cembed({
         text: new LocStr("mod/music/join/no-voice"),
@@ -29,11 +29,12 @@ module.exports = exports = {
       return ctx.resolve({embeds: embed});
     }
     if (!connection) {
-      connection = joinVoiceChannel({
+      const connection = joinVoiceChannel({
         channelId: voice.id,
         guildId: ctx.guild.id,
         adapterCreator: ctx.guild.voiceAdapterCreator
       });
+      new Player(ctx, connection);
       const embed = await ctx.cembed({
         text: new LocStr("mod/music/join/success")
           .format(escapeMd(voice.name)),
@@ -53,8 +54,8 @@ module.exports = exports = {
 
     const audio = new Audio(url);
     await audio.init();
-    const player = guildPlayer(ctx.guild.id) ?? new Player(ctx);
+    const player = guildPlayer(ctx.guild.id);
     await player.add(audio);
-    await player.start(connection);
+    player.start();
   }
 };

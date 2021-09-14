@@ -24,7 +24,9 @@
 
   "music": {
     "add-queue": "Added to Queue - **{0}**",
-    "playing": "Now Playing - **{0}**"
+    "playing": "Now Playing - **{0}**",
+    "skipped": "Skipped - **{0}**",
+    "empty-queue": "The song queue is empty!"
   },
 
   "perms": {
@@ -218,6 +220,10 @@
         "name": "Play",
         "desc": "Plays the specified `{0}` from YouTube.",
         "not-found": "No such song found on YouTube!"
+      },
+      "skip": {
+        "name": "Skip",
+        "desc": "Skips the current song in the queue."
       }
     },
 
