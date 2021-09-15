@@ -19,8 +19,7 @@ bot.on("messageCreate", async msg => {
   if (!ctx) return;
 
   if (!ctx.result && ctx.command) {
-    const generator = ctx.command.invoke(ctx,
-    ...Object.values(ctx.args));
+    const generator = ctx.command.invoke(ctx, ...Object.values(ctx.args));
     let result;
     let output;
 

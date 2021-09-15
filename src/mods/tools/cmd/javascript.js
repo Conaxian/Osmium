@@ -11,7 +11,6 @@ const {
   escapeTemplateString,
   escapeCode
 } = require("../../../lib/util");
-const {test} = require("../../../lib/osmapi");
 
 const isWin = process.platform === "win32";
 const nodeCommand = "node " + (isWin ?
