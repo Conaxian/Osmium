@@ -2,9 +2,9 @@
 
 const Log = require("../log");
 const log = new Log("Perms");
-const {forceArray, arraysEqualDetails} = require("../util");
-const {FLAGS: PERMS} = require("discord.js").Permissions;
-const {debug} = require("../../../config.json");
+const { forceArray } = require("../utils").default;
+const { FLAGS: PERMS } = require("discord.js").Permissions;
+const { debug } = require("../../../config.json");
 
 const ALL_PERMS = Object.keys(PERMS).map(perm => {
   return perm.toLowerCase().replace(/_/g, "-");
@@ -56,15 +56,6 @@ const PERM_CATEGORIES = {
     "request-to-speak",
     "priority-speaker"
   ]
-}
-
-if (debug) {
-  const categorizedPerms = [].concat(...Object.values(PERM_CATEGORIES));
-  const comparison = arraysEqualDetails(ALL_PERMS, categorizedPerms);
-  if (!comparison.result) {
-    log.debug("Some perms aren't categorized - Mismatching values: " +
-    `${comparison.first} - ${comparison.second}`);
-  }
 }
 
 class Perms {

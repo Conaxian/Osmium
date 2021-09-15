@@ -1,7 +1,7 @@
 "use strict";
 
 const Arg = require("../../../lib/cmd/argument");
-const {title} = require("../../../lib/util");
+const { title } = require("../../../lib/utils").default;
 
 module.exports = exports = {
   name: "title",

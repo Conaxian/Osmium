@@ -1,7 +1,7 @@
 "use strict";
 
 const Arg = require("../../../lib/cmd/argument");
-const {capitalize} = require("../../../lib/util");
+const { capitalize } = require("../../../lib/utils").default;
 
 module.exports = exports = {
   name: "capitalize",

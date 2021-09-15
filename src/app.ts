@@ -1,10 +1,11 @@
 "use strict";
 
-import Bot = require("./lib/bot");
+import Bot from "./lib/bot";
+import Log from "./lib/log";
+import parse from "./lib/cmd/parse";
+
 const bot = new Bot();
-import Log = require("./lib/log");
 const log = new Log("Main");
-import parse = require("./lib/cmd/parse");
 
 log.info("Starting app");
 

@@ -1,7 +1,7 @@
 "use strict";
 
-const {loadedModules, callNamespace} = require("../loader");
-const {mentionId} = require("../util");
+const { loadedModules, callNamespace } = require("../loader");
+const { mentionId } = require("../utils").default;
 
 function firstWord(string) {
   return string.match(/^(\S+)/)?.[1];

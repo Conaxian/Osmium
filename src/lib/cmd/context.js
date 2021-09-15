@@ -5,9 +5,9 @@ const Timestamp = require("../timestamp");
 const DataIO = require("../dataio");
 const Log = require("../log");
 const log = new Log("Context");
-const {forceArray} = require("../util");
-const {MessageEmbed} = require("discord.js");
-const {cembedColors, cembedIcons} = require("../../../config.json");
+const { forceArray } = require("../utils").default;
+const { MessageEmbed } = require("discord.js");
+const { cembedColors, cembedIcons } = require("../../../config.json");
 
 module.exports = exports = class Context {
   constructor({bot, text, msg, type, prefix, command, args, perms}) {

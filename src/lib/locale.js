@@ -1,7 +1,6 @@
 "use strict";
 
 const fs = require("fs/promises");
-const {Range} = require("./util");
 const DataIO = require("./dataio");
 const Context = require("./cmd/context");
 const {Message, Guild, GuildMember, User} = require("discord.js");
@@ -45,7 +44,7 @@ class LocStr {
     const idPath = this.id.split("/");
     idPath.forEach(node => string = string[node]);
 
-    for (let i of new Range(this.fValues.length)) {
+    for (let i = 0; i < this.fValues.length; i++) {
       let fValue = this.fValues[i];
       fValue = await resolveLoc(fValue, lang);
       string = string.replaceAll(`{${i}}`, fValue);
