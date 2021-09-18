@@ -5,7 +5,7 @@ const { hhmm } = require("../timestamp");
 const DataIO = require("../dataio");
 const Log = require("../log").default;
 const log = new Log("Context");
-const { forceArray } = require("../utils").default;
+const { forceArray } = require("../utils");
 const { MessageEmbed } = require("discord.js");
 const { cembedColors, cembedIcons } = require("../../../config.json");
 

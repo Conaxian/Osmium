@@ -2,8 +2,8 @@
 
 const Arg = require("../../../lib/cmd/argument");
 const DataIO = require("../../../lib/dataio");
-const {LocStr} = require("../../../lib/locale");
-const {safeAccess} = require("../../../lib/utils").default;
+const { LocStr } = require("../../../lib/locale");
+const { safeAccess } = require("../../../lib/utils");
 
 module.exports = exports = {
   name: "prefix",

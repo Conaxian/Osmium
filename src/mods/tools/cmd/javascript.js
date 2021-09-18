@@ -10,7 +10,7 @@ const {
   shell,
   escapeTemplateString,
   escapeCode
-} = require("../../../lib/utils").default;
+} = require("../../../lib/utils");
 
 const isWin = process.platform === "win32";
 const nodeCommand = "node " + (isWin ?

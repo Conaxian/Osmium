@@ -2,7 +2,7 @@
 
 const { createAudioPlayer, entersState } = require("@discordjs/voice");
 const { LocStr } = require("../locale");
-const { escapeMd } = require("../utils").default;
+const { escapeMd } = require("../utils");
 
 const players = new Map();
 

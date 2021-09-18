@@ -7,7 +7,7 @@ const {
   MAX_EMBED_DESC_LENGTH,
   shell,
   escapeCode
-} = require("../../../lib/utils").default;
+} = require("../../../lib/utils");
 const {pythonCmd} = require("../../../../config.json");
 
 const isWin = process.platform === "win32";

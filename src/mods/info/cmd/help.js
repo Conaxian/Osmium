@@ -2,7 +2,7 @@
 
 const Arg = require("../../../lib/cmd/argument");
 const Mod = require("../../../lib/mod");
-const { stabilizeFields } = require("../../../lib/utils").default;
+const { stabilizeFields } = require("../../../lib/utils");
 const { LocStr, LocGroup } = require("../../../lib/locale");
 const { loadedModules } = require("../../../lib/loader");
 

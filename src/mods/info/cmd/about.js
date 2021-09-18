@@ -2,7 +2,7 @@
 
 const { LocStr } = require("../../../lib/locale");
 const { author, botInvite, gitHub } = require("../../../../config.json");
-const { version } = require("../../../lib/utils").default;
+const { version } = require("../../../lib/utils");
 
 module.exports = exports = {
   name: "about",

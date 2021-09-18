@@ -5,7 +5,7 @@ const log = new Log("MsgParser");
 const DataIO = require("../dataio");
 const { Perms } = require("./perms");
 const Context = require("./context");
-const { mentionId, escapeRegExp } = require("../utils").default;
+const { mentionId, escapeRegExp } = require("../utils");
 const { LocStr } = require("../locale");
 
 const {prefix: defaultPrefix, cmdCooldown, devs} =

@@ -2,7 +2,7 @@
 
 const Log = require("../log").default;
 const log = new Log("Perms");
-const { forceArray } = require("../utils").default;
+const { forceArray } = require("../utils");
 const { FLAGS: PERMS } = require("discord.js").Permissions;
 const { debug } = require("../../../config.json");
 

@@ -1,8 +1,8 @@
 "use strict";
 
 const Arg = require("../../../lib/cmd/argument");
-const {LocStr} = require("../../../lib/locale");
-const {randInt} = require("../../../lib/utils").default;
+const { LocStr } = require("../../../lib/locale");
+const { randInt } = require("../../../lib/utils");
 
 module.exports = exports = {
   name: "rng",
