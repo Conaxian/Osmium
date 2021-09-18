@@ -5,7 +5,16 @@
     "rootDir": "./src",
     "outDir": "./dest",
     "allowJs": true,
-    "noEmitOnError": false
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noEmit": false,
+    "noEmitOnError": false,
   },
   "include": [
     "src",

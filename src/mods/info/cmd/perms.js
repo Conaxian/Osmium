@@ -4,7 +4,7 @@ const Arg = require("../../../lib/cmd/argument");
 const {Perms} = require("../../../lib/cmd/perms");
 const {LocStr, LocGroup} = require("../../../lib/locale");
 const {PERM_CATEGORIES} = require("../../../lib/cmd/perms");
-const {attachBlankField} = require("../../../lib/util");
+const {attachBlankField} = require("../../../lib/utils").default;
 const {emojis, devs} = require("../../../../config.json");
 
 function makePerms(ctx, member) {

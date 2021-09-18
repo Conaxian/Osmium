@@ -1,6 +1,6 @@
 "use strict";
 
-const Log = require("../log");
+const Log = require("../log").default;
 const log = new Log("MsgParser");
 const DataIO = require("../dataio");
 const { Perms } = require("./perms");

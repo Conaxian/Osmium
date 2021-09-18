@@ -2,7 +2,7 @@
 
 const Arg = require("../../../lib/cmd/argument");
 const {LocStr} = require("../../../lib/locale");
-const {randInt} = require("../../../lib/util");
+const {randInt} = require("../../../lib/utils").default;
 
 module.exports = exports = {
   name: "rng",

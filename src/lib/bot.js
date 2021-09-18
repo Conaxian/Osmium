@@ -2,7 +2,7 @@
 
 const { LocStr } = require("./locale");
 const { Client, Intents } = require("discord.js");
-const Log = require("./log");
+const Log = require("./log").default;
 const log = new Log("Bot");
 
 require("dotenv").config();

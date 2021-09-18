@@ -3,7 +3,7 @@
 const Output = require("./output");
 const { hhmm } = require("../timestamp");
 const DataIO = require("../dataio");
-const Log = require("../log");
+const Log = require("../log").default;
 const log = new Log("Context");
 const { forceArray } = require("../utils").default;
 const { MessageEmbed } = require("discord.js");

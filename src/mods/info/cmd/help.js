@@ -2,9 +2,9 @@
 
 const Arg = require("../../../lib/cmd/argument");
 const Mod = require("../../../lib/mod");
-const {Range, stabilizeFieldLayout} = require("../../../lib/util");
-const {LocStr, LocGroup} = require("../../../lib/locale");
-const {loadedModules} = require("../../../lib/loader");
+const { stabilizeFields } = require("../../../lib/utils").default;
+const { LocStr, LocGroup } = require("../../../lib/locale");
+const { loadedModules } = require("../../../lib/loader");
 
 module.exports = exports = {
   name: "help",
@@ -30,7 +30,7 @@ module.exports = exports = {
           inline: true
         });
       }
-      stabilizeFieldLayout(fields);
+      stabilizeFields(fields);
 
       embed = await ctx.cembed({
         title: new LocStr("mod/info/help/name"),
@@ -48,7 +48,7 @@ module.exports = exports = {
           inline: true
         });
       }
-      stabilizeFieldLayout(fields);
+      stabilizeFields(fields);
 
       const name = new LocStr(`mod/${scope.name}/name`);
       embed = await ctx.cembed({
@@ -74,7 +74,7 @@ module.exports = exports = {
 
       const perms = [];
       if (scope.perms.length) {
-        for (let i of new Range(scope.perms.length)) {
+        for (let i = 0; i < scope.perms.length; i++) {
           const perm = scope.perms[i];
           if (i) perms.push(", ");
           perms.push(new LocStr(`perms/${perm}`));

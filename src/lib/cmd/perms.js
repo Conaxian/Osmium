@@ -1,6 +1,6 @@
 "use strict";
 
-const Log = require("../log");
+const Log = require("../log").default;
 const log = new Log("Perms");
 const { forceArray } = require("../utils").default;
 const { FLAGS: PERMS } = require("discord.js").Permissions;

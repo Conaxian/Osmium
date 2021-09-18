@@ -3,7 +3,7 @@
 const { joinVoiceChannel, getVoiceConnection } = require("@discordjs/voice");
 const Arg = require("../../../lib/cmd/argument");
 const { LocStr } = require("../../../lib/locale");
-const { escapeMd } = require("../../../lib/util");
+const { escapeMd } = require("../../../lib/utils").default;
 const { Player, Audio, ytSearch, guildPlayer } = require("../../../lib/music");
 
 module.exports = exports = {
