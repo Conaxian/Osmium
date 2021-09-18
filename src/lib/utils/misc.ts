@@ -6,7 +6,7 @@ const ZWSP = "\u200B";
 interface EmbedField {
   name: string,
   value: string,
-  inline: boolean
+  inline: boolean,
 }
 
 export function randInt(min: number, max: number) {
@@ -45,13 +45,15 @@ export function attachBlankField(
     name: ZWSP,
     value: ZWSP,
     inline,
-  })
+  });
+  return fields;
 }
 
 export function stabilizeFields(fields: EmbedField[]) {
   while (fields.length % 3) {
     attachBlankField(fields, fields.length);
   }
+  return fields;
 }
 
 export const shell = promisify(exec);

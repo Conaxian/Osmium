@@ -1,8 +1,8 @@
 "use strict";
 
 const colors = require("colors");
-const Timestamp = require("./timestamp");
-const {debug, logColors} = require("../../config.json");
+const { hhmmss } = require("./timestamp");
+const { debug, logColors } = require("../../config.json");
 
 module.exports = exports = class Log {
   constructor(source) {
@@ -10,7 +10,7 @@ module.exports = exports = class Log {
   }
 
   log(level, message, color="white") {
-    const time = Timestamp.HHMMSS(new Date());
+    const time = hhmmss(new Date());
     const info = `[${time}] [${this.source}/${level}]`
     const text = `${info}: ${message}`[color];
     console.log(text);

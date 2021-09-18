@@ -3,10 +3,12 @@
 const { createAudioResource } = require("@discordjs/voice");
 const ytdl = require("ytdl-core");
 const ytsr = require("ytsr");
+const { hhmmss } = require("../timestamp");
 
 class Audio {
-  constructor(url) {
+  constructor(url, requestor) {
     this.url = url;
+    this.requestor = requestor;
   }
 
   async init() {
@@ -22,10 +24,20 @@ class Audio {
       highWaterMark: 1024 * 1024 * 10
     }));
   }
+
+  get duration() {
+    const date = new Date(this.length * 1000);
+    return hhmmss(date);
+  }
 }
 
 async function ytSearch(query) {
-  return (await ytsr(query, {limit: 1})).items?.[0]?.url;
+  const results = await ytsr(query, {limit: 10});
+  for (let result of results.items) {
+    if (result.type === "video") {
+      return result.url;
+    }
+  }
 }
 
 module.exports = exports = { Audio, ytSearch };

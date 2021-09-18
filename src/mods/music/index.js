@@ -5,6 +5,7 @@ module.exports = exports = {
     require("./cmd/join"),
     require("./cmd/leave"),
     require("./cmd/play"),
-    require("./cmd/skip")
-  ]
+    require("./cmd/skip"),
+    require("./cmd/queue"),
+  ],
 };

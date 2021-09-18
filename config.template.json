@@ -29,7 +29,8 @@
     "tools",
     "fun",
     "music",
-    "config"
+    "config",
+    "dev"
   ],
 
   "cembedColors": {

@@ -1,5 +1,3 @@
-"use strict";
-
 import Bot from "./lib/bot";
 import Log from "./lib/log";
 import parse from "./lib/cmd/parse";

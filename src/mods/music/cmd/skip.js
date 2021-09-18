@@ -2,10 +2,12 @@
 
 const { LocStr } = require("../../../lib/locale");
 const { guildPlayer } = require("../../../lib/music");
-const { escapeMd } = require("../../../lib/util");
 
 module.exports = exports = {
   name: "skip",
+  aliases: [
+    "s",
+  ],
 
   async *invoke(ctx) {
     const player = guildPlayer(ctx.guild.id);
@@ -24,5 +26,5 @@ module.exports = exports = {
       return ctx.resolve({embeds: embed});
     }
     await player.skip();
-  }
+  },
 };

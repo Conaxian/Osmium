@@ -1,7 +1,7 @@
 "use strict";
 
 const Output = require("./output");
-const Timestamp = require("../timestamp");
+const { hhmm } = require("../timestamp");
 const DataIO = require("../dataio");
 const Log = require("../log");
 const log = new Log("Context");
@@ -87,7 +87,7 @@ module.exports = exports = class Context {
       options.footer.text = await this.#resolveLoc(options.footer.text);
 
     options.footer ??= {
-      "text": `${Timestamp.HHMM(new Date())} UTC`,
+      "text": `${hhmm(new Date())} UTC`,
     };
 
     if (options.type) {

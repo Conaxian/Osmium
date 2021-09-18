@@ -8,8 +8,11 @@ const {loadedModules} = require("../../../lib/loader");
 
 module.exports = exports = {
   name: "help",
+  aliases: [
+    "h",
+  ],
   args: [
-    new Arg("[command/module]", "command-module")
+    new Arg("[command/module]", "command-module"),
   ],
 
   async *invoke(ctx, scope) {
@@ -92,5 +95,5 @@ module.exports = exports = {
 
     }
     ctx.resolve({embeds: embed});
-  }
+  },
 }

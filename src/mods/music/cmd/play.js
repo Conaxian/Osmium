@@ -49,10 +49,10 @@ module.exports = exports = {
         text: new LocStr("mod/music/play/not-found"),
         type: "error"
       });
-      yield ctx.output({embeds: embed});
+      return ctx.resolve({embeds: embed});
     }
 
-    const audio = new Audio(url);
+    const audio = new Audio(url, ctx.author);
     await audio.init();
     const player = guildPlayer(ctx.guild.id);
     await player.add(audio);

@@ -103,4 +103,4 @@ function guildPlayer(id) {
   return players.get(id);
 }
 
-module.exports = exports = { Player, guildPlayer };
+module.exports = exports = { players, Player, guildPlayer };

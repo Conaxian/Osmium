@@ -224,6 +224,12 @@
       "skip": {
         "name": "Skip",
         "desc": "Skips the current song in the queue."
+      },
+      "queue": {
+        "name": "Queue",
+        "desc": "Displays the current song queue.",
+        "text": "The songs are sorted from the one currently being played to the last added one. Only the first 10 songs are shown.",
+        "details": "Requested by {0} - Duration: `{1}`"
       }
     },
 
