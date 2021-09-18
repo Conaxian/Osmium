@@ -1,13 +1,16 @@
 import { promisify } from "util";
 import { exec } from "child_process";
-
-const ZWSP = "\u200B";
+import { readFileSync } from "fs";
 
 interface EmbedField {
   name: string,
   value: string,
   inline: boolean,
 }
+
+const ZWSP = "\u200B";
+
+export const version = readFileSync("version.txt", { encoding: "utf8" });
 
 export function randInt(min: number, max: number) {
   min = Math.ceil(min);

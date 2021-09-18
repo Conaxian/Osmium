@@ -96,7 +96,8 @@
         "desc": "Shows detailed information about the bot.",
         "text": "Osmium is an easy-to-use multipurpose Discord bot. Contact **{0}** on Discord if you have any questions, suggestions, or issues.",
         "add-bot": "Add Bot",
-        "github": "GitHub"
+        "github": "GitHub",
+        "version": "Version"
       },
       "ping": {
         "name": "Ping",
