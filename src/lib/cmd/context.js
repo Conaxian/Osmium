@@ -34,8 +34,8 @@ module.exports = exports = class Context {
   }
 
   async #resolveLoc(obj) {
-    if (obj?.cstring) {
-      obj = await obj.cstring(this);
+    if (obj?.cloc) {
+      obj = await obj.cloc(this);
     }
     return obj;
   }

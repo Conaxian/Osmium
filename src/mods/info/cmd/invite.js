@@ -1,7 +1,5 @@
 "use strict";
 
-const {LocStr} = require("../../../lib/locale");
-
 const INVITE_URL = "https://discord.gg/"
 
 module.exports = exports = {

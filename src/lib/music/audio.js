@@ -1,9 +1,15 @@
 "use strict";
 
-const { createAudioResource } = require("@discordjs/voice");
+const { demuxProbe, createAudioResource } = require("@discordjs/voice");
 const ytdl = require("ytdl-core");
 const ytsr = require("ytsr");
 const { hhmmss } = require("../timestamp");
+const { youtubeCookie } = require("../../../config.json");
+
+async function createResource(stream) {
+  const { stream: newStream, type } = await demuxProbe(stream);
+  return createAudioResource(newStream, { inputType: type });
+}
 
 class Audio {
   constructor(url, requestor) {
@@ -12,16 +18,19 @@ class Audio {
   }
 
   async init() {
-    this.info = await ytdl.getBasicInfo(this.url);
+    this.info = await ytdl.getBasicInfo(this.url, {
+      requestOptions: { headers: { Cookie: youtubeCookie } },
+    });
     const info = this.info.player_response.videoDetails;
     this.title = info.title;
     this.id = info.videoId;
     this.author = info.author;
     this.length = +info.lengthSeconds;
     this.desc = info.shortDescription;
-    this.resource = createAudioResource(ytdl(this.url, {
+    this.resource = await createResource(ytdl(this.url, {
       quality: "highestaudio",
-      highWaterMark: 1024 * 1024 * 10
+      highWaterMark: 1024 * 1024 * 10,
+      requestOptions: { headers: { Cookie: youtubeCookie } },
     }));
   }
 
@@ -31,7 +40,13 @@ class Audio {
   }
 }
 
+const youtubeUrlRegExp = new RegExp([
+  "https?:\\/\\/(?:www\\.)?youtu(?:be\\.com\\/watch\\?v=|\\.be\\/)",
+  "([\\w\\-\\_]*)(&(amp;)[\\w\\=]*)?"
+].join(""));
+
 async function ytSearch(query) {
+  if (youtubeUrlRegExp.test(query)) return query;
   const results = await ytsr(query, {limit: 10});
   for (let result of results.items) {
     if (result.type === "video") {

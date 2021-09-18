@@ -1,13 +1,12 @@
 "use strict";
 
-const { LocStr } = require("./locale");
 const { Client, Intents } = require("discord.js");
 const Log = require("./log").default;
 const log = new Log("Bot");
 
 require("dotenv").config();
-const {DISCORD_TOKEN: TOKEN} = process.env;
-const {activity} = require("../../config.json");
+const { DISCORD_TOKEN } = process.env;
+const { activity } = require("../../config.json");
 
 const allIntents = [
   "GUILDS",
@@ -46,7 +45,7 @@ module.exports = exports = class Bot extends Client {
 
   async run() {
     log.info("Starting to log in");
-    await super.login(TOKEN);
+    await super.login(DISCORD_TOKEN);
     log.info(`Logged in as ${this.user.tag}`)
     this.user.setActivity(activity);
   }

@@ -1,14 +1,14 @@
 "use strict";
 
-const {NodeVM} = require("vm2");
+const { NodeVM } = require("vm2");
 const fs = require("fs/promises");
-const {performance} = require("perf_hooks");
+const { performance } = require("perf_hooks");
 const Arg = require("../../../lib/cmd/argument");
-const {LocStr, LocGroup, LocLengthProxy} = require("../../../lib/locale");
+const { $, $union, $limited } = require("../../../lib/loc");
 const {
   MAX_EMBED_DESC_LENGTH,
   shell,
-  escapeTemplateString,
+  escapeTemplateStr,
   escapeCode
 } = require("../../../lib/utils");
 
@@ -17,7 +17,7 @@ const nodeCommand = "node " + (isWin ?
   "data\\execute.js" : "data/execute.js")
 
 async function jsExecute(code) {
-  code = escapeTemplateString(code);
+  code = escapeTemplateStr(code);
   code = `const{NodeVM}=require("vm2");
 const vm=new NodeVM({});
 vm.run(\`${code}\`);
@@ -35,18 +35,18 @@ vm.run(\`${code}\`);
 
   if (result.stderr.killed) {
     return {
-      text: new LocStr("mod/tools/python/timeout").format(5),
-      exitCode: new LocStr("mod/tools/javascript/finish-failure"),
-      type: "error"
+      text: $`mod/tools/python/timeout`.format(5),
+      exitCode: $`mod/tools/javascript/finish-failure`,
+      type: "error",
     };
   }
 
   const output = result.stderr.toString() || result.stdout.trim() || " ";
   return {
     text: escapeCode(output),
-    exitCode: new LocStr("mod/tools/javascript/finish-success")
+    exitCode: $`mod/tools/javascript/finish-success`
       .format((time / 1000).toFixed(2)),
-    type: "ok"
+    type: "ok",
   };
 }
 
@@ -62,17 +62,17 @@ module.exports = exports = {
   async *invoke(ctx, code) {
     const result = await jsExecute(code);
 
-    const text = new LocLengthProxy(
+    const text = $limited(
       result.text,
       MAX_EMBED_DESC_LENGTH,
       "```",
-      new LocGroup("```\n", result.exitCode)
+      $union("```\n", result.exitCode),
     );
     const embed = await ctx.cembed({
-      title: new LocStr("mod/tools/javascript/output"),
+      title: $`mod/tools/javascript/output`,
       text,
-      type: result.type
+      type: result.type,
     });
-    ctx.resolve({embeds: embed});
+    ctx.resolve({ embeds: embed });
   }
 };

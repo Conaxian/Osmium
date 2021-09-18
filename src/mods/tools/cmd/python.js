@@ -2,7 +2,7 @@
 
 const fs = require("fs/promises");
 const Arg = require("../../../lib/cmd/argument");
-const {LocStr, LocGroup, LocLengthProxy} = require("../../../lib/locale");
+const { $, $union, $limited } = require("../../../lib/loc");
 const {
   MAX_EMBED_DESC_LENGTH,
   shell,
@@ -52,34 +52,33 @@ module.exports = exports = {
 
     if (result.error) {
       if (result.unsafeToken) {
-        embedData.text = new LocStr("mod/tools/python/unsafe-token")
+        embedData.text = $`mod/tools/python/unsafe-token`
           .format(result.unsafeToken);
       } else {
-        embedData.text = new LocStr("mod/tools/python/timeout")
-          .format(5);
+        embedData.text = $`mod/tools/python/timeout`.format(5);
       }
 
-      embedData.exitCode = new LocStr("mod/tools/python/finish-failure");
+      embedData.exitCode = $`mod/tools/python/finish-failure`;
       embedData.type = "error";
 
     } else {
       embedData.text = escapeCode(result.output);
-      embedData.exitCode = new LocStr("mod/tools/python/finish-success")
+      embedData.exitCode = $`mod/tools/python/finish-success`
         .format(result.execTime.toFixed(2));
       embedData.type = "ok";
     }
 
-    const text = new LocLengthProxy(
+    const text = $limited(
       embedData.text,
       MAX_EMBED_DESC_LENGTH,
       "```",
-      new LocGroup("```\n", embedData.exitCode)
+      $union("```\n", embedData.exitCode),
     );
     const embed = await ctx.cembed({
-      title: new LocStr("mod/tools/python/output"),
+      title: $`mod/tools/python/output`,
       text,
-      type: embedData.type
+      type: embedData.type,
     });
-    ctx.resolve({embeds: embed});
+    ctx.resolve({ embeds: embed });
   }
 };

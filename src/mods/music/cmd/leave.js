@@ -1,6 +1,6 @@
 "use strict";
 
-const { LocStr } = require("../../../lib/locale");
+const { $ } = require("../../../lib/loc");
 const { guildPlayer } = require("../../../lib/music");
 
 module.exports = exports = {
@@ -14,15 +14,15 @@ module.exports = exports = {
     const player = guildPlayer(ctx.guild.id);
     if (!player) {
       const embed = await ctx.cembed({
-        text: new LocStr("mod/music/leave/no-voice"),
-        type: "error"
+        text: $`mod/music/leave/no-voice`,
+        type: "error",
       });
       return ctx.resolve({embeds: embed});
     }
     player.stop();
     const embed = await ctx.cembed({
-      text: new LocStr("mod/music/leave/success"),
-      type: "ok"
+      text: $`mod/music/leave/success`,
+      type: "ok",
     });
     ctx.resolve({embeds: embed});
   }

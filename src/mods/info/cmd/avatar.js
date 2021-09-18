@@ -1,7 +1,6 @@
 "use strict";
 
 const Arg = require("../../../lib/cmd/argument");
-const {LocStr} = require("../../../lib/locale");
 
 module.exports = exports = {
   name: "avatar",

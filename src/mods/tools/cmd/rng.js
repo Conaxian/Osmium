@@ -1,7 +1,7 @@
 "use strict";
 
 const Arg = require("../../../lib/cmd/argument");
-const { LocStr } = require("../../../lib/locale");
+const { $ } = require("../../../lib/loc");
 const { randInt } = require("../../../lib/utils");
 
 module.exports = exports = {
@@ -19,8 +19,8 @@ module.exports = exports = {
   async *invoke(ctx, min, max) {
     if (min >= max) {
       const embed = await ctx.cembed({
-        text: new LocStr("mod/tools/rng/invalid-range"),
-        type: "error"
+        text: $`mod/tools/rng/invalid-range`,
+        type: "error",
       });
       ctx.resolve({embeds: embed});
     } else {

@@ -1,7 +1,7 @@
 "use strict";
 
 const Arg = require("../../../lib/cmd/argument");
-const { LocStr } = require("../../../lib/locale");
+const { $ } = require("../../../lib/loc");
 const { randInt } = require("../../../lib/utils");
 
 module.exports = exports = {
@@ -16,10 +16,9 @@ module.exports = exports = {
   async *invoke(ctx, target) {
     const gayness = randInt(1, 101);
     const embed = await ctx.cembed({
-      title: new LocStr("mod/fun/gay/name"),
-      text: new LocStr("mod/fun/gay/text")
-        .format(target ?? ctx.author, gayness)
-    })
+      title: $`mod/fun/gay/name`,
+      text: $`mod/fun/gay/text`.format(target ?? ctx.author, gayness),
+    });
     ctx.resolve({embeds: embed});
   }
 };

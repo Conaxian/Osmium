@@ -4,13 +4,13 @@ import { hhmmss } from "./timestamp";
 import { debug, logColors } from "../../config.json";
 
 export default class Log {
-  source: string;
+  private source: string;
 
   constructor(source: string) {
     this.source = source;
   }
 
-  log(level: string, message: string, color="white") {
+  private log(level: string, message: string, color="white") {
     const time = hhmmss(new Date());
     const info = `[${time}] [${this.source}/${level}]`;
     const text: string = colors[color](`${info}: ${message}`);

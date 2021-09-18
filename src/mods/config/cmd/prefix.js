@@ -2,7 +2,7 @@
 
 const Arg = require("../../../lib/cmd/argument");
 const DataIO = require("../../../lib/dataio");
-const { LocStr } = require("../../../lib/locale");
+const { $ } = require("../../../lib/loc");
 const { safeAccess } = require("../../../lib/utils");
 
 module.exports = exports = {
@@ -20,9 +20,8 @@ module.exports = exports = {
     await DataIO.write("guilds", guildsData);
 
     const embed = await ctx.cembed({
-      text: new LocStr("mod/config/prefix/success")
-        .format(prefix),
-      type: "ok"
+      text: $`mod/config/prefix/success`.format(prefix),
+      type: "ok",
     })
     ctx.resolve({embeds: embed});
   }

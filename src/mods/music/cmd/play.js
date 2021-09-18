@@ -2,7 +2,7 @@
 
 const { joinVoiceChannel, getVoiceConnection } = require("@discordjs/voice");
 const Arg = require("../../../lib/cmd/argument");
-const { LocStr } = require("../../../lib/locale");
+const { $ } = require("../../../lib/loc");
 const { escapeMd } = require("../../../lib/utils");
 const { Player, Audio, ytSearch, guildPlayer } = require("../../../lib/music");
 
@@ -23,8 +23,8 @@ module.exports = exports = {
     const connection = getVoiceConnection(ctx.guild.id);
     if (!voice) {
       const embed = await ctx.cembed({
-        text: new LocStr("mod/music/join/no-voice"),
-        type: "error"
+        text: $`mod/music/join/no-voice`,
+        type: "error",
       });
       return ctx.resolve({embeds: embed});
     }
@@ -36,24 +36,24 @@ module.exports = exports = {
       });
       new Player(ctx, connection);
       const embed = await ctx.cembed({
-        text: new LocStr("mod/music/join/success")
+        text: $`mod/music/join/success`
           .format(escapeMd(voice.name)),
-        type: "ok"
+        type: "ok",
       });
       yield ctx.output({embeds: embed});
     }
 
     const url = await ytSearch(query);
-    if (!url) {
+    const audio = new Audio(url, ctx.author);
+    try {
+      await audio.init();
+    } catch {
       const embed = await ctx.cembed({
-        text: new LocStr("mod/music/play/not-found"),
-        type: "error"
+        text: $`mod/music/play/not-found`,
+        type: "error",
       });
       return ctx.resolve({embeds: embed});
     }
-
-    const audio = new Audio(url, ctx.author);
-    await audio.init();
     const player = guildPlayer(ctx.guild.id);
     await player.add(audio);
     player.start();

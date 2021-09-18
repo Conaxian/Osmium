@@ -85,7 +85,7 @@ const formatter = {
       if (!result) return snowflake;
       return [result, remainder];
     } else {
-      return [snowflake, remainder]
+      return [snowflake, remainder];
     }
   }
 };

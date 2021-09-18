@@ -1,6 +1,7 @@
 import Bot from "./lib/bot";
 import Log from "./lib/log";
 import parse from "./lib/cmd/parse";
+import { voiceInit } from "./lib/music";
 
 const bot = new Bot();
 const log = new Log("Main");
@@ -30,5 +31,7 @@ bot.on("messageCreate", async msg => {
 
   if (ctx.result) await ctx.out(ctx.result);
 });
+
+voiceInit(bot);
 
 bot.run();

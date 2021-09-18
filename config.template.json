@@ -57,5 +57,7 @@
     "warn": "yellow",
     "error": "red",
     "debug": "blue"
-  }
+  },
+
+  "youtubeCookie": "ABCD=1234; EFGH=5678"
 }

@@ -1,10 +1,33 @@
 "use strict";
 
 const { createAudioPlayer, entersState } = require("@discordjs/voice");
-const { LocStr } = require("../locale");
+const { $ } = require("../loc");
 const { escapeMd } = require("../utils");
 
 const players = new Map();
+
+function voiceInit(bot) {
+  bot.on("voiceStateUpdate", async (_, state) => {
+    const botMember = state.guild.me;
+    const members = botMember?.voice?.channel?.members;
+    if (!members) return;
+    if (Array.from(members).length <= 1) {
+      setTimeout(() => {
+        const members = botMember?.voice?.channel?.members;
+        if (!members) return;
+        if (Array.from(members).length <= 1) {
+          try {
+            guildPlayer(state.guild.id).stop();
+          } catch {}
+        }
+      }, 20 * 1000);
+    }
+  });
+}
+
+function guildPlayer(id) {
+  return players.get(id);
+}
 
 class Player {
   constructor(ctx, connection) {
@@ -22,8 +45,8 @@ class Player {
         } else {
           this.playing = null;
           const embed = await this.ctx.cembed({
-            text: new LocStr("music/empty-queue"),
-            type: "error"
+            text: $`music/empty-queue`,
+            type: "error",
           });
           await this.ctx.out(this.ctx.output({embeds: embed}, false));
         }
@@ -57,9 +80,8 @@ class Player {
     this.player.play(audio.resource);
     this.playing = audio;
     const embed = await this.ctx.cembed({
-      text: new LocStr("music/playing")
-        .format(escapeMd(audio.title)),
-      type: "info"
+      text: $`music/playing`.format(escapeMd(audio.title)),
+      type: "info",
     });
     await this.ctx.out(this.ctx.output({embeds: embed}, false));
   }
@@ -67,18 +89,16 @@ class Player {
   async add(audio) {
     this.queue.push(audio);
     const embed = await this.ctx.cembed({
-      text: new LocStr("music/add-queue")
-        .format(escapeMd(audio.title)),
-      type: "info"
+      text: $`music/add-queue`.format(escapeMd(audio.title)),
+      type: "info",
     });
     await this.ctx.out(this.ctx.output({embeds: embed}, false));
   }
 
   async skip() {
     const embed = await this.ctx.cembed({
-      text: new LocStr("music/skipped")
-        .format(escapeMd(this.playing.title)),
-      type: "info"
+      text: $`music/skipped`.format(escapeMd(this.playing.title)),
+      type: "info",
     });
     await this.ctx.out(this.ctx.output({embeds: embed}, false));
 
@@ -99,8 +119,4 @@ class Player {
   }
 }
 
-function guildPlayer(id) {
-  return players.get(id);
-}
-
-module.exports = exports = { players, Player, guildPlayer };
+module.exports = exports = { players, voiceInit, guildPlayer, Player };

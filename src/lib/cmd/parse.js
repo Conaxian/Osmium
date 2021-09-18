@@ -6,7 +6,7 @@ const DataIO = require("../dataio");
 const { Perms } = require("./perms");
 const Context = require("./context");
 const { mentionId, escapeRegExp } = require("../utils");
-const { LocStr } = require("../locale");
+const { $ } = require("../loc");
 
 const {prefix: defaultPrefix, cmdCooldown, devs} =
   require("../../../config.json");
@@ -16,9 +16,8 @@ const callTimes = new Map();
 async function replyPrefix(ctx) {
   if (mentionId(ctx.text) === ctx.bot.user.id) {
     const embed = await ctx.cembed({
-      text: new LocStr("parser/current-prefix")
-        .format(ctx.prefix),
-      type: "info"
+      text: $`parser/current-prefix`.format(ctx.prefix),
+      type: "info",
     })
     ctx.resolve({embeds: embed});
     return;
@@ -39,9 +38,8 @@ async function getCmd(ctx) {
     ctx.command = callNamespace.get(call);
     if (!ctx.command) {
       const embed = await ctx.cembed({
-        text: new LocStr("parser/unknown-command")
-          .format(ctx.prefix),
-        type: "error"
+        text: $`parser/unknown-command`.format(ctx.prefix),
+        type: "error",
       })
       ctx.resolve({embeds: embed});
       return;
@@ -49,8 +47,8 @@ async function getCmd(ctx) {
 
     if (!ctx.perms.has(ctx.command.perms)) {
       const embed = await ctx.cembed({
-        text: new LocStr("parser/missing-perms-user"),
-        type: "error"
+        text: $`parser/missing-perms-user`,
+        type: "error",
       })
       ctx.resolve({embeds: embed});
       return;
@@ -73,11 +71,12 @@ async function getArgs(ctx, argString) {
       result = await arg.parse(ctx, argString);
     } catch (err) {
       if (err.name != "ArgError") throw err;
-      const invalidArg = new LocStr(`arg-format/${err.arg.format}`);
+      const invalidArg = $`arg-format/${err.arg.format}`;
       const embed = await ctx.cembed({
-        text: new LocStr("parser/invalid-value")
-          .format(arg.fullname, err.value, await invalidArg.cstring(ctx)),
-        type: "error"
+        text: $`parser/invalid-value`.format(
+          arg.fullname, err.value, invalidArg
+        ),
+        type: "error",
       })
       ctx.resolve({embeds: embed});
       break;
@@ -86,9 +85,8 @@ async function getArgs(ctx, argString) {
     if (!result[0] && result[0] !== 0) {
       if (arg.optional) break;
       const embed = await ctx.cembed({
-        text: new LocStr("parser/missing-arg")
-          .format(arg.fullname),
-        type: "error"
+        text: $`parser/missing-arg`.format(arg.fullname),
+        type: "error",
       })
       ctx.resolve({embeds: embed});
       break;
