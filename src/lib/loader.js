@@ -2,7 +2,7 @@
 
 const Mod = require("./mod");
 const Command = require("./cmd/command");
-const {preloadModules} = require("../../config.json");
+const { preloadModules } = require("../../config.json");
 
 module.exports = exports = {
   loadedModules: new Map(),

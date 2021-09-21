@@ -59,5 +59,8 @@
     "debug": "blue"
   },
 
+  "urlShortener": "https://conax.cz/api/shorten",
+  "shortUrl": "https://conax.cz/a/",
+
   "youtubeCookie": "ABCD=1234; EFGH=5678"
 }

@@ -7,7 +7,7 @@ function firstWord(string) {
   return string.match(/^(\S+)/)?.[1];
 }
 
-function number(ctx, string, intOnly=false) {
+function number(_, string, intOnly=false) {
   const numeral = firstWord(string);
   const remainder = string.replace(numeral, "");
   if (numeral) {
@@ -22,17 +22,17 @@ function number(ctx, string, intOnly=false) {
 }
 
 const formatter = {
-  async word(ctx, string) {
+  async word(_, string) {
     const result = firstWord(string);
     const remainder = string.replace(result, "");
     return [result, remainder];
   },
 
-  async inf_string(ctx, string) {
+  async inf_string(_, string) {
     return [string, ""]
   },
 
-  async py_code(ctx, string) {
+  async py_code(_, string) {
     if (string) {
       const code = string
         .match(/^`{0,3}(?:py\s|python\s)?(.*?)`{0,3}$/s)[1]
@@ -43,7 +43,7 @@ const formatter = {
     }
   },
 
-  async js_code(ctx, string) {
+  async js_code(_, string) {
     if (string) {
       const code = string
         .match(/^`{0,3}(?:js\s|javascript\s)?(.*?)`{0,3}$/s)[1]
@@ -62,7 +62,7 @@ const formatter = {
     return number(ctx, string);
   },
 
-  async command_module(ctx, string) {
+  async command_module(_, string) {
     const name = firstWord(string);
     const remainder = string.replace(name, "");
     if (name) {

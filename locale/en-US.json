@@ -167,6 +167,11 @@
         "desc": "Generates a random integer (whole number) in the range from `{0}` to `{1}` (inclusive).",
         "invalid-range": "Max number must be greater than the min number!"
       },
+      "shorten": {
+        "name": "Short URL",
+        "desc": "Returns a short URL that redirects to `{0}`.",
+        "bad-url": "The provided URL is malformatted!"
+      },
       "javascript": {
         "name": "JavaScript",
         "desc": "Executes `{0}` in Node.js and displays the result. Wrapping the code in three backticks ` ``` ` is recommended.",
