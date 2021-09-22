@@ -1,6 +1,7 @@
 "use strict";
 
 const axios = require("axios");
+const { stringify: queryEncode } = require("querystring");
 const Arg = require("../../../lib/cmd/argument");
 const { $ } = require("../../../lib/loc");
 const { urlShortener, shortUrl } = require("../../../../config.json");
@@ -17,7 +18,7 @@ module.exports = exports = {
   ],
 
   async *invoke(ctx, url) {
-    const query = "?url=" + url;
+    const query = "?" + queryEncode({ "url": url });
     let urlId;
     try {
       const resp = await axios.get(urlShortener + query);

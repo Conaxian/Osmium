@@ -10,7 +10,7 @@ const { MessageEmbed } = require("discord.js");
 const { cembedColors, cembedIcons } = require("../../../config.json");
 
 module.exports = exports = class Context {
-  constructor({bot, text, msg, type, prefix, command, args, perms}) {
+  constructor({ bot, text, msg, type, prefix, command, args, perms }) {
     this.bot = bot;
     this.text = text;
     if (type !== "virtual") {

@@ -13,7 +13,7 @@ module.exports = exports = {
   hidden: true,
 
   async *invoke(ctx) {
-    let text = "**Currently playing:**\n\n";
+    let text = "**Guilds currently playing music:**\n\n";
     for (let player of players.values()) {
       text += `${player.ctx.guild.name} (\`${player.ctx.guild.id}\`)\n`
     }

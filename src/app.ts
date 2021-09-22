@@ -10,7 +10,6 @@ log.info("Starting app");
 
 bot.on("ready", () => {
   log.info("Bot is ready");
-  bot.reload();
 });
 
 bot.on("messageCreate", async msg => {

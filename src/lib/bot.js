@@ -50,7 +50,7 @@ module.exports = exports = class Bot extends Client {
     this.user.setActivity(activity);
   }
 
-  reload() {
-    this.user.setActivity(activity);
+  setActivity(name, type) {
+    this.user.setActivity({ name, type });
   }
 }

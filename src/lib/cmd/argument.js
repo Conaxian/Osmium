@@ -3,6 +3,14 @@
 const { loadedModules, callNamespace } = require("../loader");
 const { mentionId } = require("../utils");
 
+const ACTIVITY_TYPES = [
+  "PLAYING",
+  "STREAMING",
+  "LISTENING",
+  "WATCHING",
+  "COMPETING",
+];
+
 function firstWord(string) {
   return string.match(/^(\S+)/)?.[1];
 }
@@ -87,7 +95,20 @@ const formatter = {
     } else {
       return [snowflake, remainder];
     }
-  }
+  },
+
+  async activity_type(_, string) {
+    const name = firstWord(string);
+    const remainder = string.replace(name, "");
+    if (!name) {
+      return [name, remainder];
+    }
+    const activityType = name.toUpperCase();
+    if (!ACTIVITY_TYPES.includes(activityType)) {
+      return activityType;
+    }
+    return [activityType, remainder];
+  },
 };
 
 class ArgError extends Error {
