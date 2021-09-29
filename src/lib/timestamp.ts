@@ -18,3 +18,10 @@ export function hhmm(date: Date) {
   return dateTime(date)[1]
     .replace(/:\d{2}\..+/, "");
 }
+
+export function fullDate(date: Date) {
+  const dateString = dateTime(date)[0];
+  const timeString = dateTime(date)[1]
+    .replace(/\..+/, "");
+  return dateString + "-" + timeString;
+}

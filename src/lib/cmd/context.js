@@ -26,6 +26,10 @@ module.exports = exports = class Context {
     this.perms = perms;
   }
 
+  get authorUser() {
+    return this.author?.user ?? this.author;
+  }
+
   async init() {
     this.userData = (await DataIO.read("user"))?.[this.author.id];
     if (this.type === "guild") {
