@@ -23,8 +23,7 @@ module.exports = exports = {
   ],
 
   async *invoke(ctx, member) {
-    member ??= ctx.author;
-    const user = member?.user ?? member;
+    const user = member ?? ctx.authorUser;
     const avatarUrl = user.displayAvatarURL({dynamic: true, size: 1024});
     const permissions = member.id === ctx.author.id ?
       ctx.perms : makePerms(ctx, member);
