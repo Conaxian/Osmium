@@ -1,6 +1,6 @@
 "use strict";
 
-const { $ } = require("../../../lib/loc");
+const { $, $union } = require("../../../lib/loc");
 const { guildPlayer } = require("../../../lib/music");
 const { escapeMd } = require("../../../lib/utils");
 
@@ -28,11 +28,17 @@ module.exports = exports = {
     }
 
     const fields = [];
+
+    let playing = $`mod/music/queue/details`
+      .format(player.playing.requestor, player.playing.duration);
+    if (player.looping) {
+      playing = $union($`mod/music/queue/looping`, playing);
+    }
     fields.push({
       name: escapeMd(player.playing.title),
-      value: $`mod/music/queue/details`
-        .format(player.playing.requestor, player.playing.duration),
+      value: playing,
     });
+
     for (let audio of player.queue.slice(0, 9)) {
       fields.push({
         name: escapeMd(audio.title),
@@ -40,6 +46,7 @@ module.exports = exports = {
           .format(audio.requestor, audio.duration),
       });
     }
+
     const embed = await ctx.cembed({
       title: $`mod/music/queue/name`,
       text: $`mod/music/queue/text`,
