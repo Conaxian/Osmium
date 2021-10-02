@@ -27,7 +27,8 @@
     "add-queue": "Added to Queue - **{0}**",
     "playing": "Now Playing - **{0}**",
     "skipped": "Skipped - **{0}**",
-    "empty-queue": "The song queue is empty!"
+    "empty-queue": "The song queue is empty!",
+    "looping": "Looping - **{0}**"
   },
 
   "perms": {
@@ -236,7 +237,13 @@
         "name": "Queue",
         "desc": "Displays the current song queue.",
         "text": "The songs are sorted from the one currently being played to the last added one. Only the first 10 songs are shown.",
-        "details": "Requested by {0} - Duration: `{1}`"
+        "details": "Requested by {0} - Duration: `{1}`",
+        "looping": "**Looping** - "
+      },
+      "loop": {
+        "name": "Loop",
+        "desc": "Loops the current song.",
+        "already-looping": "The current song is already looping!"
       }
     },
 
