@@ -7,5 +7,6 @@ module.exports = exports = {
     require("./cmd/play"),
     require("./cmd/skip"),
     require("./cmd/queue"),
+    require("./cmd/loop"),
   ],
 };
