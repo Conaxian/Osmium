@@ -5,7 +5,7 @@ const { Perms } = require("../../../lib/cmd/perms");
 const { $, $union } = require("../../../lib/loc");
 const { PERM_CATEGORIES } = require("../../../lib/cmd/perms");
 const { attachBlankField } = require("../../../lib/utils");
-const { emojis } = require("../../../../config.json");
+const { emojis } = require("../../../../config");
 
 function makePerms(ctx, member) {
   const guildPerms = member.permissions;

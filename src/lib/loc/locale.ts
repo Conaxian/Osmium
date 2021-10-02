@@ -1,6 +1,6 @@
 import { readFile } from "fs/promises";
 import Context from "../cmd/context";
-import { defaultLocale } from "../../../config.json";
+import Config from "../../../config";
 
 const localePath = (code: string) => `./locale/${code}.json`;
 const localeCache = new Map<string, Locale>();
@@ -19,7 +19,7 @@ export class Localizable {
       locale = src.userData?.config?.language ??
       src.guildData?.config?.language;
     } // TODO: finish cloc for other types of source
-    return await this.loc(locale ?? defaultLocale);
+    return await this.loc(locale ?? Config.defaultLocale);
   }
 }
 
