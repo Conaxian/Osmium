@@ -36,11 +36,12 @@ class Player {
     this.player = createAudioPlayer();
     this.playing = null;
     this.queue = [];
+    this.looping = false;
     players.set(ctx.guild.id, this);
 
     this.player.on("stateChange", async (_, { status }) => {
       if (status === "idle") {
-        if (this.queue.length) {
+        if (this.queue.length || this.looping) {
           await this.next();
         } else {
           this.playing = null;
@@ -48,7 +49,7 @@ class Player {
             text: $`music/empty-queue`,
             type: "error",
           });
-          await this.ctx.out(this.ctx.output({embeds: embed}, false));
+          await this.ctx.out(this.ctx.output({ embeds: embed }, false));
         }
       }
     });
@@ -76,9 +77,19 @@ class Player {
   }
 
   async next() {
-    const audio = this.queue.shift();
+    let audio;
+    if (!this.looping) {
+      audio = this.queue.shift();
+    } else {
+      audio = this.playing;
+      await audio.loadResource();
+    }
+
     this.player.play(audio.resource);
     this.playing = audio;
+
+    if (this.looping) return;
+
     const embed = await this.ctx.cembed({
       text: $`music/playing`.format(escapeMd(audio.title)),
       type: "info",
@@ -102,12 +113,26 @@ class Player {
     });
     await this.ctx.out(this.ctx.output({embeds: embed}, false));
 
+    this.looping = false;
     if (this.queue.length) {
       await this.next();
     } else {
       this.player.stop();
       this.playing = null;
     }
+  }
+
+  async loop() {
+    if (this.looping) return false;
+    this.looping = true;
+
+    const embed = await this.ctx.cembed({
+      text: $`music/looping`.format(escapeMd(this.playing.title)),
+      type: "info",
+    });
+    await this.ctx.out(this.ctx.output({ embeds: embed }, false));
+
+    return true;
   }
 
   stop() {

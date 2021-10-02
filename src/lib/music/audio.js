@@ -27,16 +27,20 @@ class Audio {
     this.author = info.author;
     this.length = +info.lengthSeconds;
     this.desc = info.shortDescription;
-    this.resource = await createResource(ytdl(this.url, {
-      quality: "highestaudio",
-      highWaterMark: 1024 * 1024 * 10,
-      requestOptions: { headers: { Cookie: youtubeCookie } },
-    }));
+    await this.loadResource();
   }
 
   get duration() {
     const date = new Date(this.length * 1000);
     return hhmmss(date);
+  }
+
+  async loadResource() {
+    this.resource = await createResource(ytdl(this.url, {
+      quality: "highestaudio",
+      highWaterMark: 1024 * 1024 * 10,
+      requestOptions: { headers: { Cookie: youtubeCookie } },
+    }));
   }
 }
 
