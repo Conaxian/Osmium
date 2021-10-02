@@ -1,14 +1,22 @@
-"use strict";
+import { config } from "dotenv";
+config();
 
-const { Client, Intents } = require("discord.js");
-const Log = require("./log").default;
+const { DISCORD_TOKEN } = process.env;
+
+import {
+  Client,
+  Intents,
+  IntentsString,
+  PartialTypes,
+  ClientOptions,
+} from "discord.js";
+import Log from "./log";
+
 const log = new Log("Bot");
 
-require("dotenv").config();
-const { DISCORD_TOKEN } = process.env;
-const { activity } = require("../../config.json");
+import Config from "../../config";
 
-const allIntents = [
+const allIntents: IntentsString[] = [
   "GUILDS",
   "GUILD_MEMBERS",
   "GUILD_BANS",
@@ -23,22 +31,24 @@ const allIntents = [
   "GUILD_MESSAGE_TYPING",
   "DIRECT_MESSAGES",
   "DIRECT_MESSAGE_REACTIONS",
-  "DIRECT_MESSAGE_TYPING"
+  "DIRECT_MESSAGE_TYPING",
 ];
-const allPartials = [
+
+const allPartials: PartialTypes[] = [
   "USER",
   "CHANNEL",
   "GUILD_MEMBER",
   "MESSAGE",
-  "REACTION"
+  "REACTION",
 ];
-const options = {
+
+const options: ClientOptions = {
   intents: new Intents(allIntents),
   partials: allPartials,
-  failIfNotExists: false
+  failIfNotExists: false,
 };
 
-module.exports = exports = class Bot extends Client {
+export default class Bot extends Client {
   constructor() {
     super(options);
   }
@@ -46,11 +56,11 @@ module.exports = exports = class Bot extends Client {
   async run() {
     log.info("Starting to log in");
     await super.login(DISCORD_TOKEN);
-    log.info(`Logged in as ${this.user.tag}`)
-    this.user.setActivity(activity);
+    log.info(`Logged in as ${this.user!.tag}`);
+    this.user!.setActivity(Config.activity);
   }
 
   setActivity(name, type) {
-    this.user.setActivity({ name, type });
+    this.user!.setActivity({ name, type });
   }
 }

@@ -12,7 +12,7 @@ const {
   prefix: defaultPrefix,
   cmdCooldown,
   devs,
-} = require("../../../config.json");
+} = require("../../../config");
 const { callNamespace } = require("../loader");
 const callTimes = new Map();
 

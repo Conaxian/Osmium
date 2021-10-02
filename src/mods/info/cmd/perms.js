@@ -5,7 +5,7 @@ const { Perms } = require("../../../lib/cmd/perms");
 const { $, $union } = require("../../../lib/loc");
 const { PERM_CATEGORIES } = require("../../../lib/cmd/perms");
 const { attachBlankField } = require("../../../lib/utils");
-const { emojis } = require("../../../../config.json");
+const { emojis } = require("../../../../config");
 
 function makePerms(ctx, member) {
   const guildPerms = member.permissions;
@@ -23,8 +23,9 @@ module.exports = exports = {
   ],
 
   async *invoke(ctx, member) {
-    const user = member ?? ctx.authorUser;
-    const avatarUrl = user.displayAvatarURL({dynamic: true, size: 1024});
+    member ??= ctx.author;
+    const user = member?.user ?? member;
+    const avatarUrl = user.displayAvatarURL({ dynamic: true, size: 1024 });
     const permissions = member.id === ctx.author.id ?
       ctx.perms : makePerms(ctx, member);
     const yesUrl = "https://youtu.be/HIcSWuKMwOw";

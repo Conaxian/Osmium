@@ -1,7 +1,7 @@
 import colors from "colors/safe";
 import { hhmmss } from "./timestamp";
 // @ts-ignore Config should be placed outside the TS root directory
-import { debug, logColors } from "../../config.json";
+import { debug, logColors } from "../../config";
 
 export default class Log {
   private source: string;

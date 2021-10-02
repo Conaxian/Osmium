@@ -7,7 +7,7 @@ const Log = require("../log").default;
 const log = new Log("Context");
 const { forceArray } = require("../utils");
 const { MessageEmbed } = require("discord.js");
-const { cembedColors, cembedIcons } = require("../../../config.json");
+const { cembedColors, cembedIcons } = require("../../../config");
 
 module.exports = exports = class Context {
   constructor({ bot, text, msg, type, prefix, command, args, perms }) {

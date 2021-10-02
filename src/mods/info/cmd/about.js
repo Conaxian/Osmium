@@ -1,7 +1,7 @@
 "use strict";
 
 const { $ } = require("../../../lib/loc");
-const { author, botInvite, gitHub } = require("../../../../config.json");
+const { author, botInvite, gitHub } = require("../../../../config");
 const { version } = require("../../../lib/utils");
 
 module.exports = exports = {

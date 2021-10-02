@@ -1,4 +1,4 @@
-{
+module.exports = exports = {
   "debug": false,
   "prefix": "?",
   "cmdCooldown": 1000,
@@ -63,4 +63,4 @@
   "shortUrl": "https://conax.cz/a/",
 
   "youtubeCookie": "ABCD=1234; EFGH=5678"
-}
+};

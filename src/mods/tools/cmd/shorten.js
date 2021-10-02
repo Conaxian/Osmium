@@ -4,7 +4,7 @@ const axios = require("axios");
 const { stringify: queryEncode } = require("querystring");
 const Arg = require("../../../lib/cmd/argument");
 const { $ } = require("../../../lib/loc");
-const { urlShortener, shortUrl } = require("../../../../config.json");
+const { urlShortener, shortUrl } = require("../../../../config");
 
 module.exports = exports = {
   name: "shorten",

@@ -4,7 +4,7 @@ const { demuxProbe, createAudioResource } = require("@discordjs/voice");
 const ytdl = require("ytdl-core");
 const ytsr = require("ytsr");
 const { hhmmss } = require("../timestamp");
-const { youtubeCookie } = require("../../../config.json");
+const { youtubeCookie } = require("../../../config");
 
 async function createResource(stream) {
   const { stream: newStream, type } = await demuxProbe(stream);

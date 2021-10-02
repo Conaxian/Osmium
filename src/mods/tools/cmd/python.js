@@ -8,7 +8,7 @@ const {
   shell,
   escapeCode
 } = require("../../../lib/utils");
-const {pythonCmd} = require("../../../../config.json");
+const {pythonCmd} = require("../../../../config");
 
 const isWin = process.platform === "win32";
 const pyexecCommand = pythonCmd + (isWin ?
