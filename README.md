@@ -1,2 +1,3 @@
 # Osmium
-An easy-to-use multipurpose Discord bot.
+
+A free open-source easy-to-use multipurpose Discord bot.
