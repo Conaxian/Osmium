@@ -23,8 +23,9 @@ module.exports = exports = {
   ],
 
   async *invoke(ctx, member) {
-    const user = member ?? ctx.authorUser;
-    const avatarUrl = user.displayAvatarURL({dynamic: true, size: 1024});
+    member ??= ctx.author;
+    const user = member?.user ?? member;
+    const avatarUrl = user.displayAvatarURL({ dynamic: true, size: 1024 });
     const permissions = member.id === ctx.author.id ?
       ctx.perms : makePerms(ctx, member);
     const yesUrl = "https://youtu.be/HIcSWuKMwOw";
