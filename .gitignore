@@ -2,7 +2,7 @@
 .env
 
 # Bot config
-/config.json
+/config.js
 
 # Local data except dummy file
 /data/*
