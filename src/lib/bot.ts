@@ -8,6 +8,7 @@ import {
   Intents,
   IntentsString,
   PartialTypes,
+  ActivityType,
   ClientOptions,
 } from "discord.js";
 import Log from "./log";
@@ -60,7 +61,7 @@ export default class Bot extends Client {
     this.user!.setActivity(Config.activity);
   }
 
-  setActivity(name, type) {
+  setActivity(name: string, type: ActivityType) {
     this.user!.setActivity({ name, type });
   }
 }
