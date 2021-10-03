@@ -40,10 +40,10 @@ module.exports = exports = {
     info: "246BCC",
   },
   cembedIcons: {
-    default: "https://conax.cz/osm/footer.png",
-    ok: "https://conax.cz/osm/ok.png",
-    error: "https://conax.cz/osm/error.png",
-    info: "https://conax.cz/osm/info.png",
+    default: "https://conax.cz/content/osmium/footer.png",
+    ok: "https://conax.cz/content/osmium/ok.png",
+    error: "https://conax.cz/content/osmium/error.png",
+    info: "https://conax.cz/content/osmium/info.png",
   },
 
   emojis: {
