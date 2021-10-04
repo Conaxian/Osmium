@@ -1,7 +1,8 @@
 import colors from "colors/safe";
+
 import { hhmmss } from "./timestamp";
-// @ts-ignore Config should be placed outside the TS root directory
-import { debug, logColors } from "../../config";
+
+import Config from "../../config";
 
 export default class Log {
   private source: string;
@@ -18,19 +19,19 @@ export default class Log {
   }
 
   info(message: string) {
-    this.log("INFO", message, logColors.info);
+    this.log("INFO", message, Config.logColors.info);
   }
 
   warn(message: string) {
-    this.log("WARN", message, logColors.warn);
+    this.log("WARN", message, Config.logColors.warn);
   }
 
   error(message: string) {
-    this.log("ERROR", message, logColors.error);
+    this.log("ERROR", message, Config.logColors.error);
   }
 
   debug(message: string) {
-    if (!debug) return;
-    this.log("DEBUG", message, logColors.debug);
+    if (!Config.debug) return;
+    this.log("DEBUG", message, Config.logColors.debug);
   }
 }

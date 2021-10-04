@@ -11,6 +11,7 @@ import {
   ActivityType,
   ClientOptions,
 } from "discord.js";
+
 import Log from "./log";
 
 const log = new Log("Bot");
