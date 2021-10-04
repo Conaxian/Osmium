@@ -74,7 +74,7 @@ async function getArgs(ctx, argString) {
     try {
       result = await arg.parse(ctx, argString);
     } catch (err) {
-      if (err.name != "ArgError") throw err;
+      if (err.name !== "ArgError") throw err;
       const invalidArg = $`arg-format/${err.arg.format}`;
       const embed = await ctx.cembed({
         text: $`parser/invalid-value`.format(
