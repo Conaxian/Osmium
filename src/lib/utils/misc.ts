@@ -3,9 +3,9 @@ import { exec } from "child_process";
 import { readFileSync } from "fs";
 
 interface EmbedField {
-  name: string,
-  value: string,
-  inline: boolean,
+  name: string;
+  value: string;
+  inline: boolean;
 }
 
 const ZWSP = "\u200B";
