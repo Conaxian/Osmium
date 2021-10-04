@@ -8,6 +8,10 @@ interface EmbedField {
   inline: boolean;
 }
 
+interface GenericObject {
+  [key: string | symbol]: any;
+}
+
 const ZWSP = "\u200B";
 
 export const version = readFileSync("version.txt", { encoding: "utf8" });
@@ -26,7 +30,7 @@ export function forceArray(obj: any): any[] {
 }
 
 export function safeAccess(
-  obj: object,
+  obj: GenericObject,
   path: string,
   defaultIsArray=false,
 ): any {

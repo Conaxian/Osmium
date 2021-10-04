@@ -10,14 +10,16 @@ export class LocStr extends Localizable {
     this.fValues = [];
   }
 
-  format(...args) {
+  format(...args: any[]) {
     this.fValues = args;
     return this;
   }
 
-  async loc(locale: string) {
+  override async loc(locale: string) {
     let string: string | Locale = await loadLocale(locale);
     const idPath = this.id.split("/");
+    // @ts-ignore: Assert that localization indexing
+    //             will always involve correct paths
     idPath.forEach(node => string = string[node]);
     string = string as unknown as string;
 
@@ -33,12 +35,12 @@ export class LocStr extends Localizable {
 export class LocGroup extends Localizable {
   private parts: any[];
 
-  constructor(...parts) {
+  constructor(...parts: any[]) {
     super();
     this.parts = parts;
   }
 
-  async loc(locale: string) {
+  override async loc(locale: string) {
     let result = "";
     for (let part of this.parts) {
       result += await resolveLoc(part, locale);
@@ -53,7 +55,7 @@ export class LocLengthProxy extends Localizable {
   private leftPad: any;
   private rightPad: any;
 
-  constructor(core, length: number, leftPad="", rightPad="") {
+  constructor(core: any, length: number, leftPad: any="", rightPad: any="") {
     super();
     this.core = core;
     this.length = length;
@@ -61,7 +63,7 @@ export class LocLengthProxy extends Localizable {
     this.rightPad = rightPad;
   }
 
-  async loc(locale: string) {
+  override async loc(locale: string) {
     const parts = {
       left: await resolveLoc(this.leftPad, locale),
       core: await resolveLoc(this.core, locale),

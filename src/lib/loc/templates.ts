@@ -1,7 +1,7 @@
 import { Localizable } from "./locale";
 import { LocStr, LocGroup, LocLengthProxy } from "./formats";
 
-export function $(id: TemplateStringsArray, ...values) {
+export function $(id: TemplateStringsArray, ...values: any[]) {
   let fullId = "";
   for (let i = 0; i < id.length; i++) {
     fullId += id[i];
@@ -17,6 +17,8 @@ export function $union(first: string | Localizable,
   return new LocGroup(first, ...parts);
 }
 
-export function $limited(core, length: number, left="", right="") {
+export function $limited(
+  core: Localizable, length: number, left="", right=""
+) {
   return new LocLengthProxy(core, length, left, right);
 }

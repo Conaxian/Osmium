@@ -14,12 +14,13 @@ export class Localizable {
   async loc(_locale: string): Promise<void | string>
   async loc(_locale: string) {}
 
-  async cloc(src) {
+  async cloc(src: any) { // TODO: finish Localizable.cloc
+                         // for other types of source
     let locale;
     if (src instanceof Context) {
       locale = src.userData?.config?.language ??
       src.guildData?.config?.language;
-    } // TODO: finish cloc for other types of source
+    }
     return await this.loc(locale ?? Config.defaultLocale);
   }
 }

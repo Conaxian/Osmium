@@ -14,6 +14,8 @@ export default class Log {
   private log(level: string, message: string, color="white") {
     const time = hhmmss(new Date());
     const info = `[${time}] [${this.source}/${level}]`;
+    // @ts-ignore: npm colors module doesn't have any TS declarations,
+    //             string colors aren't recognized by TS
     const text: string = colors[color](`${info}: ${message}`);
     console.log(text);
   }
