@@ -2,7 +2,7 @@
 
 const Output = require("./output");
 const { hhmm } = require("../timestamp");
-const { JsonIo } = require("../dataio");
+const { readJson } = require("../dataio");
 const Log = require("../log").default;
 const log = new Log("Context");
 const { forceArray } = require("../utils");
@@ -31,9 +31,9 @@ module.exports = exports = class Context {
   }
 
   async init() {
-    this.userData = (await JsonIo.read("user"))?.[this.author.id];
+    this.userData = (await readJson("user"))?.[this.author.id];
     if (this.type === "guild") {
-      this.guildData = (await JsonIo.read("guilds"))?.[this.guild.id];
+      this.guildData = (await readJson("guilds"))?.[this.guild.id];
     }
   }
 

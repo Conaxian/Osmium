@@ -1,7 +1,7 @@
 "use strict";
 
 const Arg = require("../../../lib/cmd/argument");
-const { JsonIo } = require("../../../lib/dataio");
+const { readJson, writeJson } = require("../../../lib/dataio");
 const { $ } = require("../../../lib/loc");
 const { safeAccess } = require("../../../lib/utils");
 
@@ -15,9 +15,9 @@ module.exports = exports = {
   ],
 
   async *invoke(ctx, prefix) {
-    const guildsData = await JsonIo.read("guilds");
+    const guildsData = await readJson("guilds");
     safeAccess(guildsData, `${ctx.guild.id}/config`).prefix = prefix;
-    await JsonIo.write("guilds", guildsData);
+    await writeJson("guilds", guildsData);
 
     const embed = await ctx.cembed({
       text: $`mod/config/prefix/success`.format(prefix),
