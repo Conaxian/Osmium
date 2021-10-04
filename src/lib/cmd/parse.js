@@ -2,7 +2,7 @@
 
 const Log = require("../log").default;
 const log = new Log("MsgParser");
-const DataIO = require("../dataio");
+const { JsonIo, logMessage } = require("../dataio");
 const { Perms } = require("./perms");
 const Context = require("./context");
 const { mentionId, escapeRegExp } = require("../utils");
@@ -107,12 +107,12 @@ const parseTypes = {
     const channelPerms = msg.channel.permissionsFor(msg.member);
     const perms = new Perms(dev, true, guildPerms, channelPerms);
 
-    const guildData = (await DataIO.read("guilds"))?.[msg.guild.id];
+    const guildData = (await JsonIo.read("guilds"))?.[msg.guild.id];
     const prefix = guildData?.config?.prefix ?? defaultPrefix;
     const ctx = new Context({ bot, text, msg, type: "guild", prefix, perms });
     await ctx.init();
 
-    DataIO.logMessage(ctx);
+    logMessage(ctx);
 
     await replyPrefix(ctx);
     if (ctx.result) return ctx;
