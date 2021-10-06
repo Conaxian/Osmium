@@ -26,8 +26,8 @@ interface Emojis {
   ok: string;
   error: string;
   info: string;
-  warn: T;
-  music: T;
+  warn: string;
+  music: string;
 }
 
 interface LogColors {
