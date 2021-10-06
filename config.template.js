@@ -40,6 +40,7 @@ module.exports = exports = {
     info: "246BCC",
     warn: "000000",
     music: "ffffff",
+    loading: "aaaaaa"
   },
   cembedIcons: {
     default: "https://conax.cz/content/osmium/footer.png",
@@ -48,6 +49,7 @@ module.exports = exports = {
     info: "https://conax.cz/content/osmium/info.png",
     warn: "https://conax.cz/content/osmium/warn.png",
     music: "https://conax.cz/content/osmium/music.png",
+    loading: "https://conax.cz/content/osmium/loading.png",
   },
 
   emojis: {
@@ -56,6 +58,7 @@ module.exports = exports = {
     info: "<:info:873902215906091008>",
     warn: "<:warn:895371075133788181>",
     music: "<:music:895368060305829960>",
+    loading: "<:loading:895382924185178152>",
   },
 
   logColors: {
