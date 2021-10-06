@@ -4,7 +4,7 @@ const Log = require("../log").default;
 const log = new Log("MsgParser");
 const { readJson, logMessage } = require("../dataio");
 const { Perms } = require("./perms");
-const Context = require("./context");
+const Context = require("../context").default;
 const { mentionId, escapeRegExp } = require("../utils");
 const { $ } = require("../loc");
 
@@ -19,10 +19,10 @@ const callTimes = new Map();
 async function replyPrefix(ctx) {
   if (mentionId(ctx.text) === ctx.bot.user.id) {
     const prefix = ctx.prefix ?? defaultPrefix;
-    const embed = await ctx.cembed({
+    const embed = await ctx.embed({
       text: $`parser/current-prefix`.format(prefix),
       type: "info",
-    })
+    });
     ctx.resolve({ embeds: embed });
     return;
   }
@@ -41,19 +41,19 @@ async function getCmd(ctx) {
     const call = originalCall.toLowerCase().replace(/_/g, "-");
     ctx.command = callNamespace.get(call);
     if (!ctx.command) {
-      const embed = await ctx.cembed({
+      const embed = await ctx.embed({
         text: $`parser/unknown-command`.format(ctx.prefix),
         type: "error",
-      })
+      });
       ctx.resolve({ embeds: embed });
       return;
     }
 
     if (!ctx.perms.has(ctx.command.perms)) {
-      const embed = await ctx.cembed({
+      const embed = await ctx.embed({
         text: $`parser/missing-perms-user`,
         type: "error",
-      })
+      });
       ctx.resolve({ embeds: embed });
       return;
     }
@@ -76,22 +76,22 @@ async function getArgs(ctx, argString) {
     } catch (err) {
       if (err.name !== "ArgError") throw err;
       const invalidArg = $`arg-format/${err.arg.format}`;
-      const embed = await ctx.cembed({
+      const embed = await ctx.embed({
         text: $`parser/invalid-value`.format(
           arg.fullname, err.value, invalidArg
         ),
         type: "error",
-      })
+      });
       ctx.resolve({ embeds: embed });
       break;
     }
 
     if (!result[0] && result[0] !== 0) {
       if (arg.optional) break;
-      const embed = await ctx.cembed({
+      const embed = await ctx.embed({
         text: $`parser/missing-arg`.format(arg.fullname),
         type: "error",
-      })
+      });
       ctx.resolve({ embeds: embed });
       break;
     }
@@ -109,9 +109,9 @@ const parseTypes = {
 
     const guildData = (await readJson("guilds"))?.[msg.guild.id];
     const prefix = guildData?.config?.prefix ?? defaultPrefix;
-    const ctx = new Context({ bot, text, msg, type: "guild", prefix, perms });
-    await ctx.init();
+    const ctx = new Context({ bot, text, msg, type: "GUILD", prefix, perms });
 
+    console.log(ctx.msg.guild);
     logMessage(ctx);
 
     await replyPrefix(ctx);
@@ -121,11 +121,10 @@ const parseTypes = {
     return ctx;
   },
 
-  async dm({ bot, text, msg }) {
+  async direct({ bot, text, msg }) {
     const perms = new Perms(devs.includes(msg.author.id), false);
-    const ctx = new Context({bot, text, msg,
-      type: "dm", defaultPrefix, perms});
-    await ctx.init();
+    const ctx = new Context({ bot, text, msg,
+      type: "DIRECT", defaultPrefix, perms });
 
     await replyPrefix(ctx);
     if (ctx.result) return ctx;
@@ -136,9 +135,8 @@ const parseTypes = {
 
   async virtual({bot, text}) {
     const perms = new Perms(false, false);
-    const ctx = new Context({ bot, text, type: "virtual",
+    const ctx = new Context({ bot, text, type: "VIRTUAL",
       defaultPrefix, perms });
-    await ctx.init();
 
     await replyPrefix(ctx);
     if (ctx.result) return ctx;
@@ -155,18 +153,19 @@ module.exports = exports = async function parse({ bot, text, msg }) {
 
   switch (msg?.channel?.type) {
     case undefined:
-      type = "virtual"; break;
+      type = "VIRTUAL"; break;
     case "GUILD_TEXT":
     case "GUILD_PUBLIC_THREAD":
     case "GUILD_PRIVATE_THREAD":
-      type = "guild"; break;
+      type = "GUILD"; break;
     case "DM": case "GROUP_DM":
-      type = "dm"; break;
+      type = "DIRECT"; break;
     default:
       log.error(`Invalid channel type: '${msg.channel.type}'`);
       return;
   }
 
-  const ctx = await parseTypes[type]({bot, text, msg});
+  const parseFunc = parseTypes[type.toLowerCase()];
+  const ctx = await parseFunc({ bot, text, msg });
   return ctx;
 }
