@@ -20,6 +20,7 @@ interface CembedTypesConfig<T> {
   info: T;
   warn: T;
   music: T;
+  loading: T;
 }
 
 interface Emojis {
@@ -28,6 +29,7 @@ interface Emojis {
   info: string;
   warn: string;
   music: string;
+  loading: string;
 }
 
 interface LogColors {
