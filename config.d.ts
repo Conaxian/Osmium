@@ -6,7 +6,7 @@ interface BotActivity {
   type: ActivityType;
 }
 
-type Locale = "en-US";
+export type LocaleCode = "en-US";
 
 type Module = "info" | "text" | "tools" | "fun" | "music" | "config" | "dev";
 
@@ -18,12 +18,16 @@ interface CembedTypesConfig<T> {
   ok: T;
   error: T;
   info: T;
+  warn: T;
+  music: T;
 }
 
 interface Emojis {
   ok: string;
   error: string;
   info: string;
+  warn: T;
+  music: T;
 }
 
 interface LogColors {
@@ -48,8 +52,8 @@ interface Config {
 
   devs: string[];
 
-  defaultLocale: Locale;
-  locales: Locale[];
+  defaultLocale: LocaleCode;
+  locales: LocaleCode[];
 
   preloadModules: Module[];
 
