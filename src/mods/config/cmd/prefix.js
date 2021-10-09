@@ -7,22 +7,18 @@ const { safeAccess } = require("../../../lib/utils");
 
 module.exports = exports = {
   name: "prefix",
-  args: [
-    new Arg("<prefix>", "word")
-  ],
-  perms: [
-    "manage-guild"
-  ],
+  args: [new Arg("<prefix>", "word")],
+  perms: ["manage-guild"],
 
   async *invoke(ctx, prefix) {
     const guildsData = await readJson("guilds");
     safeAccess(guildsData, `${ctx.guild.id}/config`).prefix = prefix;
     await writeJson("guilds", guildsData);
 
-    const embed = await ctx.cembed({
+    const embed = await ctx.embed({
       text: $`mod/config/prefix/success`.format(prefix),
       type: "ok",
-    })
-    ctx.resolve({embeds: embed});
-  }
+    });
+    ctx.resolve({ embeds: embed });
+  },
 };
