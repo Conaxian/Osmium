@@ -36,22 +36,26 @@ class Audio {
   }
 
   async loadResource() {
-    this.resource = await createResource(ytdl(this.url, {
-      quality: "highestaudio",
-      highWaterMark: 1024 * 1024 * 10,
-      requestOptions: { headers: { Cookie: youtubeCookie } },
-    }));
+    this.resource = await createResource(
+      ytdl(this.url, {
+        quality: "highestaudio",
+        highWaterMark: 1024 * 1024 * 10,
+        requestOptions: { headers: { Cookie: youtubeCookie } },
+      }),
+    );
   }
 }
 
-const youtubeUrlRegExp = new RegExp([
-  "https?:\\/\\/(?:www\\.)?youtu(?:be\\.com\\/watch\\?v=|\\.be\\/)",
-  "([\\w\\-\\_]*)(&(amp;)[\\w\\=]*)?"
-].join(""));
+const youtubeUrlRegExp = new RegExp(
+  [
+    "https?:\\/\\/(?:www\\.)?youtu(?:be\\.com\\/watch\\?v=|\\.be\\/)",
+    "([\\w\\-\\_]*)(&(amp;)[\\w\\=]*)?",
+  ].join(""),
+);
 
 async function ytSearch(query) {
   if (youtubeUrlRegExp.test(query)) return query;
-  const results = await ytsr(query, {limit: 10});
+  const results = await ytsr(query, { limit: 10 });
   for (let result of results.items) {
     if (result.type === "video") {
       return result.url;

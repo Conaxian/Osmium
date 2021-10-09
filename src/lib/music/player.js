@@ -45,9 +45,9 @@ class Player {
           await this.next();
         } else {
           this.playing = null;
-          const embed = await this.ctx.cembed({
+          const embed = await this.ctx.embed({
             text: $`music/empty-queue`,
-            type: "error",
+            type: "warn",
           });
           await this.ctx.out(this.ctx.output({ embeds: embed }, false));
         }
@@ -58,7 +58,7 @@ class Player {
       try {
         await Promise.race([
           entersState(this.connection, "signalling", 2000),
-          entersState(this.connection, "connecting", 2000)
+          entersState(this.connection, "connecting", 2000),
         ]);
       } catch (error) {
         this.stop();
@@ -90,28 +90,28 @@ class Player {
 
     if (this.looping) return;
 
-    const embed = await this.ctx.cembed({
+    const embed = await this.ctx.embed({
       text: $`music/playing`.format(escapeMd(audio.title)),
-      type: "info",
+      type: "music",
     });
-    await this.ctx.out(this.ctx.output({embeds: embed}, false));
+    await this.ctx.out(this.ctx.output({ embeds: embed }, false));
   }
 
   async add(audio) {
     this.queue.push(audio);
-    const embed = await this.ctx.cembed({
+    const embed = await this.ctx.embed({
       text: $`music/add-queue`.format(escapeMd(audio.title)),
-      type: "info",
+      type: "music",
     });
-    await this.ctx.out(this.ctx.output({embeds: embed}, false));
+    await this.ctx.out(this.ctx.output({ embeds: embed }, false));
   }
 
   async skip() {
-    const embed = await this.ctx.cembed({
+    const embed = await this.ctx.embed({
       text: $`music/skipped`.format(escapeMd(this.playing.title)),
-      type: "info",
+      type: "music",
     });
-    await this.ctx.out(this.ctx.output({embeds: embed}, false));
+    await this.ctx.out(this.ctx.output({ embeds: embed }, false));
 
     this.looping = false;
     if (this.queue.length) {
@@ -126,9 +126,9 @@ class Player {
     if (this.looping) return false;
     this.looping = true;
 
-    const embed = await this.ctx.cembed({
+    const embed = await this.ctx.embed({
       text: $`music/looping`.format(escapeMd(this.playing.title)),
-      type: "info",
+      type: "music",
     });
     await this.ctx.out(this.ctx.output({ embeds: embed }, false));
 
