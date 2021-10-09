@@ -10,8 +10,8 @@ export async function read(filename: string) {
   const path = getJsonPath(filename);
 
   if (Cache.has(path)) {
-    return Cache.get(path)
-  };
+    return Cache.get(path);
+  }
 
   let data;
   try {
