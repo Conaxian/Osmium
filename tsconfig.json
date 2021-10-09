@@ -18,9 +18,7 @@
     "noImplicitThis": true,
     "noImplicitOverride": true,
     "alwaysStrict": true,
-    "noImplicitReturns": true,
+    "noImplicitReturns": true
   },
-  "include": [
-    "src",
-  ],
+  "include": ["src"]
 }
