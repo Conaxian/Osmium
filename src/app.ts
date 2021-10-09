@@ -12,8 +12,8 @@ bot.on("ready", () => {
   log.info("Bot is ready");
 });
 
-bot.on("messageCreate", async msg => {
-  const ctx = await parse({bot, text: msg.content, msg});
+bot.on("messageCreate", async (msg) => {
+  const ctx = await parse({ bot, text: msg.content, msg });
   if (!ctx) return;
 
   if (!ctx.result && ctx.command) {
