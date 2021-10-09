@@ -12,13 +12,18 @@ export function $(id: TemplateStringsArray, ...values: any[]) {
   return new LocStr(fullId);
 }
 
-export function $union(first: string | Localizable,
-...parts: Array<string | Localizable>) {
+export function $union(
+  first: string | Localizable,
+  ...parts: Array<string | Localizable>
+) {
   return new LocGroup(first, ...parts);
 }
 
 export function $limited(
-  core: Localizable, length: number, left="", right=""
+  core: Localizable,
+  length: number,
+  left = "",
+  right = "",
 ) {
   return new LocLengthProxy(core, length, left, right);
 }

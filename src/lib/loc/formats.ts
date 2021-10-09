@@ -1,4 +1,5 @@
 import { Locale, Localizable, loadLocale, resolveLoc } from "./locale";
+import { LocaleCode } from "../../../config";
 
 export class LocStr extends Localizable {
   private id: string;
@@ -15,12 +16,12 @@ export class LocStr extends Localizable {
     return this;
   }
 
-  override async loc(locale: string) {
+  override async loc(locale: LocaleCode) {
     let string: string | Locale = await loadLocale(locale);
     const idPath = this.id.split("/");
     // @ts-ignore: Assert that localization indexing
     //             will always involve correct paths
-    idPath.forEach(node => string = string[node]);
+    idPath.forEach((node) => (string = string[node]));
     string = string as unknown as string;
 
     for (let i = 0; i < this.fValues.length; i++) {
@@ -40,7 +41,7 @@ export class LocGroup extends Localizable {
     this.parts = parts;
   }
 
-  override async loc(locale: string) {
+  override async loc(locale: LocaleCode) {
     let result = "";
     for (let part of this.parts) {
       result += await resolveLoc(part, locale);
@@ -55,7 +56,12 @@ export class LocLengthProxy extends Localizable {
   private leftPad: any;
   private rightPad: any;
 
-  constructor(core: any, length: number, leftPad: any="", rightPad: any="") {
+  constructor(
+    core: any,
+    length: number,
+    leftPad: any = "",
+    rightPad: any = "",
+  ) {
     super();
     this.core = core;
     this.length = length;
@@ -63,7 +69,7 @@ export class LocLengthProxy extends Localizable {
     this.rightPad = rightPad;
   }
 
-  override async loc(locale: string) {
+  override async loc(locale: LocaleCode) {
     const parts = {
       left: await resolveLoc(this.leftPad, locale),
       core: await resolveLoc(this.core, locale),
