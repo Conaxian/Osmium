@@ -6,26 +6,19 @@ const { randInt } = require("../../../lib/utils");
 
 module.exports = exports = {
   name: "rng",
-  aliases: [
-    "random",
-    "randint",
-    "randnum"
-  ],
-  args: [
-    new Arg("<min>", "int"),
-    new Arg("<max>", "int")
-  ],
+  aliases: ["random", "randint", "randnum"],
+  args: [new Arg("<min>", "int"), new Arg("<max>", "int")],
 
   async *invoke(ctx, min, max) {
     if (min >= max) {
-      const embed = await ctx.cembed({
+      const embed = await ctx.embed({
         text: $`mod/tools/rng/invalid-range`,
         type: "error",
       });
-      ctx.resolve({embeds: embed});
+      ctx.resolve({ embeds: embed });
     } else {
       const text = `${randInt(min, max + 1)}`;
-      ctx.resolve({text});
+      ctx.resolve({ text });
     }
-  }
+  },
 };

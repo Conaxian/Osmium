@@ -9,12 +9,11 @@ const {
   MAX_EMBED_DESC_LENGTH,
   shell,
   escapeTemplateStr,
-  escapeCode
+  escapeCode,
 } = require("../../../lib/utils");
 
 const isWin = process.platform === "win32";
-const nodeCommand = "node " + (isWin ?
-  "data\\execute.js" : "data/execute.js")
+const nodeCommand = "node " + (isWin ? "data\\execute.js" : "data/execute.js");
 
 async function jsExecute(code) {
   code = escapeTemplateStr(code);
@@ -22,14 +21,14 @@ async function jsExecute(code) {
 const vm=new NodeVM({});
 vm.run(\`${code}\`);
 `;
-  await fs.writeFile("data/execute.js", code, {encoding: "utf8"});
+  await fs.writeFile("data/execute.js", code, { encoding: "utf8" });
 
   const start = performance.now();
   let result;
   try {
-    result = await shell(nodeCommand, {timeout: 5000});
+    result = await shell(nodeCommand, { timeout: 5000 });
   } catch (err) {
-    result = {stdout: "", stderr: err};
+    result = { stdout: "", stderr: err };
   }
   const time = performance.now() - start;
 
@@ -44,20 +43,17 @@ vm.run(\`${code}\`);
   const output = result.stderr.toString() || result.stdout.trim() || " ";
   return {
     text: escapeCode(output),
-    exitCode: $`mod/tools/javascript/finish-success`
-      .format((time / 1000).toFixed(2)),
+    exitCode: $`mod/tools/javascript/finish-success`.format(
+      (time / 1000).toFixed(2),
+    ),
     type: "ok",
   };
 }
 
 module.exports = exports = {
   name: "javascript",
-  aliases: [
-    "js"
-  ],
-  args: [
-    new Arg("<code>", "js-code")
-  ],
+  aliases: ["js"],
+  args: [new Arg("<code>", "js-code")],
 
   async *invoke(ctx, code) {
     const result = await jsExecute(code);
@@ -68,11 +64,11 @@ module.exports = exports = {
       "```",
       $union("```\n", result.exitCode),
     );
-    const embed = await ctx.cembed({
+    const embed = await ctx.embed({
       title: $`mod/tools/javascript/output`,
       text,
       type: result.type,
     });
     ctx.resolve({ embeds: embed });
-  }
+  },
 };
