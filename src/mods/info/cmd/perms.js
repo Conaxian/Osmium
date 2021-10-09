@@ -15,19 +15,15 @@ function makePerms(ctx, member) {
 
 module.exports = exports = {
   name: "perms",
-  aliases: [
-    "permissions",
-  ],
-  args: [
-    new Arg("[member]", "member"),
-  ],
+  aliases: ["permissions"],
+  args: [new Arg("[member]", "member")],
 
   async *invoke(ctx, member) {
     member ??= ctx.author;
     const user = member?.user ?? member;
     const avatarUrl = user.displayAvatarURL({ dynamic: true, size: 1024 });
-    const permissions = member.id === ctx.author.id ?
-      ctx.perms : makePerms(ctx, member);
+    const permissions =
+      member.id === ctx.author.id ? ctx.perms : makePerms(ctx, member);
     const yesUrl = "https://youtu.be/HIcSWuKMwOw";
     let yes = $`general/yes`;
     yes = $union("**[", yes, `](${yesUrl}) ${emojis.ok}**`);
@@ -45,22 +41,21 @@ module.exports = exports = {
       fields.push({
         name: $`perm-categories/${category}`,
         value: $union(...perms),
-        inline: true,
       });
     }
     attachBlankField(fields, 1);
     attachBlankField(fields, 4);
 
-    const embed = await ctx.cembed({
+    const embed = await ctx.embed({
       title: $`mod/info/perms/perms-in`.format(ctx.guild.name),
       text: $`mod/info/perms/text`.format(member),
       author: {
         name: user.username,
-        iconURL: avatarUrl
+        iconUrl: avatarUrl,
       },
       fields,
-      type: "info"
+      type: "info",
     });
-    ctx.resolve({embeds: embed});
+    ctx.resolve({ embeds: embed });
   },
 };

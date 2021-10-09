@@ -8,12 +8,8 @@ const { loadedModules } = require("../../../lib/loader");
 
 module.exports = exports = {
   name: "help",
-  aliases: [
-    "h",
-  ],
-  args: [
-    new Arg("[command/module]", "command-module"),
-  ],
+  aliases: ["h"],
+  args: [new Arg("[command/module]", "command-module")],
 
   async *invoke(ctx, scope) {
     let embed;
@@ -22,54 +18,56 @@ module.exports = exports = {
       for (let mod of loadedModules.values()) {
         if (mod.hidden) continue;
         let desc = $`mod/${mod.name}/desc`;
-        let text = $`mod/info/help/module-help`
-          .format(desc, ctx.prefix, mod.name);
+        let text = $`mod/info/help/module-help`.format(
+          desc,
+          ctx.prefix,
+          mod.name,
+        );
         fields.push({
           name: $`mod/${mod.name}/name`,
           value: text,
-          inline: true
         });
       }
       stabilizeFields(fields);
 
-      embed = await ctx.cembed({
+      embed = await ctx.embed({
         title: $`mod/info/help/name`,
         text: $`mod/info/help/module-list`,
         fields,
-        type: "info"
+        type: "info",
       });
-
     } else if (scope instanceof Mod) {
       const fields = [];
       for (let command of scope.commands) {
         fields.push({
           name: $`mod/${scope.name}/${command.name}/name`,
           value: `\`${ctx.prefix}help ${command.name}\``,
-          inline: true
         });
       }
       stabilizeFields(fields);
 
       const name = $`mod/${scope.name}/name`;
-      embed = await ctx.cembed({
+      embed = await ctx.embed({
         title: $`mod/info/help/name`,
         text: $`mod/info/help/command-list`.format(name),
         fields,
-        type: "info"
+        type: "info",
       });
-
     } else {
       const fields = [];
       const none = $`general/none`;
       fields.push({
         name: $`mod/info/help/syntax`,
-        value: `\`${ctx.prefix}${scope.syntax}\``
+        value: `\`${ctx.prefix}${scope.syntax}\``,
+        inline: false,
       });
-      const aliases = scope.aliases.length ?
-        "`" + scope.aliases.join("`, `") + "`" : none;
+      const aliases = scope.aliases.length
+        ? "`" + scope.aliases.join("`, `") + "`"
+        : none;
       fields.push({
         name: $`mod/info/help/aliases`,
-        value: aliases
+        value: aliases,
+        inline: false,
       });
 
       const perms = [];
@@ -82,18 +80,19 @@ module.exports = exports = {
       }
       fields.push({
         name: $`mod/info/help/perms`,
-        value: perms.length ? $union(...perms) : none
+        value: perms.length ? $union(...perms) : none,
+        inline: false,
       });
 
-      embed = await ctx.cembed({
+      embed = await ctx.embed({
         title: $`mod/${scope.mod.name}/${scope.name}/name`,
-        text: $`mod/${scope.mod.name}/${scope.name}/desc`
-          .format(...scope.args.map(arg => arg.fullname)),
+        text: $`mod/${scope.mod.name}/${scope.name}/desc`.format(
+          ...scope.args.map((arg) => arg.fullname),
+        ),
         fields,
-        type: "info"
+        type: "info",
       });
-
     }
-    ctx.resolve({embeds: embed});
+    ctx.resolve({ embeds: embed });
   },
-}
+};
