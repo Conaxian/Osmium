@@ -14,24 +14,12 @@ module.exports = exports = {
     type: "LISTENING",
   },
 
-  devs: [
-    "209607873787985920",
-  ],
+  devs: ["209607873787985920"],
 
   defaultLocale: "en-US",
-  locales: [
-    "en-US",
-  ],
+  locales: ["en-US"],
 
-  preloadModules: [
-    "info",
-    "text",
-    "tools",
-    "fun",
-    "music",
-    "config",
-    "dev",
-  ],
+  preloadModules: ["info", "text", "tools", "fun", "music", "config", "dev"],
 
   cembedColors: {
     default: "2288CC",
@@ -40,7 +28,7 @@ module.exports = exports = {
     info: "246BCC",
     warn: "000000",
     music: "ffffff",
-    loading: "aaaaaa"
+    loading: "aaaaaa",
   },
   cembedIcons: {
     default: "https://conax.cz/content/osmium/footer.png",

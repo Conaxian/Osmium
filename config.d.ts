@@ -10,8 +10,17 @@ export type LocaleCode = "en-US";
 
 type Module = "info" | "text" | "tools" | "fun" | "music" | "config" | "dev";
 
-type TerminalColor = "black" | "red" | "green" | "yellow" | "blue" |
-  "magenta" | "cyan" | "white" | "gray" | "grey";
+type TerminalColor =
+  | "black"
+  | "red"
+  | "green"
+  | "yellow"
+  | "blue"
+  | "magenta"
+  | "cyan"
+  | "white"
+  | "gray"
+  | "grey";
 
 interface CembedTypesConfig<T> {
   default: T;
