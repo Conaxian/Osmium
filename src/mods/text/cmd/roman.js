@@ -9,22 +9,18 @@ const MAX = 4999;
 
 module.exports = exports = {
   name: "roman",
-  aliases: [
-    "romanum"
-  ],
-  args: [
-    new Arg("<number>", "int")
-  ],
+  aliases: ["romanum"],
+  args: [new Arg("<number>", "int")],
 
   async *invoke(ctx, number) {
     if (number < MIN || number > MAX) {
-      const embed = await ctx.cembed({
+      const embed = await ctx.embed({
         text: $`mod/text/numeral/out-of-bounds`.format(MIN, MAX),
         type: "error",
       });
-      ctx.resolve({embeds: embed});
+      ctx.resolve({ embeds: embed });
     } else {
-      ctx.resolve({text: toRoman(number)});
+      ctx.resolve({ text: toRoman(number) });
     }
-  }
+  },
 };

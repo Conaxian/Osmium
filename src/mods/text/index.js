@@ -9,6 +9,6 @@ module.exports = exports = {
     require("./cmd/title"),
     require("./cmd/tiny"),
     require("./cmd/numeral"),
-    require("./cmd/roman")
-  ]
+    require("./cmd/roman"),
+  ],
 };

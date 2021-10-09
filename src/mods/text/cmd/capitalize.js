@@ -5,11 +5,9 @@ const { capitalize } = require("../../../lib/utils");
 
 module.exports = exports = {
   name: "capitalize",
-  args: [
-    new Arg("<text>", "inf-string")
-  ],
+  args: [new Arg("<text>", "inf-string")],
 
   async *invoke(ctx, text) {
-    ctx.resolve({text: capitalize(text)});
-  }
+    ctx.resolve({ text: capitalize(text) });
+  },
 };

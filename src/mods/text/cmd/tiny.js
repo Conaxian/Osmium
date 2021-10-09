@@ -5,14 +5,10 @@ const Arg = require("../../../lib/cmd/argument");
 
 module.exports = exports = {
   name: "tiny",
-  aliases: [
-    "small"
-  ],
-  args: [
-    new Arg("<text>", "inf-string")
-  ],
+  aliases: ["small"],
+  args: [new Arg("<text>", "inf-string")],
 
   async *invoke(ctx, text) {
-    ctx.resolve({text: tiny(text)});
-  }
+    ctx.resolve({ text: tiny(text) });
+  },
 };
