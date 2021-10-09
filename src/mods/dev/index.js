@@ -2,8 +2,5 @@
 
 module.exports = exports = {
   hidden: true,
-  commands: [
-    require("./cmd/current-usage"),
-    require("./cmd/set-activity"),
-  ],
+  commands: [require("./cmd/current-usage"), require("./cmd/set-activity")],
 };
