@@ -9,28 +9,28 @@ module.exports = exports = {
   async *invoke(ctx) {
     const player = guildPlayer(ctx.guild.id);
     if (!player) {
-      const embed = await ctx.cembed({
+      const embed = await ctx.embed({
         text: $`mod/music/leave/no-voice`,
         type: "error",
       });
-      return ctx.resolve({embeds: embed});
+      return ctx.resolve({ embeds: embed });
     }
 
     if (!player.playing) {
-      const embed = await ctx.cembed({
+      const embed = await ctx.embed({
         text: $`music/empty-queue`,
-        type: "error",
+        type: "warn",
       });
-      return ctx.resolve({embeds: embed});
+      return ctx.resolve({ embeds: embed });
     }
 
     const startedLoop = await player.loop();
     if (!startedLoop) {
-      const embed = await ctx.cembed({
+      const embed = await ctx.embed({
         text: $`mod/music/loop/already-looping`,
         type: "error",
       });
-      return ctx.resolve({embeds: embed});
+      return ctx.resolve({ embeds: embed });
     }
   },
 };
