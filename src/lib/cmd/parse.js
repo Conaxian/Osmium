@@ -8,11 +8,7 @@ const Context = require("../context").default;
 const { mentionId, escapeRegExp } = require("../utils");
 const { $ } = require("../loc");
 
-const {
-  prefix: defaultPrefix,
-  cmdCooldown,
-  devs,
-} = require("../../../config");
+const { prefix: defaultPrefix, cmdCooldown, devs } = require("../../../config");
 const { callNamespace } = require("../loader");
 const callTimes = new Map();
 
@@ -29,8 +25,7 @@ async function replyPrefix(ctx) {
 }
 
 async function getCmd(ctx) {
-  if (ctx.text.startsWith(ctx.prefix) &&
-  ctx.text.replace(ctx.prefix, "")) {
+  if (ctx.text.startsWith(ctx.prefix) && ctx.text.replace(ctx.prefix, "")) {
     if (ctx.msg) {
       const callTime = callTimes.get(ctx.author.id);
       if (callTime > new Date() - cmdCooldown) return;
@@ -78,7 +73,9 @@ async function getArgs(ctx, argString) {
       const invalidArg = $`arg-format/${err.arg.format}`;
       const embed = await ctx.embed({
         text: $`parser/invalid-value`.format(
-          arg.fullname, err.value, invalidArg
+          arg.fullname,
+          err.value,
+          invalidArg,
         ),
         type: "error",
       });
@@ -111,7 +108,6 @@ const parseTypes = {
     const prefix = guildData?.config?.prefix ?? defaultPrefix;
     const ctx = new Context({ bot, text, msg, type: "GUILD", prefix, perms });
 
-    console.log(ctx.msg.guild);
     logMessage(ctx);
 
     await replyPrefix(ctx);
@@ -123,8 +119,14 @@ const parseTypes = {
 
   async direct({ bot, text, msg }) {
     const perms = new Perms(devs.includes(msg.author.id), false);
-    const ctx = new Context({ bot, text, msg,
-      type: "DIRECT", defaultPrefix, perms });
+    const ctx = new Context({
+      bot,
+      text,
+      msg,
+      type: "DIRECT",
+      defaultPrefix,
+      perms,
+    });
 
     await replyPrefix(ctx);
     if (ctx.result) return ctx;
@@ -133,17 +135,22 @@ const parseTypes = {
     return ctx;
   },
 
-  async virtual({bot, text}) {
+  async virtual({ bot, text }) {
     const perms = new Perms(false, false);
-    const ctx = new Context({ bot, text, type: "VIRTUAL",
-      defaultPrefix, perms });
+    const ctx = new Context({
+      bot,
+      text,
+      type: "VIRTUAL",
+      defaultPrefix,
+      perms,
+    });
 
     await replyPrefix(ctx);
     if (ctx.result) return ctx;
 
     await getCmd(ctx);
     return ctx;
-  }
+  },
 };
 
 module.exports = exports = async function parse({ bot, text, msg }) {
@@ -153,13 +160,17 @@ module.exports = exports = async function parse({ bot, text, msg }) {
 
   switch (msg?.channel?.type) {
     case undefined:
-      type = "VIRTUAL"; break;
+      type = "VIRTUAL";
+      break;
     case "GUILD_TEXT":
     case "GUILD_PUBLIC_THREAD":
     case "GUILD_PRIVATE_THREAD":
-      type = "GUILD"; break;
-    case "DM": case "GROUP_DM":
-      type = "DIRECT"; break;
+      type = "GUILD";
+      break;
+    case "DM":
+    case "GROUP_DM":
+      type = "DIRECT";
+      break;
     default:
       log.error(`Invalid channel type: '${msg.channel.type}'`);
       return;
@@ -168,4 +179,4 @@ module.exports = exports = async function parse({ bot, text, msg }) {
   const parseFunc = parseTypes[type.toLowerCase()];
   const ctx = await parseFunc({ bot, text, msg });
   return ctx;
-}
+};
