@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = exports = class Output {
-  constructor(data={}, reply=true, replyMention=false) {
+  constructor(data = {}, reply = true, replyMention = false) {
     this.data = data;
     this.reply = reply;
     if (data.text) data.content = data.text;
@@ -10,4 +10,4 @@ module.exports = exports = class Output {
       this.data.allowedMentions.repliedUser = false;
     }
   }
-}
+};

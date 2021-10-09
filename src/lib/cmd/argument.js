@@ -15,13 +15,13 @@ function firstWord(string) {
   return string.match(/^(\S+)/)?.[1];
 }
 
-function number(_, string, intOnly=false) {
+function number(_, string, intOnly = false) {
   const numeral = firstWord(string);
   const remainder = string.replace(numeral, "");
   if (numeral) {
     const number = +numeral;
-    const isInvalid = (!number && number !== 0) ||
-    (intOnly && !Number.isInteger(number));
+    const isInvalid =
+      (!number && number !== 0) || (intOnly && !Number.isInteger(number));
     if (isInvalid) return numeral;
     return [number, remainder];
   } else {
@@ -37,7 +37,7 @@ const formatter = {
   },
 
   async inf_string(_, string) {
-    return [string, ""]
+    return [string, ""];
   },
 
   async py_code(_, string) {
@@ -140,4 +140,4 @@ module.exports = exports = class Argument {
     if (!Array.isArray(result)) throw new ArgError(this, result);
     return [result[0], result[1].trim()];
   }
-}
+};

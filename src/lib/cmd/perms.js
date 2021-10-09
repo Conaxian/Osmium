@@ -6,7 +6,7 @@ const { forceArray } = require("../utils");
 const { FLAGS: PERMS } = require("discord.js").Permissions;
 const { debug } = require("../../../config");
 
-const ALL_PERMS = Object.keys(PERMS).map(perm => {
+const ALL_PERMS = Object.keys(PERMS).map((perm) => {
   return perm.toLowerCase().replace(/_/g, "-");
 });
 
@@ -20,7 +20,7 @@ const PERM_CATEGORIES = {
     "manage-emojis-and-stickers",
     "manage-webhooks",
     "view-audit-log",
-    "view-guild-insights"
+    "view-guild-insights",
   ],
   moderation: [
     "kick-members",
@@ -32,7 +32,7 @@ const PERM_CATEGORIES = {
     "change-nickname",
     "manage-nicknames",
     "create-instant-invite",
-    "mention-everyone"
+    "mention-everyone",
   ],
   "text-channels": [
     "view-channel",
@@ -46,7 +46,7 @@ const PERM_CATEGORIES = {
     "use-external-emojis",
     "use-external-stickers",
     "send-tts-messages",
-    "use-application-commands"
+    "use-application-commands",
   ],
   "voice-channels": [
     "connect",
@@ -54,12 +54,17 @@ const PERM_CATEGORIES = {
     "stream",
     "use-vad",
     "request-to-speak",
-    "priority-speaker"
-  ]
-}
+    "priority-speaker",
+  ],
+};
 
 class Perms {
-  constructor(dev=false, enforced=true, guildPerms={}, channelPerms={}) {
+  constructor(
+    dev = false,
+    enforced = true,
+    guildPerms = {},
+    channelPerms = {},
+  ) {
     this.dev = dev;
     this.enforced = enforced;
     this.guildPerms = guildPerms;
@@ -83,4 +88,4 @@ class Perms {
   }
 }
 
-module.exports = exports = {ALL_PERMS, PERM_CATEGORIES, Perms};
+module.exports = exports = { ALL_PERMS, PERM_CATEGORIES, Perms };

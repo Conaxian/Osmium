@@ -1,8 +1,15 @@
 "use strict";
 
 module.exports = exports = class Command {
-  constructor({name, aliases=[], args=[], perms=[],
-    invoke, hidden=false, mod}) {
+  constructor({
+    name,
+    aliases = [],
+    args = [],
+    perms = [],
+    invoke,
+    hidden = false,
+    mod,
+  }) {
     this.name = name;
     this.aliases = aliases;
     this.args = args;
@@ -23,4 +30,4 @@ module.exports = exports = class Command {
     }
     return result;
   }
-}
+};
