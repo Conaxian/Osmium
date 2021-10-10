@@ -32,7 +32,7 @@
   },
 
   "perms": {
-    "developer": "Developer",
+    "developer": "Osmium Developer",
     "administrator": "Administrator",
     "create-instant-invite": "Create Invite",
     "kick-members": "Kick Members",
@@ -75,7 +75,8 @@
     "administration": "Administration",
     "moderation": "Moderation",
     "text-channels": "Text Channels",
-    "voice-channels": "Voice Channels"
+    "voice-channels": "Voice Channels",
+    "special": "Special"
   },
 
   "mod": {
