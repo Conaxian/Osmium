@@ -1,9 +1,9 @@
 "use strict";
 
 const Arg = require("../../../lib/cmd/argument");
-const { Perms } = require("../../../lib/cmd/perms");
+const Perms = require("../../../lib/perms").default;
+const { permCategories } = require("../../../lib/perms");
 const { $, $union } = require("../../../lib/loc");
-const { PERM_CATEGORIES } = require("../../../lib/cmd/perms");
 const { attachBlankField } = require("../../../lib/utils");
 const { emojis } = require("../../../../config");
 
@@ -31,9 +31,9 @@ module.exports = exports = {
     no = $union("**", no, "** " + emojis.error);
 
     const fields = [];
-    for (let category in PERM_CATEGORIES) {
+    for (let category in permCategories) {
       const perms = [];
-      for (let perm of PERM_CATEGORIES[category]) {
+      for (let perm of permCategories[category]) {
         const name = $`perms/${perm}`;
         const has = permissions.has(perm);
         perms.push($union(name, " - ", has ? yes : no, "\n"));
