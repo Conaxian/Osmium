@@ -1,6 +1,7 @@
 import { Message } from "discord.js";
 
 import Bot from "../bot";
+import Perms from "../perms";
 import Output from "../cmd/output";
 import { LocaleCode } from "../../../config";
 import { readJson } from "../dataio";
@@ -22,7 +23,7 @@ interface ContextArgs {
   prefix: string;
   command: any; // TODO: Add command type
   args: any[];
-  perms: any; // TODO: Add perms type
+  perms: Perms;
 }
 
 interface UserConfig {
@@ -49,7 +50,7 @@ export default class Context {
   prefix: string;
   command: any; // TODO: Add command type
   args: any[];
-  perms: any; // TODO: Add perms type
+  perms: Perms;
   private result: any; // TODO: Add output type
 
   constructor({
