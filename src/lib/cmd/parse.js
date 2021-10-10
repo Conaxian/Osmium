@@ -3,7 +3,7 @@
 const Log = require("../log").default;
 const log = new Log("MsgParser");
 const { readJson, logMessage } = require("../dataio");
-const { Perms } = require("./perms");
+const Perms = require("../perms").default;
 const Context = require("../context").default;
 const { mentionId, escapeRegExp } = require("../utils");
 const { $ } = require("../loc");
