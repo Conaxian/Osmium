@@ -1,35 +1,49 @@
-"use strict";
+import { writeFile } from "fs/promises";
+import { join as pathJoin } from "path";
+import { performance } from "perf_hooks";
 
-const { NodeVM } = require("vm2");
-const fs = require("fs/promises");
-const { performance } = require("perf_hooks");
-const Arg = require("../../../lib/cmd/argument");
-const { $, $union, $limited } = require("../../../lib/loc");
-const {
+import Argument from "../../../lib/arg";
+import { CommandDefinition } from "../../../lib/cmd";
+import { $, $union, $limited, Localizable } from "../../../lib/loc";
+import {
   MAX_EMBED_DESC_LENGTH,
   shell,
   escapeTemplateStr,
   escapeCode,
-} = require("../../../lib/utils");
+} from "../../../lib/utils";
+import { EmbedType } from "../../../types";
 
-const isWin = process.platform === "win32";
-const nodeCommand = "node " + (isWin ? "data\\execute.js" : "data/execute.js");
+interface ExecutionResult {
+  stdout: string;
+  stderr: any;
+}
 
-async function jsExecute(code) {
+interface ResultData {
+  text: string | Localizable;
+  exitCode: Localizable;
+  type: EmbedType;
+}
+
+const nodeCommand = "node " + pathJoin("data", "execute.js");
+
+async function jsExecute(code: string): Promise<ResultData> {
   code = escapeTemplateStr(code);
   code = `const{NodeVM}=require("vm2");
 const vm=new NodeVM({});
 vm.run(\`${code}\`);
 `;
-  await fs.writeFile("data/execute.js", code, { encoding: "utf8" });
+
+  await writeFile("data/execute.js", code, { encoding: "utf8" });
 
   const start = performance.now();
-  let result;
+
+  let result: ExecutionResult;
   try {
     result = await shell(nodeCommand, { timeout: 5000 });
   } catch (err) {
     result = { stdout: "", stderr: err };
   }
+
   const time = performance.now() - start;
 
   if (result.stderr.killed) {
@@ -40,7 +54,9 @@ vm.run(\`${code}\`);
     };
   }
 
-  const output = result.stderr.toString() || result.stdout.trim() || " ";
+  const output: string =
+    result.stderr.toString() || result.stdout.trim() || " ";
+
   return {
     text: escapeCode(output),
     exitCode: $`mod/tools/javascript/finish-success`.format(
@@ -50,12 +66,12 @@ vm.run(\`${code}\`);
   };
 }
 
-module.exports = exports = {
+const command: CommandDefinition = {
   name: "javascript",
   aliases: ["js"],
-  args: [new Arg("<code>", "js-code")],
+  args: [new Argument("<code>", "js-code")],
 
-  async *invoke(ctx, code) {
+  async *invoke(ctx, code: string) {
     const result = await jsExecute(code);
 
     const text = $limited(
@@ -64,11 +80,14 @@ module.exports = exports = {
       "```",
       $union("```\n", result.exitCode),
     );
+
     const embed = await ctx.embed({
       title: $`mod/tools/javascript/output`,
       text,
       type: result.type,
     });
-    ctx.resolve({ embeds: embed });
+    await ctx.resolve({ embeds: embed });
   },
 };
+
+export default command;
