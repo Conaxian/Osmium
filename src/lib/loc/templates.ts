@@ -13,17 +13,16 @@ export function $(id: TemplateStringsArray, ...values: any[]) {
 }
 
 export function $union(
-  first: string | Localizable,
   ...parts: Array<string | Localizable>
 ) {
-  return new LocGroup(first, ...parts);
+  return new LocGroup(...parts);
 }
 
 export function $limited(
-  core: Localizable,
+  core: string | Localizable,
   length: number,
-  left = "",
-  right = "",
+  left: string | Localizable = "",
+  right: string | Localizable = "",
 ) {
   return new LocLengthProxy(core, length, left, right);
 }

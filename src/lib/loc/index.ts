@@ -1,3 +1,2 @@
-export * from "./locale";
-export * from "./formats";
-export * from "./templates";
+export { Localizable, resolveCloc } from "./locale";
+export { $, $union, $limited } from "./templates";

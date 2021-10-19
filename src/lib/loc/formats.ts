@@ -1,5 +1,5 @@
 import { Locale, Localizable, loadLocale, resolveLoc } from "./locale";
-import { LocaleCode } from "../../../config";
+import { LocaleCode } from "../../types";
 
 export class LocStr extends Localizable {
   private id: string;
@@ -26,7 +26,7 @@ export class LocStr extends Localizable {
 
     for (let i = 0; i < this.fValues.length; i++) {
       const fValue = await resolveLoc(this.fValues[i], locale);
-      string = string.replaceAll(`{${i}}`, fValue);
+      string = string.replaceAll(`{${i}}`, fValue!);
     }
 
     return string;
@@ -43,7 +43,7 @@ export class LocGroup extends Localizable {
 
   override async loc(locale: LocaleCode) {
     let result = "";
-    for (let part of this.parts) {
+    for (const part of this.parts) {
       result += await resolveLoc(part, locale);
     }
     return result;
@@ -75,8 +75,8 @@ export class LocLengthProxy extends Localizable {
       core: await resolveLoc(this.core, locale),
       right: await resolveLoc(this.rightPad, locale),
     };
-    const padLength = parts.left.length + parts.right.length;
-    const maxLength = this.length - padLength - parts.core.length;
-    return parts.left + parts.core.slice(0, maxLength) + parts.right;
+    const padLength = parts.left!.length + parts.right!.length;
+    const maxLength = this.length - padLength - parts.core!.length;
+    return parts.left + parts.core!.slice(0, maxLength) + parts.right;
   }
 }
