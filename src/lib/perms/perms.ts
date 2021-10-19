@@ -1,6 +1,6 @@
 import { Permissions, PermissionString } from "discord.js";
 import { forceArray } from "../utils";
-import { Perm } from "./perm-types";
+import { Perm } from "./types";
 
 export default class Perms {
   dev: boolean;
@@ -22,7 +22,7 @@ export default class Perms {
 
   has(perms: Perm | Perm[]) {
     if (this.dev || !this.enforced) return true;
-    perms = forceArray(perms);
+    perms = forceArray(perms) as Perm[];
 
     let result = true;
 
