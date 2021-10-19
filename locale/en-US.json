@@ -18,7 +18,7 @@
   "arg-format": {
     "int": "Enter a valid integer (whole number).",
     "num": "Enter a valid number.",
-    "command-module": "Enter a name of a valid module or command.",
+    "command-module": "Enter the name of a valid module or command.",
     "member": "Enter a valid member of this server.",
     "activity-type": "Enter a valid activity type."
   },
