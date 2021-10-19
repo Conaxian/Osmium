@@ -8,11 +8,12 @@ import {
   Intents,
   IntentsString,
   PartialTypes,
-  ActivityType,
   ClientOptions,
 } from "discord.js";
 
 import Log from "./log";
+import { ActivityType } from "../types";
+import { musicController } from "./music";
 
 const log = new Log("Bot");
 
@@ -59,7 +60,10 @@ export default class Bot extends Client {
     log.info("Starting to log in");
     await super.login(DISCORD_TOKEN);
     log.info(`Logged in as ${this.user!.tag}`);
+
     this.user!.setActivity(Config.activity);
+
+    musicController.registerVoice(this);
   }
 
   setActivity(name: string, type: ActivityType) {
