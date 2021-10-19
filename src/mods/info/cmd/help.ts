@@ -1,33 +1,37 @@
-"use strict";
+import { MessageEmbed } from "discord.js";
 
-const Arg = require("../../../lib/cmd/argument");
-const Mod = require("../../../lib/mod");
-const { stabilizeFields } = require("../../../lib/utils");
-const { $, $union } = require("../../../lib/loc");
-const { loadedModules } = require("../../../lib/loader");
+import Command, { CommandDefinition } from "../../../lib/cmd";
+import Module, { loadedModules } from "../../../lib/mod";
+import Argument from "../../../lib/arg/argument";
+import { CembedField } from "../../../lib/context";
+import { $, $union, Localizable } from "../../../lib/loc";
+import { stabilizeFields } from "../../../lib/utils";
 
-module.exports = exports = {
+const command: CommandDefinition = {
   name: "help",
   aliases: ["h"],
-  args: [new Arg("[command/module]", "command-module")],
+  args: [new Argument("[scope]", "command-module")],
 
-  async *invoke(ctx, scope) {
-    let embed;
+  async *invoke(ctx, scope: Command | Module | undefined) {
+    let embed: MessageEmbed;
+    const fields: CembedField[] = [];
+
     if (!scope) {
-      const fields = [];
-      for (let mod of loadedModules.values()) {
+      for (const mod of loadedModules.values()) {
         if (mod.hidden) continue;
-        let desc = $`mod/${mod.name}/desc`;
-        let text = $`mod/info/help/module-help`.format(
-          desc,
+
+        const text = $`mod/info/help/module-help`.format(
+          $`mod/${mod.name}/desc`,
           ctx.prefix,
           mod.name,
         );
+
         fields.push({
           name: $`mod/${mod.name}/name`,
           value: text,
         });
       }
+
       stabilizeFields(fields);
 
       embed = await ctx.embed({
@@ -36,14 +40,14 @@ module.exports = exports = {
         fields,
         type: "info",
       });
-    } else if (scope instanceof Mod) {
-      const fields = [];
-      for (let command of scope.commands) {
+    } else if (scope instanceof Module) {
+      for (const command of scope.commands) {
         fields.push({
           name: $`mod/${scope.name}/${command.name}/name`,
           value: `\`${ctx.prefix}help ${command.name}\``,
         });
       }
+
       stabilizeFields(fields);
 
       const name = $`mod/${scope.name}/name`;
@@ -54,30 +58,29 @@ module.exports = exports = {
         type: "info",
       });
     } else {
-      const fields = [];
-      const none = $`general/none`;
       fields.push({
         name: $`mod/info/help/syntax`,
         value: `\`${ctx.prefix}${scope.syntax}\``,
         inline: false,
       });
+
+      const none = $`general/none`;
       const aliases = scope.aliases.length
         ? "`" + scope.aliases.join("`, `") + "`"
         : none;
+
       fields.push({
         name: $`mod/info/help/aliases`,
         value: aliases,
         inline: false,
       });
 
-      const perms = [];
-      if (scope.perms.length) {
-        for (let i = 0; i < scope.perms.length; i++) {
-          const perm = scope.perms[i];
-          if (i) perms.push(", ");
-          perms.push($`perms/${perm}`);
-        }
-      }
+      const perms: (string | Localizable)[] = [];
+      scope.perms.forEach((perm, i) => {
+        if (i) perms.push(", ");
+        perms.push($`perms/${perm}`);
+      });
+
       fields.push({
         name: $`mod/info/help/perms`,
         value: perms.length ? $union(...perms) : none,
@@ -87,12 +90,15 @@ module.exports = exports = {
       embed = await ctx.embed({
         title: $`mod/${scope.mod.name}/${scope.name}/name`,
         text: $`mod/${scope.mod.name}/${scope.name}/desc`.format(
-          ...scope.args.map((arg) => arg.fullname),
+          ...scope.args.map((arg) => arg.displayName),
         ),
         fields,
         type: "info",
       });
     }
-    ctx.resolve({ embeds: embed });
+
+    await ctx.resolve({ embeds: embed });
   },
 };
+
+export default command;

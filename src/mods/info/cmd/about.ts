@@ -1,34 +1,39 @@
-"use strict";
+import Config from "../../../../config";
+import { CommandDefinition } from "../../../lib/cmd";
+import { $ } from "../../../lib/loc";
+import { version } from "../../../lib/utils";
 
-const { $ } = require("../../../lib/loc");
-const { author, botInvite, gitHub } = require("../../../../config");
-const { version } = require("../../../lib/utils");
-
-module.exports = exports = {
+const command: CommandDefinition = {
   name: "about",
   aliases: ["osmium", "github", "version"],
 
   async *invoke(ctx) {
-    const text = $`mod/info/about/text`.format(author);
+    const text = $`mod/info/about/text`.format(Config.author);
     const fields = [];
+
     fields.push({
       name: $`mod/info/about/add-bot`,
-      value: botInvite,
+      value: Config.botInvite,
     });
+
     fields.push({
       name: $`mod/info/about/github`,
-      value: gitHub,
+      value: Config.gitHub,
     });
+
     fields.push({
       name: $`mod/info/about/version`,
       value: `**\`v${version}\`**`,
     });
+
     const embed = await ctx.embed({
       title: $`mod/info/about/name`,
       text,
       fields,
       type: "info",
     });
-    ctx.resolve({ embeds: embed });
-  },
+    await ctx.resolve({ embeds: embed });
+  }
 };
+
+export default command;
