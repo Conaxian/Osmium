@@ -1,8 +1,8 @@
 import { appendFile } from "fs/promises";
-import { TextChannel } from "discord.js";
 
-import { fullDate } from "../timestamp";
 import Context from "../context";
+import { fullDate } from "../timestamp";
+import { notNullish } from "../utils";
 
 const LOG_PATH = "data/log.txt";
 
@@ -12,13 +12,14 @@ function logDataEntry(name: string, id: string) {
 }
 
 export async function logMessage(ctx: Context) {
-  // TODO: Add context type
+  notNullish(ctx.guild);
+
   const content = ctx.text.replace(/\\newlog\\/g, "/newlog/");
   const time = fullDate(new Date());
 
-  const guildEntry = logDataEntry(ctx.guild!.name, ctx.guild!.id);
+  const guildEntry = logDataEntry(ctx.guild.name, ctx.guild.id);
   const channelEntry = logDataEntry(
-    (ctx.channel as TextChannel).name,
+    ctx.channel.name,
     ctx.channel.id,
   );
   const authorEntry = logDataEntry(ctx.authorUser.username, ctx.authorUser.id);
