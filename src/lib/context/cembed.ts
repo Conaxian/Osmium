@@ -1,17 +1,17 @@
 import { ColorResolvable, MessageEmbed, MessageEmbedOptions } from "discord.js";
 
+import Config from "../../../config";
 import { Localizable, resolveCloc } from "../loc";
 import { forceArray } from "../utils";
+import { EmbedType } from "../../types";
+
 import Context from "./context";
-import Config from "../../../config";
 
 const DEFAULT_INLINENESS = true;
 
 type CembedString = string | Localizable | undefined;
 
-type EmbedType = "ok" | "error" | "info" | "warn" | "music" | "loading";
-
-interface CembedField {
+export interface CembedField {
   name: string | Localizable;
   value: string | Localizable;
   inline?: boolean;
@@ -68,10 +68,7 @@ function attachResource(
 }
 
 export default async function cembed(ctx: Context, options: CembedOptions) {
-  const resolved = function (data: CembedString) {
-    if (data === undefined) return undefined;
-    return resolveCloc(ctx, data);
-  };
+  const resolved = (data: CembedString) => resolveCloc(ctx, data);
 
   const embedOptions: MessageEmbedOptions = {};
 
@@ -82,11 +79,11 @@ export default async function cembed(ctx: Context, options: CembedOptions) {
   embedOptions.color = options.color;
 
   embedOptions.fields = [];
-  options.fields = forceArray(options.fields) ?? [];
+  options.fields = (forceArray(options.fields) ?? []) as CembedField[];
   for (const field of options.fields) {
     embedOptions.fields.push({
-      name: await resolved(field.name)!,
-      value: await resolved(field.value)!,
+      name: (await resolved(field.name))!,
+      value: (await resolved(field.value))!,
       inline: field.inline !== undefined ? field.inline : DEFAULT_INLINENESS,
     });
   }
@@ -120,9 +117,7 @@ export default async function cembed(ctx: Context, options: CembedOptions) {
     embedOptions.footer.iconURL ??= Config.cembedIcons[options.type];
   }
 
-  embedOptions.color ??=
-    ctx.authorMember?.displayColor ||
-    (Config.cembedColors.default as ColorResolvable);
+  embedOptions.color ??= (Config.cembedColors.default as ColorResolvable);
   embedOptions.footer.iconURL ??= Config.cembedIcons.default;
 
   return new MessageEmbed(embedOptions);

@@ -1,28 +1,30 @@
-import { Message } from "discord.js";
+import { Message, TextChannel } from "discord.js";
 
 import Bot from "../bot";
 import Perms from "../perms";
-import Output from "../cmd/output";
-import { LocaleCode } from "../../../config";
-import { readJson } from "../dataio";
-import { resolveCloc } from "../loc";
-import { forceArray } from "../utils";
-import cembed, { CembedOptions } from "./cembed";
+import Command from "../cmd/command";
+import { Localizable } from "../loc";
+import { readJson, writeJson } from "../dataio";
+import { notNullish } from "../utils";
+import { LocaleCode, EmbedType } from "../../types";
 
-enum ContextType {
+import cembed, { CembedOptions } from "./cembed";
+import output, { Output, OutputOptions } from "./output";
+
+export enum ContextType {
   guild = "GUILD",
   direct = "DIRECT",
   virtual = "VIRTUAL",
 }
 
-interface ContextArgs {
+interface ContextOptions {
   bot: Bot;
   text: string;
-  msg: Message;
+  msg?: Message;
   type: ContextType;
   prefix: string;
-  command: any; // TODO: Add command type
-  args: any[];
+  command?: Command;
+  args?: ArgsObject;
   perms: Perms;
 }
 
@@ -36,22 +38,27 @@ interface UserData {
 
 interface GuildConfig {
   language?: LocaleCode;
+  prefix?: string;
 }
 
 interface GuildData {
   config?: GuildConfig;
 }
 
+export interface ArgsObject {
+  [key: string]: any;
+}
+
 export default class Context {
   bot: Bot;
   text: string;
-  msg: Message;
+  msg?: Message;
   type: ContextType;
   prefix: string;
-  command: any; // TODO: Add command type
-  args: any[];
+  command?: Command;
+  args?: ArgsObject;
   perms: Perms;
-  private result: any; // TODO: Add output type
+  protected result!: Output;
 
   constructor({
     bot,
@@ -62,7 +69,7 @@ export default class Context {
     command,
     args,
     perms,
-  }: ContextArgs) {
+  }: ContextOptions) {
     this.bot = bot;
     this.text = text;
     this.msg = msg;
@@ -74,26 +81,38 @@ export default class Context {
   }
 
   get author() {
-    return this.type === ContextType.guild ? this.msg.member! : this.msg.author;
+    if (this.type === ContextType.virtual) return;
+    return this.type === ContextType.guild
+      ? this.msg!.member!
+      : this.msg!.author;
   }
 
   get authorUser() {
+    notNullish(this.msg);
     return this.msg.author;
   }
 
   get authorMember() {
+    notNullish(this.msg);
     return this.msg.member;
   }
 
-  get channel() {
-    return this.msg.channel;
+  get channel(): TextChannel {
+    notNullish(this.msg);
+    return this.msg.channel as TextChannel;
   }
 
   get guild() {
+    notNullish(this.msg);
     return this.type === ContextType.guild ? this.msg.guild : null;
   }
 
+  get resolved() {
+    return !!this.result;
+  }
+
   async userData(): Promise<UserData | null> {
+    notNullish(this.author);
     return (await readJson("users"))?.[this.author.id];
   }
 
@@ -102,30 +121,52 @@ export default class Context {
     return (await readJson("guilds"))?.[this.guild.id];
   }
 
-  // TODO: Move to output
-  private async fixMessage(data: any) {
-    if (data.content !== undefined) {
-      data.content = await resolveCloc(this, data.content);
-    }
-    data.embeds = forceArray(data.embeds);
-    data.files = forceArray(data.files);
-    data.components = forceArray(data.components);
-    data.stickers = forceArray(data.stickers);
+  async setGuildData(newData: GuildData) {
+    if (!this.guild) return null;
+
+    const guildsData = await readJson("guild");
+    if (!guildsData[this.guild.id]) guildsData[this.guild.id] = {};
+    guildsData[this.guild.id] = newData;
+
+    return await writeJson("guilds", guildsData);
   }
 
-  // TODO: Rewrite output
-  output(data: any, reply = true) {
-    return new Output(data, reply);
+  async output(data: OutputOptions) {
+    return await output(this, data);
   }
 
-  // TODO: Rewrite resolve
-  resolve(data: any, reply = true) {
-    this.result ??= new Output(data, reply);
+  async resolve(data: OutputOptions) {
+    this.result ??= await output(this, data);
   }
 
-  // TODO: Rewrite out
-  async out(output: any) {
-    await this.fixMessage(output.data);
+  async resolveNow(data: OutputOptions) {
+    const output = await this.output(data);
+    return await this.out(output);
+  }
+
+  private async genericEmbedShortcut(
+    text: string | Localizable,
+    type: EmbedType,
+  ) {
+    const embed = await this.embed({ text, type });
+    await this.resolve({ embeds: embed });
+  }
+
+  async ok(text: string | Localizable) {
+    await this.genericEmbedShortcut(text, "ok");
+  }
+
+  async error(text: string | Localizable) {
+    await this.genericEmbedShortcut(text, "error");
+  }
+
+  async warn(text: string | Localizable) {
+    await this.genericEmbedShortcut(text, "warn");
+  }
+
+  async out(output: Output) {
+    notNullish(this.msg);
+
     if (output.reply) {
       return await this.msg.reply(output.data);
     } else {
@@ -133,13 +174,19 @@ export default class Context {
     }
   }
 
-  // TODO: Rewrite edit
-  async edit(msg: Message, edited: any) {
-    await this.fixMessage(edited.data);
+  async edit(msg: Message, edited: Output) {
     return await msg.edit(edited.data);
   }
 
+  async finalize() {
+    await this.out(this.result);
+  }
+
   async embed(options: CembedOptions) {
-    return cembed(this, options);
+    return await cembed(this, options);
   }
 }
+
+export type FullContext = Required<Context> & Context;
+
+export function declareFull(ctx: Context): asserts ctx is FullContext {}
