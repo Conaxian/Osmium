@@ -1,4 +1,5 @@
-import { ActivityType } from "discord.js";
+import { ActivityType, LocaleCode } from "./src/types";
+
 import config from "./config";
 
 interface BotActivity {
@@ -6,9 +7,7 @@ interface BotActivity {
   type: ActivityType;
 }
 
-export type LocaleCode = "en-US";
-
-type Module = "info" | "text" | "tools" | "fun" | "music" | "config" | "dev";
+type ModName = "info" | "text" | "tools" | "fun" | "music" | "config" | "dev";
 
 type TerminalColor =
   | "black"
@@ -66,7 +65,7 @@ interface Config {
   defaultLocale: LocaleCode;
   locales: LocaleCode[];
 
-  preloadModules: Module[];
+  preloadModules: ModName[];
 
   cembedColors: CembedTypesConfig<string>;
   cembedIcons: CembedTypesConfig<string>;
