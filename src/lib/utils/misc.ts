@@ -2,10 +2,12 @@ import { promisify } from "util";
 import { exec } from "child_process";
 import { readFileSync } from "fs";
 
+import { CembedField } from "../context";
+
 interface EmbedField {
   name: string;
   value: string;
-  inline: boolean;
+  inline?: boolean;
 }
 
 interface GenericObject {
@@ -14,7 +16,7 @@ interface GenericObject {
 
 const ZWSP = "\u200B";
 
-export const version = readFileSync("version.txt", { encoding: "utf8" });
+export const version = readFileSync("version.txt", { encoding: "utf8" }).trim();
 
 export function randInt(min: number, max: number) {
   min = Math.ceil(min);
@@ -22,7 +24,7 @@ export function randInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function forceArray(obj: any): any[] {
+export function forceArray<T>(obj: T | T[]): T | T[] {
   if (obj && !Array.isArray(obj)) {
     obj = [obj];
   }
@@ -32,10 +34,10 @@ export function forceArray(obj: any): any[] {
 export function safeAccess(
   obj: GenericObject,
   path: string,
-  defaultIsArray=false,
+  defaultIsArray = false,
 ): any {
   const pathParts = path.split("/");
-  for (let property of pathParts) {
+  for (const property of pathParts) {
     const defaultValue = defaultIsArray ? [] : {};
     if (obj[property] === undefined) obj[property] = defaultValue;
     obj = obj[property];
@@ -44,9 +46,9 @@ export function safeAccess(
 }
 
 export function attachBlankField(
-  fields: EmbedField[],
+  fields: CembedField[],
   index: number,
-  inline=true,
+  inline = true,
 ) {
   fields.splice(index, 0, {
     name: ZWSP,
@@ -56,7 +58,7 @@ export function attachBlankField(
   return fields;
 }
 
-export function stabilizeFields(fields: EmbedField[]) {
+export function stabilizeFields(fields: CembedField[]) {
   while (fields.length % 3) {
     attachBlankField(fields, fields.length);
   }

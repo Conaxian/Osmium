@@ -1,4 +1,4 @@
-import { Util as DiscordUtils } from "discord.js";
+import { Util as DiscordUtils, Snowflake } from "discord.js";
 
 export function capitalize(string: string) {
   return string[0].toUpperCase() + string.slice(1).toLowerCase();
@@ -6,7 +6,7 @@ export function capitalize(string: string) {
 
 export function title(string: string) {
   let result = "";
-  for (let word of string.split(/( |\t|\n|-)/g)) {
+  for (const word of string.split(/( |\t|\n|-)/g)) {
     result += capitalize(word);
   }
   return result;
@@ -14,9 +14,9 @@ export function title(string: string) {
 
 export function mentionId(mention: string) {
   if (+mention) {
-    return mention;
+    return mention as Snowflake;
   }
-  return mention.match(/^<(?:@[!&]?|#)(\d+)>$/)?.[1] ?? null;
+  return (mention.match(/^<(?:@[!&]?|#)(\d+)>$/)?.[1] as Snowflake) ?? null;
 }
 
 export function escapeRegExp(string: string) {
@@ -33,4 +33,8 @@ export function escapeCode(string: string) {
 
 export function escapeMd(string: string) {
   return DiscordUtils.escapeMarkdown(string);
+}
+
+export function kebabToCamel(string: string) {
+  return string.replace(/-./g, (char) => char[1].toUpperCase());
 }
