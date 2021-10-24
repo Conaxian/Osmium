@@ -1,6 +1,5 @@
 import ytdl from "ytdl-core";
 import ytsr from "ytsr";
-import { GuildMember } from "discord.js";
 import {
   demuxProbe,
   createAudioResource,
@@ -76,7 +75,7 @@ export default class Audio {
   private async loadResource() {
     const stream = ytdl(this.url, {
       quality: "highestaudio",
-      highWaterMark: 1024 * 1024 * 10,
+      highWaterMark: 1 << 25,
       requestOptions: { headers: ytdlHeaders },
     });
 
