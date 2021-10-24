@@ -49,7 +49,7 @@ export default class Audio {
   }
 
   get duration() {
-    const date = new Date(this.length ?? 0 * 1000);
+    const date = new Date((this.length ?? 0) * 1000);
     return hhmmss(date);
   }
 
