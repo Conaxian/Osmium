@@ -1,7 +1,7 @@
 {
   "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "rootDir": "./src",
     "outDir": "./dest",
     "allowJs": true,
@@ -15,8 +15,10 @@
     "resolveJsonModule": true,
     "noEmit": false,
     "noEmitOnError": false,
+    "noImplicitThis": true,
+    "noImplicitOverride": true,
+    "alwaysStrict": true,
+    "noImplicitReturns": true
   },
-  "include": [
-    "src",
-  ],
+  "include": ["src"]
 }

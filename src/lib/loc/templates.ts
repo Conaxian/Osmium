@@ -1,7 +1,7 @@
 import { Localizable } from "./locale";
 import { LocStr, LocGroup, LocLengthProxy } from "./formats";
 
-export function $(id: TemplateStringsArray, ...values) {
+export function $(id: TemplateStringsArray, ...values: any[]) {
   let fullId = "";
   for (let i = 0; i < id.length; i++) {
     fullId += id[i];
@@ -12,11 +12,17 @@ export function $(id: TemplateStringsArray, ...values) {
   return new LocStr(fullId);
 }
 
-export function $union(first: string | Localizable,
-...parts: Array<string | Localizable>) {
-  return new LocGroup(first, ...parts);
+export function $union(
+  ...parts: Array<string | Localizable>
+) {
+  return new LocGroup(...parts);
 }
 
-export function $limited(core, length: number, left="", right="") {
+export function $limited(
+  core: string | Localizable,
+  length: number,
+  left: string | Localizable = "",
+  right: string | Localizable = "",
+) {
   return new LocLengthProxy(core, length, left, right);
 }

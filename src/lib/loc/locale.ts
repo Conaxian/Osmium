@@ -1,6 +1,8 @@
 import { readFile } from "fs/promises";
-import Context from "../cmd/context";
+
+import Context from "../context";
 import Config from "../../../config";
+import { LocaleCode } from "../../types";
 
 const localePath = (code: string) => `./locale/${code}.json`;
 const localeCache = new Map<string, Locale>();
@@ -10,27 +12,41 @@ export interface Locale {
 }
 
 export class Localizable {
-  async loc(_locale: string): Promise<void | string>
-  async loc(_locale: string) {}
+  async loc(locale: LocaleCode): Promise<void | string>;
+  async loc(_locale: LocaleCode) {}
 
-  async cloc(src) {
-    let locale;
-    if (src instanceof Context) {
-      locale = src.userData?.config?.language ??
-      src.guildData?.config?.language;
-    } // TODO: finish cloc for other types of source
+  async cloc(src: Context) {
+    let locale: LocaleCode | undefined;
+
+    const userData = await src.userData();
+    const guildData = await src.guildData();
+    locale = userData?.config?.language ?? guildData?.config?.language;
+
     return await this.loc(locale ?? Config.defaultLocale);
   }
 }
 
-export async function resolveLoc(obj: any, locale: string) {
+export async function resolveLoc(obj: any, locale: LocaleCode) {
+  if (obj === undefined) return undefined;
+
   if (obj instanceof Localizable) {
     obj = await obj.loc(locale);
   }
+
   return String(obj);
 }
 
-export async function loadLocale(code: string, force=false) {
+export async function resolveCloc(ctx: Context, obj: any) {
+  if (obj === undefined) return undefined;
+
+  if (obj instanceof Localizable) {
+    obj = await obj.cloc(ctx);
+  }
+
+  return String(obj);
+}
+
+export async function loadLocale(code: LocaleCode, force = false) {
   if (force || !localeCache.has(code)) {
     const path = localePath(code);
     const json = await readFile(path, { encoding: "utf8" });
