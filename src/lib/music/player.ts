@@ -89,6 +89,7 @@ export default class Player {
       audio = this.playing!;
     }
 
+    await audio.loadResource();
     this.player.play(audio!.resource);
     this.playing = audio;
 
