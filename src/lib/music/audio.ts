@@ -11,7 +11,7 @@ import { hhmmss } from "../timestamp";
 import { escapeMd } from "../utils";
 
 const youtubeUrlRegExp =
-  /https?:\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?[\w\?=]*)?/;
+  /^https?:\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?[\w\?=]*)?$/;
 
 const ytdlHeaders = {
   Cookie: Config.youtubeCookie,
