@@ -4,12 +4,6 @@ import { readFileSync } from "fs";
 
 import { CembedField } from "../context";
 
-interface EmbedField {
-  name: string;
-  value: string;
-  inline?: boolean;
-}
-
 interface GenericObject {
   [key: string | symbol]: any;
 }
@@ -63,6 +57,10 @@ export function stabilizeFields(fields: CembedField[]) {
     attachBlankField(fields, fields.length);
   }
   return fields;
+}
+
+export async function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 export const shell = promisify(exec);
