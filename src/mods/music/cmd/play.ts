@@ -44,7 +44,8 @@ const command: CommandDefinition = {
 
     try {
       await audio!.init();
-    } catch {
+    } catch (err) {
+      console.log(err);
       return await ctx.error($`mod/music/play/not-found`);
     }
 
