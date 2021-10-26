@@ -45,6 +45,7 @@ const command: CommandDefinition = {
     for (let i = 0; i < 5; i++) {
       try {
         await audio!.init();
+        break;
       } catch (err: any) {
         if (err?.name === "TypeError" || err?.message === "Video unavailable") {
           return await ctx.error($`mod/music/play/not-found`);
