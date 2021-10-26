@@ -44,8 +44,6 @@ export default class Audio {
     this.author = info.author;
     this.length = +info.lengthSeconds;
     this.desc = info.shortDescription;
-
-    this.resource = await this.loadResource();
   }
 
   get duration() {
@@ -60,26 +58,27 @@ export default class Audio {
   static async fromYoutube(query: string, requestor: string) {
     if (youtubeUrlRegExp.test(query)) {
       return new Audio(query, requestor);
-    };
+    }
 
     const results = await ytsr(query, { limit: 10 });
     for (const result of results.items) {
       if (result.type === "video") {
         return new Audio(result.url, requestor);
-      };
+      }
     }
 
     return null;
   }
 
-  private async loadResource() {
+  async loadResource() {
     const stream = ytdl(this.url, {
+      filter: "audioonly",
       quality: "highestaudio",
       highWaterMark: 1 << 25,
       requestOptions: { headers: ytdlHeaders },
     });
 
     const { stream: probedStream, type } = await demuxProbe(stream);
-    return createAudioResource(probedStream, { inputType: type });
+    this.resource = createAudioResource(probedStream, { inputType: type });
   }
 }
