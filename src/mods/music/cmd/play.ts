@@ -8,7 +8,7 @@ import Argument from "../../../lib/arg/argument";
 import { CommandDefinition } from "../../../lib/cmd";
 import { Player, Audio, musicController } from "../../../lib/music";
 import { $ } from "../../../lib/loc";
-import { escapeMd } from "../../../lib/utils";
+import { escapeMd, sleep } from "../../../lib/utils";
 
 const command: CommandDefinition = {
   name: "play",
@@ -42,11 +42,16 @@ const command: CommandDefinition = {
 
     const audio = await Audio.fromYoutube(query, String(ctx.authorMember));
 
-    try {
-      await audio!.init();
-    } catch (err) {
-      console.log(err);
-      return await ctx.error($`mod/music/play/not-found`);
+    for (let i = 0; i < 5; i++) {
+      try {
+        await audio!.init();
+      } catch (err: any) {
+        if (err?.name === "TypeError" || err?.message === "Video unavailable") {
+          return await ctx.error($`mod/music/play/not-found`);
+        }
+        await sleep(1000);
+        continue;
+      }
     }
 
     const player = musicController.get(ctx.guild!.id)!;
